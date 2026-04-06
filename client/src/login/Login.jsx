@@ -3,9 +3,12 @@ import { useState } from "react"
 import style from "./login.module.css"
 
 export default function Login(){
+    const [isError, setIsError] = useState(false);
+
     return (
         <div className={style.loginContainer}>
             <PageName name="Злагода"/>
+            {isError && <ErrorMessage text="Неправильний логін або пароль"/>}
             <EmailInput />
             <PasswordInput />
         </div>
@@ -41,5 +44,11 @@ function PasswordInput(){
             value={password}
             onChange={(e)=>setPassword(e.target.value)}
         />
+    )
+}
+
+function ErrorMessage({text}){
+    return(
+        <p>{text}</p>
     )
 }
