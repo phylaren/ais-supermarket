@@ -1,0 +1,9 @@
+header {
+    align-self: baseline;
+    padding: 16px;
+    background-color: brown;
+    width: 100%;
+    color: white;
+    font-size: 32px;
+    text-align: center;
+}
