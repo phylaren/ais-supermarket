@@ -1,4 +1,4 @@
-export const cashier = [
+export const manager = [
     {
         ukr: "Працівники",
         eng: "workers"
@@ -27,7 +27,7 @@ export const cashier = [
 
 // should goods have different view for them? maybe i should return to /cashier /manager 
 
-export const manager = [
+export const cashier = [
     {
         ukr: "Мій профіль",
         eng: "profile"
