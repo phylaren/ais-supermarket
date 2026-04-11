@@ -1,0 +1,27 @@
+{
+  "name": "ais-supermarket",
+  "version": "1.0.0",
+  "description": "https://docs.google.com/spreadsheets/d/1iWlKQc_Sd8NWvi8VIaNHbCNluvjWi-YurJ1ObOfAPDA/edit?usp=sharing",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "server": "npm run dev --prefix server",
+    "client": "npm run dev --prefix client",
+    "dev": "concurrently \"npm run server\" \"npm run client\""
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/phylaren/ais-supermarket.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/phylaren/ais-supermarket/issues"
+  },
+  "homepage": "https://github.com/phylaren/ais-supermarket#readme",
+  "devDependencies": {
+    "concurrently": "^9.2.1"
+  }
+}
