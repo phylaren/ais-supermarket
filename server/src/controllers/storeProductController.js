@@ -1,7 +1,7 @@
 import db from '../../db.js';
 
 export const getAll = (req, res) => {
-    const sqlQuery = `SELECT * FROM Store`;
+    const sqlQuery = `SELECT * FROM Store_Product`;
 
     db.all(sqlQuery, [], (err, rows) => {
         if(err){
