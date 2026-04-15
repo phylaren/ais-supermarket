@@ -12,3 +12,26 @@ export const getAll = (req, res) => {
         }
     });
 }
+
+export const insertData = (req, res) => {
+  const { id_employee, empl_surname, empl_name, empl_patronymic, id_role, salary,
+          date_of_birth, date_of_start, phone_number, city, street, zip_code } = req.body;
+
+  const sqlQuery = `INSERT INTO Employee (
+                    id_employee, empl_surname, empl_name, empl_patronymic,
+                    id_role, salary, date_of_birth, date_of_start,
+                    phone_number, city, street, zip_code)
+                    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
+
+  db.run( sqlQuery, [id_employee, empl_surname, empl_name, empl_patronymic, id_role, salary,
+                    date_of_birth, date_of_start, phone_number, city, street, zip_code],
+    function (err) {
+      if (err) {
+        return res.status(500).json({ error: err.message });
+      }
+        res.status(201).json({
+        id_employee, empl_surname, empl_name, empl_patronymic, id_role, salary,
+        date_of_birth, date_of_start, phone_number, city, street, zip_code
+      });
+    });
+}

@@ -12,3 +12,20 @@ export const getAll = (req, res) => {
         }
     });
 }
+
+export const insertData = (req, res) => {
+  const { id_role, role_name } = req.body;
+
+  const sqlQuery = `INSERT INTO Role (id_role, role_name)
+                    VALUES (?, ?)`;
+
+  db.run(sqlQuery, [id_role, role_name], function (err) {
+    if (err) {
+      return res.status(500).json({ error: err.message });
+    }
+    res.status(201).json({
+      id_role,
+      role_name
+    });
+  });
+}; 
