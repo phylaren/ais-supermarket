@@ -1,21 +1,27 @@
-import { Link } from "react-router-dom"
+import { Link, Outlet, useLocation } from "react-router-dom"
 import style from "./Main.module.css"
 
-import { useContext } from "react"
-import { UserContext } from "../context/UserContext"
-
-import { PageName } from "../pageElems/PageName"
+import PageName from "../pageElems/PageName"
 import headerStyle from "../pageElems/headerStyle.module.css"
 
-import {cashier, manager} from "./categories.js";
+import {getCategories} from "./categories.js";
 
 export default function Main(){
-    const categories = useContext(UserContext).role === "CASHIER" ? cashier : manager;
+    const categories = getCategories();
+    console.log(categories);
+
+    const location = useLocation();
+    
+    const isExactMainPage = location.pathname === "/main" || location.pathname === "/main/";
 
     return(
         <div className={style.pageContainer}>
             <PageName name="Головна"/>
-            {<PageCategories categories={categories}/>}
+            {isExactMainPage && <PageCategories categories={categories} />}
+            
+            <div className={style.contentArea}>
+                <Outlet /> 
+            </div>
         </div>
     )
 }

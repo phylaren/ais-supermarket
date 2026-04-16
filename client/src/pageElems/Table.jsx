@@ -4,9 +4,6 @@ function getAttributes(data){
 }
 
 export default function Table({ data, category }) {
-    console.log(data);
-    console.log(category);
-
     if (!data || data.length === 0) {
         return <div>Завантажую таблицю</div>;
     }
@@ -47,16 +44,18 @@ function Attributes({ attributes }) {
     )
 }
 
-function Data({data}) {
+function Data({ data }) {
     return (
         <tbody>
-            {data.map((item) => (
-                <tr key={item.id}>
-                    {Object.values(item).map((value) => (
-                        <td key={value}>{value}</td>
+            {data.map((row, rowIndex) => (
+                <tr key={rowIndex}>
+                    {Object.values(row).map((value, colIndex) => (
+                        <td key={colIndex}>{value}</td>
                     ))}
                 </tr>
             ))}
         </tbody>
-    )
+    );
 }
+
+

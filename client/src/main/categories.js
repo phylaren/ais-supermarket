@@ -1,4 +1,7 @@
-export const manager = [
+import { useContext } from "react";
+import { UserContext } from "../context/UserContext.jsx";
+
+const manager = [
     {
         ukr: "Працівники",
         eng: "workers"
@@ -27,14 +30,14 @@ export const manager = [
 
 // should goods have different view for them? maybe i should return to /cashier /manager 
 
-export const cashier = [
+const cashier = [
     {
         ukr: "Мій профіль",
         eng: "profile"
     },
     {
         ukr: "Чеки",
-        eng: "checks"
+        eng: "receipt"
     },
     {
         ukr: "Товари",
@@ -42,6 +45,15 @@ export const cashier = [
     },
     {
         ukr: "Товари в магазині",
-        eng: "shop-goods"
+        eng: "store-product"
     },
 ]
+
+export function getCategories() {
+    const {role} = useContext(UserContext);
+    console.log(role);
+
+    if (role === "CASHIER") return cashier;
+    if (role === "MANAGER") return manager;
+    return [];
+}
