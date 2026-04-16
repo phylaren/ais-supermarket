@@ -1,33 +1,32 @@
-import db from '../../db.js';
+import { getAllEntities, insertEntity, deleteEntity } from "../service.js";
 
-export const getAllSales = (req, res) => {
-    const sqlQuery = `SELECT * FROM Sale`;
+export const getAll = async (req, res) => {
+  const result = await getAllEntities({
+    tableName: "Sale",
+  });
 
-    db.all(sqlQuery, [], (err, rows) => {
-        if(err){
-            console.log(err.message);
-            res.status(500).json({error: err.message});
-        }else{
-            res.json(rows);
-        }
-    });
-}
+  return res.status(result.status).json(result.body);
+};
 
-export const insertData = (req, res) => {
-  const { UPC, id_check, product_number, selling_price } = req.body;
+export const insertData = async (req, res) => {
+  const result = await insertEntity({
+    tableName: "Sale",
+    data: req.body,
+    entityName: "Продаж",
+  });
 
-  const sqlQuery = `INSERT INTO Sale (
-                    UPC, id_check, product_number, selling_price)
-                    VALUES (?, ?, ?, ?)`;
+  return res.status(result.status).json(result.body);
+};
 
-  db.run(
-    sqlQuery,
-    [UPC, id_check, product_number, selling_price],
-    function (err) {
-      if (err) {
-        return res.status(500).json({ error: err.message });
-      }
+export const deleteSale = async (req, res) => {
+  const { id_sale } = req.params;
 
-    }
-  );
+  const result = await deleteEntity({
+    tableName: "Sale",
+    idField: "id_sale",
+    entityName: "Продаж",
+    id: id_sale,
+  });
+
+  return res.status(result.status).json(result.body);
 };

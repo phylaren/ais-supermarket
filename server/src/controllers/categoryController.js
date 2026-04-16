@@ -1,28 +1,32 @@
-import db from '../../db.js';
+import { getAllEntities, insertEntity, deleteEntity } from "../service.js";
 
-export const getAllCategories = (req, res) => {
-    const sqlQuery = `SELECT * FROM Category`;
-
-    db.all(sqlQuery, [], (err, rows) => {
-        if(err){
-            console.log(err.message);
-            res.status(500).json({error: err.message});
-        }else{
-            res.json(rows);
-        }
-    });
-}
-
-export const insertData = (req, res) => {
-  const { id_category, category_name } = req.body;
-
-  const sqlQuery = `INSERT INTO Category (id_category, category_name)
-                    VALUES (?, ?)`;
-
-  db.run(sqlQuery, [id_category, category_name], function (err) {
-    if (err) {
-      return res.status(500).json({ error: err.message });
-    }
-    res.status(201).json({id_category, category_name});
+export const getAll = async (req, res) => {
+  const result = await getAllEntities({
+    tableName: "Category",
   });
-}
+
+  return res.status(result.status).json(result.body);
+};
+
+export const insertData = async (req, res) => {
+  const result = await insertEntity({
+    tableName: "Category",
+    data: req.body,
+    entityName: "Категорію",
+  });
+
+  return res.status(result.status).json(result.body);
+};
+
+export const deleteCategory = async (req, res) => {
+  const { id_category } = req.params;
+
+  const result = await deleteEntity({
+    tableName: "Category",
+    idField: "id_category",
+    entityName: "Категорію",
+    id: id_category,
+  });
+
+  return res.status(result.status).json(result.body);
+};

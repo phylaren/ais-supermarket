@@ -1,36 +1,32 @@
-import db from '../../db.js';
+import { getAllEntities, insertEntity, deleteEntity } from "../service.js";
 
-export const getAllCustomerCards = (req, res) => {
-    const sqlQuery = `SELECT * FROM Customer_Card`;
+export const getAll = async (req, res) => {
+  const result = await getAllEntities({
+    tableName: "Customer_Card",
+  });
 
-    db.all(sqlQuery, [], (err, rows) => {
-        if(err){
-            console.log(err.message);
-            res.status(500).json({error: err.message});
-        }else{
-            res.json(rows);
-        }
-    });
-}
+  return res.status(result.status).json(result.body);
+};
 
-export const insertData = (req, res) => {
-  const {id_card, cust_surname, cust_name, cust_patronymic, phone_number, city,
-        street, zip_code, discount_percent} = req.body;
+export const insertData = async (req, res) => {
+  const result = await insertEntity({
+    tableName: "Customer_Card",
+    data: req.body,
+    entityName: "Карту клієнта",
+  });
 
-  const sqlQuery = `INSERT INTO Customer_Card (
-                    id_card, cust_surname, cust_name, cust_patronymic,
-                    phone_number, city, street, zip_code, discount_percent)
-                    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`;
+  return res.status(result.status).json(result.body);
+};
 
-  db.run(sqlQuery, [id_card, cust_surname, cust_name, cust_patronymic, phone_number, city, street, zip_code, discount_percent],
-    function (err) {
-      if (err) {
-        return res.status(500).json({ error: err.message });
-      }
-      res.status(201).json({
-        id_card, cust_surname, cust_name, cust_patronymic, phone_number, city,
-        street, zip_code, discount_percent
-      });
-    }
-  );
+export const deleteCustomerCard = async (req, res) => {
+  const { card_number } = req.params;
+
+  const result = await deleteEntity({
+    tableName: "Customer_Card",
+    idField: "card_number",
+    entityName: "Карту клієнта",
+    id: card_number,
+  });
+
+  return res.status(result.status).json(result.body);
 };
