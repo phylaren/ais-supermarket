@@ -1,4 +1,4 @@
-export function PageName({name}) {
+export default function PageName({name}) {
     return (
         <header>{name}</header>
     )

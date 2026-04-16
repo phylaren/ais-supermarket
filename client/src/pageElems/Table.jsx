@@ -1,44 +1,65 @@
-export default function Table({data, filters}){ 
-    // OR FILTERED DATA SHOULD BE PASSED INTO THE FUNCTION?
-    return(
-        <table>
-            <Filters/>
-            <Attributes/>
-            <Data/>
-        </table>
-    )
+import style from "./Table.module.css"; 
+
+function getAttributes(data) {
+    if (!data || data.length === 0) return [];
+    return Object.keys(data[0]);
 }
 
-function Filters(){
-    return(
+export default function Table({ data, category }) {
+    if (!data || data.length === 0) {
+        return <div style={{ padding: "20px" }}>Завантажую таблицю...</div>;
+    }
+
+    const attributes = getAttributes(data);
+    
+    return (
         <div>
-            <button>Filter</button>
-            <input type="text" placeholder="Пошук"/>
-            <button>Print</button>
-            <button>Add person</button>
-            <button>Add category</button>
+            <Filters />
+            <div className={style.tableWrapper}>
+                <table className={style.styledTable}>
+                    <Attributes attributes={attributes} />
+                    <Data data={data} />
+                </table>
+                
+            </div>
         </div>
     );
 }
 
-function Attributes(){
-    return(
-        <thead>
-            <tr>
-                <th>1</th>
-            </tr>
-        </thead>
-    )
+function Filters() {
+    return (
+        <div style={{ display: "flex", gap: "10px", marginBottom: "15px", flexWrap: "wrap" }}>
+            <button>Filter</button>
+            <button>Print</button>
+            <button>Add person</button>
+            <button>Add category</button>
+            <input type="text" placeholder="Пошук" style={{ padding: "5px 10px", borderRadius: "4px", border: "1px solid #ccc" }} />
+        </div>
+    );
 }
 
-function Data(){
-    return(
-        <tbody>
+function Attributes({ attributes }) {
+    return (
+        <thead>
             <tr>
-                
-                {/* <th>1</th>  FOR ID's */}
-                <td>1</td>
+                {attributes.map((attribute) => (
+                    <th key={attribute}>{attribute}</th>
+                ))}
             </tr>
+        </thead>
+    );
+}
+
+function Data({ data }) {
+    return (
+        <tbody>
+            {data.map((row, rowIndex) => (
+                <tr key={rowIndex}>
+                    {Object.values(row).map((value, colIndex) => (
+                        <td key={colIndex}>{value}</td>
+                    ))}
+                </tr>
+            ))}
         </tbody>
-    )
+    );
 }

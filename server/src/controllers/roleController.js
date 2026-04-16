@@ -1,6 +1,6 @@
 import db from '../../db.js';
 
-export const getAll = (req, res) => {
+export const getAllRoles = (req, res) => {
     const sqlQuery = `SELECT * FROM Role`;
 
     db.all(sqlQuery, [], (err, rows) => {

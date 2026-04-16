@@ -1,6 +1,6 @@
 import db from '../../db.js';
 
-export const getAll = (req, res) => {
+export const getAllCategories = (req, res) => {
     const sqlQuery = `SELECT * FROM Category`;
 
     db.all(sqlQuery, [], (err, rows) => {

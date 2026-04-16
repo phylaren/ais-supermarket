@@ -4,3 +4,5 @@ https://docs.google.com/spreadsheets/d/1iWlKQc_Sd8NWvi8VIaNHbCNluvjWi-YurJ1ObOfA
 
 npm install --save-dev concurrently
 
+npm install jsonwebtoken
+

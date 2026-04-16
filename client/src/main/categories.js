@@ -1,47 +1,59 @@
-export const manager = [
+import { useContext } from "react";
+import { UserContext } from "../context/UserContext.jsx";
+
+const manager = [
     {
         ukr: "Працівники",
-        eng: "workers"
+        eng: "employee"
     },
     {
         ukr: "Клієнти",
-        eng: "clients"
+        eng: "customer-card"
     },
     {
         ukr: "Категорії",
-        eng: "categories"
+        eng: "category"
     },
     {
         ukr: "Товари",
-        eng: "goods"
+        eng: "product"
     },
     {
         ukr: "Товари в магазині",
-        eng: "shop-goods"
+        eng: "store-product"
     },
     {
         ukr: "Чеки",
-        eng: "checks"
+        eng: "receipt"
     }
 ];
 
 // should goods have different view for them? maybe i should return to /cashier /manager 
 
-export const cashier = [
+const cashier = [
     {
         ukr: "Мій профіль",
-        eng: "profile"
+        eng: "me"
     },
     {
         ukr: "Чеки",
-        eng: "checks"
+        eng: "receipt"
     },
     {
         ukr: "Товари",
-        eng: "goods"
+        eng: "product"
     },
     {
         ukr: "Товари в магазині",
-        eng: "shop-goods"
+        eng: "store-product"
     },
 ]
+
+export function getCategories() {
+    const {role} = useContext(UserContext);
+    console.log(role);
+
+    if (role === "CASHIER") return cashier;
+    if (role === "MANAGER") return manager;
+    return [];
+}

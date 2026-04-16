@@ -1,0 +1,47 @@
+.tableWrapper {
+    width: 100%;
+    overflow-x: auto;
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+    margin-top: 20px;
+    border: 1px solid #edf2f7;
+}
+
+.styledTable {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 600px;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    font-size: 15px;
+    text-align: left;
+}
+
+.styledTable thead tr {
+    background-color: #f8fafc;
+    color: #475569;
+    border-bottom: 2px solid #e2e8f0;
+}
+
+.styledTable th {
+    padding: 16px 15px;
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 13px;
+    letter-spacing: 0.5px;
+}
+
+.styledTable td {
+    padding: 14px 15px;
+    color: #334155;
+    border-bottom: 1px solid #f1f5f9;
+}
+
+.styledTable tbody tr:hover {
+    background-color: #f1f5f9;
+    transition: background-color 0.2s ease;
+}
+
+.styledTable tbody tr:last-of-type td {
+    border-bottom: none;
+}
