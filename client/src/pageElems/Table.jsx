@@ -1,33 +1,39 @@
-function getAttributes(data){
+import style from "./Table.module.css"; 
+
+function getAttributes(data) {
     if (!data || data.length === 0) return [];
     return Object.keys(data[0]);
 }
 
 export default function Table({ data, category }) {
     if (!data || data.length === 0) {
-        return <div>Завантажую таблицю</div>;
+        return <div style={{ padding: "20px" }}>Завантажую таблицю...</div>;
     }
 
     const attributes = getAttributes(data);
+    
     return (
         <div>
             <Filters />
-            <table>
-                <Attributes attributes={attributes} />
-                <Data data={data} />
-            </table>
+            <div className={style.tableWrapper}>
+                <table className={style.styledTable}>
+                    <Attributes attributes={attributes} />
+                    <Data data={data} />
+                </table>
+                
+            </div>
         </div>
-    )
+    );
 }
 
 function Filters() {
     return (
-        <div>
+        <div style={{ display: "flex", gap: "10px", marginBottom: "15px", flexWrap: "wrap" }}>
             <button>Filter</button>
-            <input type="text" placeholder="Пошук" />
             <button>Print</button>
             <button>Add person</button>
             <button>Add category</button>
+            <input type="text" placeholder="Пошук" style={{ padding: "5px 10px", borderRadius: "4px", border: "1px solid #ccc" }} />
         </div>
     );
 }
@@ -41,7 +47,7 @@ function Attributes({ attributes }) {
                 ))}
             </tr>
         </thead>
-    )
+    );
 }
 
 function Data({ data }) {
@@ -57,5 +63,3 @@ function Data({ data }) {
         </tbody>
     );
 }
-
-
