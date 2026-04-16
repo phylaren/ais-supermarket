@@ -4,6 +4,6 @@ import * as receiptController from '../../controllers/receiptController.js';
 const router = Router();
 
 router.get('/getAll', receiptController.getAll);
-router.post('/insertData', receiptController.insertData);
+router.post('/insert-data', receiptController.insertData);
 
 export default router;

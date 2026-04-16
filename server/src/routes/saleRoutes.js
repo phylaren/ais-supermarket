@@ -4,6 +4,6 @@ import * as saleController from '../../controllers/saleController.js';
 const router = Router();
 
 router.get('/getAll', saleController.getAll);
-router.post('/insertData', saleController.insertData);
+router.post('/insert-data', saleController.insertData);
 
 export default router;

@@ -4,6 +4,6 @@ import * as customerCardController from '../../controllers/customerCardControlle
 const router = Router();
 
 router.get('/getAll', customerCardController.getAll);
-router.post('/insertData', customerCardController.insertData);
+router.post('/insert-data', customerCardController.insertData);
 
 export default router;
