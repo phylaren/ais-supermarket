@@ -4,27 +4,27 @@ import { UserContext } from "../context/UserContext.jsx";
 const manager = [
     {
         ukr: "Працівники",
-        eng: "workers"
+        eng: "employee"
     },
     {
         ukr: "Клієнти",
-        eng: "clients"
+        eng: "customer-card"
     },
     {
         ukr: "Категорії",
-        eng: "categories"
+        eng: "category"
     },
     {
         ukr: "Товари",
-        eng: "goods"
+        eng: "product"
     },
     {
         ukr: "Товари в магазині",
-        eng: "shop-goods"
+        eng: "store-product"
     },
     {
         ukr: "Чеки",
-        eng: "checks"
+        eng: "receipt"
     }
 ];
 
@@ -33,7 +33,7 @@ const manager = [
 const cashier = [
     {
         ukr: "Мій профіль",
-        eng: "profile"
+        eng: "me"
     },
     {
         ukr: "Чеки",
@@ -41,7 +41,7 @@ const cashier = [
     },
     {
         ukr: "Товари",
-        eng: "goods"
+        eng: "product"
     },
     {
         ukr: "Товари в магазині",

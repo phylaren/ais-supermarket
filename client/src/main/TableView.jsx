@@ -1,4 +1,5 @@
 import GoToMainButton from "../pageElems/GoToMainButton.jsx";
+import PageName from "../pageElems/PageName.jsx";
 import Table from "../pageElems/Table.jsx";
 import style from "./Main.module.css";
 import { useState, useEffect } from "react";
@@ -29,7 +30,7 @@ export default function TableView({category}){
 function DrawTable({category, data}){
     return(
             <div className={style.pageContainer}>
-                <Table category={category.eng} data={data}/>
+                {<Table category={category.eng} data={data}/>}
                 <GoToMainButton/>
             </div>
         );

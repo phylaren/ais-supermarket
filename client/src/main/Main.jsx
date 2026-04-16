@@ -1,3 +1,6 @@
+import { useContext } from "react"
+import { UserContext } from "../context/UserContext.jsx"
+
 import { Link, Outlet, useLocation } from "react-router-dom"
 import style from "./Main.module.css"
 
@@ -7,16 +10,19 @@ import headerStyle from "../pageElems/headerStyle.module.css"
 import {getCategories} from "./categories.js";
 
 export default function Main(){
+    const {page} = useContext(UserContext);
+
     const categories = getCategories();
-    console.log(categories);
 
     const location = useLocation();
-    
     const isExactMainPage = location.pathname === "/main" || location.pathname === "/main/";
+
+    const currentCategory = categories.find(category => location.pathname.includes(category.eng));
+    const name = currentCategory ? currentCategory.ukr : "Головна";
 
     return(
         <div className={style.pageContainer}>
-            <PageName name="Головна"/>
+            <PageName name={name}/>
             {isExactMainPage && <PageCategories categories={categories} />}
             
             <div className={style.contentArea}>
