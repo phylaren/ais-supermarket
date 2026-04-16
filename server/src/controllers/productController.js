@@ -12,3 +12,23 @@ export const getAllProducts = (req, res) => {
         }
     });
 }
+
+export const insertData = (req, res) => {
+  const { id_product, product_name, characteristics, id_category } = req.body;
+
+  const sqlQuery = `
+    INSERT INTO Product (id_product, product_name, characteristics, id_category)
+    VALUES (?, ?, ?, ?)
+  `;
+
+  db.run(
+    sqlQuery,
+    [id_product, product_name, characteristics, id_category],
+    function (err) {
+      if (err) {
+        return res.status(500).json({ error: err.message });
+      }
+      res.status(201).json({ id_product, product_name, characteristics, id_category });
+    }
+  );
+}

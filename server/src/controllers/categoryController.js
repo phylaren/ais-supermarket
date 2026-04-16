@@ -12,3 +12,17 @@ export const getAllCategories = (req, res) => {
         }
     });
 }
+
+export const insertData = (req, res) => {
+  const { id_category, category_name } = req.body;
+
+  const sqlQuery = `INSERT INTO Category (id_category, category_name)
+                    VALUES (?, ?)`;
+
+  db.run(sqlQuery, [id_category, category_name], function (err) {
+    if (err) {
+      return res.status(500).json({ error: err.message });
+    }
+    res.status(201).json({id_category, category_name});
+  });
+}

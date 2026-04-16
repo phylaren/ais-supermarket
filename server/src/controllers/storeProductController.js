@@ -1,6 +1,6 @@
 import db from '../../db.js';
 
-export const getAllStoreProducts = (req, res) => {
+export const getAll = (req, res) => {
     const sqlQuery = `SELECT * FROM Store_Product`;
 
     db.all(sqlQuery, [], (err, rows) => {
@@ -12,3 +12,22 @@ export const getAllStoreProducts = (req, res) => {
         }
     });
 }
+
+export const insertData = (req, res) => {
+  const { UPC, selling_price, products_number, promotional_product, id_product } = req.body;
+
+  const sqlQuery = `INSERT INTO Store_Product (
+                    UPC, selling_price, products_number, promotional_product, id_product)
+                    VALUES (?, ?, ?, ?, ?)`;
+
+  db.run(
+    sqlQuery,
+    [UPC, selling_price, products_number, promotional_product, id_product],
+    function (err) {
+      if (err) {
+        return res.status(500).json({ error: err.message });
+      }
+      res.status(201).json({UPC, selling_price, products_number, promotional_product, id_product});
+    }
+  );
+};

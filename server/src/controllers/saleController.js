@@ -12,3 +12,22 @@ export const getAllSales = (req, res) => {
         }
     });
 }
+
+export const insertData = (req, res) => {
+  const { UPC, id_check, product_number, selling_price } = req.body;
+
+  const sqlQuery = `INSERT INTO Sale (
+                    UPC, id_check, product_number, selling_price)
+                    VALUES (?, ?, ?, ?)`;
+
+  db.run(
+    sqlQuery,
+    [UPC, id_check, product_number, selling_price],
+    function (err) {
+      if (err) {
+        return res.status(500).json({ error: err.message });
+      }
+
+    }
+  );
+};
