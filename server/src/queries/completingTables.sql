@@ -89,3 +89,6 @@ INSERT INTO Sale ( UPC, id_check, product_number, selling_price
 ('000000000014', 'CHK005', 2, 22.00), 
 ('000000000015', 'CHK005', 1, 40.00), 
 ('000000000016', 'CHK005', 2, 45.00);
+
+INSERT INTO Account ( id_employee, password_hash) VALUES 
+("E001", "$2b$10$NkdHIZHw0DskfSDwXd4xKue7sJhSoKfL1QQ5MtmDNrGYP/wM.0IA2");
