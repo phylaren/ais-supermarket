@@ -3,13 +3,17 @@ import { createContext, useState } from "react";
 export const UserContext = createContext();
 
 export function UserProvider({children}){
-    const [role, setRole] = useState("MANAGER"); //role could be MANAGER OR CASHIER OR null, should check if valid
+    const [role, setRole] = useState(localStorage.getItem('role') || null);
     const [page, setPage] = useState("Головна");
-    // maybe add current page as Context API?
-    // add isLoggedIn here 
+    
+    const logout = () => {
+        setRole(null);
+        localStorage.removeItem('token');
+        localStorage.removeItem('role');
+    };
 
     return (
-        <UserContext.Provider value={{role, setRole, page, setPage}}>
+        <UserContext.Provider value={{role, setRole, page, setPage, logout}}>
             {children}
         </UserContext.Provider>
     )

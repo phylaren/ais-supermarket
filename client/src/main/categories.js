@@ -53,7 +53,7 @@ export function getCategories() {
     const {role} = useContext(UserContext);
     console.log(role);
 
-    if (role === "CASHIER") return cashier;
-    if (role === "MANAGER") return manager;
+    if (role === "Касир") return cashier;
+    if (role === "Менеджер") return manager;
     return [];
 }

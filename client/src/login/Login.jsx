@@ -1,58 +1,77 @@
 import { useState } from "react"
-import { Link } from "react-router-dom"
+import { useNavigate } from "react-router-dom";
 
 import style from "./login.module.css"
 
 export default function Login() {
-    const [isError, setIsError] = useState(true);
+    const [login, setLogin] = useState("");
+    const [password, setPassword] = useState("");
+    const [errorMessage, setErrorMessage] = useState("");
+
+    const navigate = useNavigate();
+
+    const handleLogin = async (e) => {
+        e.preventDefault();
+        setErrorMessage("");
+
+        try {
+            const response = await fetch('http://localhost:5000/api/auth/login', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ 
+                    id_employee: login, 
+                    password: password 
+                }),
+            });
+
+            const data = await response.json();
+
+            if (!response.ok) {
+                throw new Error(data.error || 'Помилка при вході');
+            }
+
+            localStorage.setItem('token', data.token);
+            localStorage.setItem('role', data.role);
+
+            navigate('/main');
+
+        } catch (err) {
+            setErrorMessage(err.message);
+        }
+    };
 
     return (
         <div className={style.pageContainer}>
-            <div className={style.loginContainer}>
+            <form className={style.loginContainer} onSubmit={handleLogin}>
                 <PageName name="Злагода" />
-                {isError && <ErrorMessage text="Неправильний логін або пароль" />}
-                <LoginInput />
-                <PasswordInput />
-                <Link to="/main"><button>Увійти</button></Link>
-            </div>
+                {errorMessage && <ErrorMessage text={errorMessage} />}
+                
+                <input
+                    type="text"
+                    placeholder="Введіть логін"
+                    value={login}
+                    onChange={(e) => setLogin(e.target.value)}
+                    required
+                />
+
+                <input
+                    type="password"
+                    placeholder="Введіть пароль"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    required
+                />
+
+                <button type="submit">Увійти</button>
+            </form>
         </div>
     )
 }
 
 function PageName({ name }) {
-    return (
-        <h1>{name}</h1>
-    )
-}
-
-function LoginInput() {
-    const [login, setLogin] = useState("");
-
-    return (
-        <input
-            type="text"
-            placeholder="Введіть свій логін"
-            value={login}
-            onChange={(e) => setLogin(e.target.value)}
-        />
-    )
-}
-
-function PasswordInput() {
-    const [password, setPassword] = useState("");
-
-    return (
-        <input
-            type="password"
-            placeholder="Введіть свій пароль"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-        />
-    )
+    return <h1>{name}</h1>
 }
 
 function ErrorMessage({ text }) {
-    return (
-        <p>{text}</p>
-    )
+    return <p>{text}</p>
 }

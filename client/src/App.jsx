@@ -8,15 +8,34 @@ import { getCategories } from "./main/categories.js";
 
 import TableView from "./main/TableView.jsx";
 
+function ProtectedRoute({ children }) {
+    const { role } = useContext(UserContext);
+
+    if (!role || role === "null" || role === "undefined") {
+        return <Navigate to="/login" replace />;
+    }
+
+    return children;
+}
+
+//TO-DO logined users to main if dont have acces http://localhost:5173/main/category
+//TO-DO unlogined users to login
 
 function AppRouter() {
-    const {role} = useContext(UserContext);
+    const { role } = useContext(UserContext);
     const categories = getCategories();
 
     return (
         <BrowserRouter>
             <Routes>
-                <Route path="/main" element={<Main />}>
+                <Route 
+                    path="/main" 
+                    element={
+                        <ProtectedRoute>
+                            <Main />
+                        </ProtectedRoute>
+                    }
+                >
                     {categories.map((category) => {
                         return (
                             <Route 

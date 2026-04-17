@@ -20,7 +20,6 @@ export default function Table({ data, category }) {
                     <Attributes attributes={attributes} />
                     <Data data={data} />
                 </table>
-                
             </div>
         </div>
     );
