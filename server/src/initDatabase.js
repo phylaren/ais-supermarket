@@ -3,7 +3,7 @@ import db from '../db.js';
 
 export const initDatabase = async (req, res) => {
   try {
-    const sqlQuery = await fs.readFile('./src/queries/createTables.sql', 'utf8');
+    const sqlQuery = await fs.readFile('./queries/createTables.sql', 'utf8');
 
     db.exec(sqlQuery, (err) => {
       if (err) {
@@ -20,7 +20,7 @@ export const initDatabase = async (req, res) => {
 
 export const initData = async (req, res) => {
   try {
-    const sqlQuery = await fs.readFile('./src/queries/completingTables.sql', 'utf8');
+    const sqlQuery = await fs.readFile('./queries/completingTables.sql', 'utf8');
 
     db.exec(sqlQuery, (err) => {
       if (err) {
