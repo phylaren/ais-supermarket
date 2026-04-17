@@ -1,33 +1,32 @@
-import db from '../../db.js';
+import { getAllEntities, insertEntity, deleteEntity } from "../service.js";
 
-export const getAll = (req, res) => {
-    const sqlQuery = `SELECT * FROM Store_Product`;
+export const getAll = async (req, res) => {
+  const result = await getAllEntities({
+    tableName: "Store_Product",
+  });
 
-    db.all(sqlQuery, [], (err, rows) => {
-        if(err){
-            console.log(err.message);
-            res.status(500).json({error: err.message});
-        }else{
-            res.json(rows);
-        }
-    });
-}
+  return res.status(result.status).json(result.body);
+};
 
-export const insertData = (req, res) => {
-  const { UPC, selling_price, products_number, promotional_product, id_product } = req.body;
+export const insertData = async (req, res) => {
+  const result = await insertEntity({
+    tableName: "Store_Product",
+    data: req.body,
+    entityName: "Товар у магазині",
+  });
 
-  const sqlQuery = `INSERT INTO Store_Product (
-                    UPC, selling_price, products_number, promotional_product, id_product)
-                    VALUES (?, ?, ?, ?, ?)`;
+  return res.status(result.status).json(result.body);
+};
 
-  db.run(
-    sqlQuery,
-    [UPC, selling_price, products_number, promotional_product, id_product],
-    function (err) {
-      if (err) {
-        return res.status(500).json({ error: err.message });
-      }
-      res.status(201).json({UPC, selling_price, products_number, promotional_product, id_product});
-    }
-  );
+export const deleteStoreProduct = async (req, res) => {
+  const { UPC } = req.params;
+
+  const result = await deleteEntity({
+    tableName: "Store_Product",
+    idField: "UPC",
+    entityName: "Товар у магазині",
+    id: UPC,
+  });
+
+  return res.status(result.status).json(result.body);
 };

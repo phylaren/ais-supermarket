@@ -1,32 +1,32 @@
-import db from '../../db.js';
+import { getAllEntities, insertEntity, deleteEntity } from "../service.js";
 
-export const getAllReceipts = (req, res) => {
-    const sqlQuery = `SELECT * FROM Receipt`;
+export const getAll = async (req, res) => {
+  const result = await getAllEntities({
+    tableName: "Receipt",
+  });
 
-    db.all(sqlQuery, [], (err, rows) => {
-        if(err){
-            console.log(err.message);
-            res.status(500).json({error: err.message});
-        }else{
-            res.json(rows);
-        }
-    });
-}
+  return res.status(result.status).json(result.body);
+};
 
-export const insertData = (req, res) => {
-  const { id_check, print_date, sum_total, vat, id_employee, id_card } = req.body;
+export const insertData = async (req, res) => {
+  const result = await insertEntity({
+    tableName: "Receipt",
+    data: req.body,
+    entityName: "Чек",
+  });
 
-  const sqlQuery = `INSERT INTO Receipt (
-                    id_check, print_date, sum_total, vat, id_employee, id_card)
-                    VALUES (?, ?, ?, ?, ?, ?)`;
+  return res.status(result.status).json(result.body);
+};
 
-  db.run(
-    sqlQuery,
-    [id_check, print_date, sum_total, vat, id_employee, id_card],
-    function (err) {
-      if (err) {
-        return res.status(500).json({ error: err.message });
-      }
-       res.status(201).json({ id_check, print_date, sum_total, vat, id_employee, id_card});
-    });
-}
+export const deleteReceipt = async (req, res) => {
+  const { id_receipt } = req.params;
+
+  const result = await deleteEntity({
+    tableName: "Receipt",
+    idField: "id_receipt",
+    entityName: "Чек",
+    id: id_receipt,
+  });
+
+  return res.status(result.status).json(result.body);
+};

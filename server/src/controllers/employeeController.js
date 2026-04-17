@@ -1,37 +1,32 @@
-import db from '../../db.js';
+import { getAllEntities, insertEntity, deleteEntity } from "../service.js";
 
-export const getAllEmployees = (req, res) => {
-    const sqlQuery = `SELECT * FROM Employee`;
+export const getAll = async (req, res) => {
+  const result = await getAllEntities({
+    tableName: "Employee",
+  });
 
-    db.all(sqlQuery, [], (err, rows) => {
-        if(err){
-            console.log(err.message);
-            res.status(500).json({error: err.message});
-        }else{
-            res.json(rows);
-        }
-    });
-}
+  return res.status(result.status).json(result.body);
+};
 
-export const insertData = (req, res) => {
-  const { id_employee, empl_surname, empl_name, empl_patronymic, id_role, salary,
-          date_of_birth, date_of_start, phone_number, city, street, zip_code } = req.body;
+export const insertData = async (req, res) => {
+  const result = await insertEntity({
+    tableName: "Employee",
+    data: req.body,
+    entityName: "Працівника",
+  });
 
-  const sqlQuery = `INSERT INTO Employee (
-                    id_employee, empl_surname, empl_name, empl_patronymic,
-                    id_role, salary, date_of_birth, date_of_start,
-                    phone_number, city, street, zip_code)
-                    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
+  return res.status(result.status).json(result.body);
+};
 
-  db.run( sqlQuery, [id_employee, empl_surname, empl_name, empl_patronymic, id_role, salary,
-                    date_of_birth, date_of_start, phone_number, city, street, zip_code],
-    function (err) {
-      if (err) {
-        return res.status(500).json({ error: err.message });
-      }
-        res.status(201).json({
-        id_employee, empl_surname, empl_name, empl_patronymic, id_role, salary,
-        date_of_birth, date_of_start, phone_number, city, street, zip_code
-      });
-    });
-}
+export const deleteEmployee = async (req, res) => {
+  const { id_employee } = req.params;
+
+  const result = await deleteEntity({
+    tableName: "Employee",
+    idField: "id_employee",
+    entityName: "Працівника",
+    id: id_employee,
+  });
+
+  return res.status(result.status).json(result.body);
+};

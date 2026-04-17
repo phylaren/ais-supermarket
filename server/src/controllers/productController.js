@@ -1,34 +1,32 @@
-import db from '../../db.js';
+import { getAllEntities, insertEntity, deleteEntity } from "../service.js";
 
-export const getAllProducts = (req, res) => {
-    const sqlQuery = `SELECT * FROM Product`;
+export const getAll = async (req, res) => {
+  const result = await getAllEntities({
+    tableName: "Product",
+  });
 
-    db.all(sqlQuery, [], (err, rows) => {
-        if(err){
-            console.log(err.message);
-            res.status(500).json({error: err.message});
-        }else{
-            res.json(rows);
-        }
-    });
-}
+  return res.status(result.status).json(result.body);
+};
 
-export const insertData = (req, res) => {
-  const { id_product, product_name, characteristics, id_category } = req.body;
+export const insertData = async (req, res) => {
+  const result = await insertEntity({
+    tableName: "Product",
+    data: req.body,
+    entityName: "Продукт",
+  });
 
-  const sqlQuery = `
-    INSERT INTO Product (id_product, product_name, characteristics, id_category)
-    VALUES (?, ?, ?, ?)
-  `;
+  return res.status(result.status).json(result.body);
+};
 
-  db.run(
-    sqlQuery,
-    [id_product, product_name, characteristics, id_category],
-    function (err) {
-      if (err) {
-        return res.status(500).json({ error: err.message });
-      }
-      res.status(201).json({ id_product, product_name, characteristics, id_category });
-    }
-  );
-}
+export const deleteProduct = async (req, res) => {
+  const { id_product } = req.params;
+
+  const result = await deleteEntity({
+    tableName: "Product",
+    idField: "id_product",
+    entityName: "Продукт",
+    id: id_product,
+  });
+
+  return res.status(result.status).json(result.body);
+};
