@@ -1,12 +1,5 @@
-import { getAllEntities, insertEntity, deleteEntity, updateEntity } from "../service/service.js";
-
-export const getAll = async (req, res) => {
-  const result = await getAllEntities({
-    tableName: "Customer_Card",
-  });
-
-  return res.status(result.status).json(result.body);
-};
+import { insertEntity, deleteEntity, updateEntity } from "../service/service.js";
+import { getAllCustomersService, getCustomersByDiscountService, getCustomerBySurnameService} from "../service/customerCardService.js";
 
 export const insertData = async (req, res) => {
   const result = await insertEntity({
@@ -41,6 +34,27 @@ export const updateData = async (req, res) => {
     id: card_number,
     data: req.body
   });
+
+  return res.status(result.status).json(result.body);
+};
+
+export const getAllCustomers = async (req, res) => {
+  const result = await getAllCustomersService();
+  return res.status(result.status).json(result.body);
+};
+
+export const getCustomersByDiscount = async (req, res) => {
+  const { percent } = req.params;
+
+  const result = await getCustomersByDiscountService(percent);
+
+  return res.status(result.status).json(result.body);
+};
+
+export const getCustomerBySurname = async (req, res) => {
+  const { surname } = req.params;
+
+  const result = await getCustomerBySurnameService(surname);
 
   return res.status(result.status).json(result.body);
 };
