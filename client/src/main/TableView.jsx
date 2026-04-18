@@ -1,39 +1,37 @@
-import GoToMainButton from "../pageElems/GoToMainButton.jsx";
-import Table from "../pageElems/Table.jsx";
-import style from "./Main.module.css";
 import { useState, useEffect } from "react";
+import Table from "../pageElems/Table.jsx";
+import GoToMainButton from "../pageElems/GoToMainButton.jsx";
+import Popup from "../pageElems/Popup.jsx";
+import style from "./Main.module.css";
 
 export default function TableView({ category }) {
     const [data, setData] = useState([]);
 
-    useEffect(() => {
-        async function getData() {
-            try {
-                const token = localStorage.getItem('token');
+    const [isPopupOpen, setIsPopupOpen] = useState(false);
+    const [editingRecord, setEditingRecord] = useState(null);
 
-                const response = await fetch(`http://localhost:5000/api/${category.link}`, {
-                    method: 'GET',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': `Bearer ${token}`
-                    }
-                });
-
-                console.log("response: ", response)
-
-                if (!response.ok) {
-                    throw new Error(`Помилка сервера: ${response.status}`);
+    const fetchData = async () => {
+        try {
+            const token = localStorage.getItem('token');
+            const response = await fetch(`http://localhost:5000/api/${category.link}`, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
                 }
+            });
 
-                const resData = await response.json();
-                console.log("resData: ", resData);
-                setData(Array.isArray(resData.data) ? resData.data : [resData.data]);
-            } catch (error) {
-                console.log(error);
-            }
+            if (!response.ok) throw new Error(`Помилка сервера: ${response.status}`);
+
+            const resData = await response.json();
+            setData(Array.isArray(resData.data) ? resData.data : [resData.data]);
+        } catch (error) {
+            console.error(error);
         }
+    };
 
-        getData();
+    useEffect(() => {
+        fetchData();
     }, [category.link]);
 
     const handleDelete = async (id) => {
@@ -42,36 +40,49 @@ export default function TableView({ category }) {
 
         try {
             const token = localStorage.getItem('token');
-
             const response = await fetch(`http://localhost:5000/api/${category.link}/${id}`, {
                 method: 'DELETE',
-                headers: {
-                    'Authorization': `Bearer ${token}`
-                }
+                headers: { 'Authorization': `Bearer ${token}` }
             });
-console.log("Спроба видалити запис з ID:", id);
-            if (!response.ok) {
-                throw new Error('Помилка при видаленні');
-            }
+            
+            if (!response.ok) throw new Error('Помилка при видаленні');
 
             setData(prevData => prevData.filter(row => Object.values(row)[0] !== id));
-
             alert("Успішно видалено!");
-
         } catch (error) {
-            console.error("Помилка видалення:", error);
-            alert("Не вдалося видалити запис. Можливо, він пов'язаний з іншими таблицями");
+            alert("Не вдалося видалити запис");
         }
     };
-    return (
-        <DrawTable data={data} onDelete={handleDelete}/>
-    );
-}
 
-function DrawTable({ data, onDelete }) {
+    const handleAddClick = () => {
+        setEditingRecord(null);
+        setIsPopupOpen(true);
+    };
+
+    const handleEditClick = (record) => {
+        setEditingRecord(record);
+        setIsPopupOpen(true);
+    };
+
     return (
         <div className={style.pageContainer}>
-            <Table data={data} onDelete={onDelete} />
+            {isPopupOpen && (
+                <Popup 
+                    category={category} 
+                    onClose={() => setIsPopupOpen(false)} 
+                    onSuccess={fetchData} 
+                    initialData={editingRecord} 
+                />
+            )}
+
+            <Table 
+                data={data} 
+                category={category} 
+                onDelete={handleDelete} 
+                onAddClick={handleAddClick} 
+                onEditClick={handleEditClick} 
+            />
+            
             <GoToMainButton />
         </div>
     );

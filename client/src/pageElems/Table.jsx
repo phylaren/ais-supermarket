@@ -6,7 +6,7 @@ function getAttributes(data) {
     return Object.keys(data[0]);
 }
 
-export default function Table({ data, onDelete }) {
+export default function Table({ data, category, onDelete, onAddClick, onEditClick }) {
     if (!data || data.length === 0) {
         return <div style={{ padding: "20px" }}>Завантажую таблицю...</div>;
     }
@@ -15,25 +15,62 @@ export default function Table({ data, onDelete }) {
     
     return (
         <div>
-            <Filters />
+            <Filters category={category} onAddClick={onAddClick} />
+            
             <div className={style.tableWrapper}>
                 <table className={style.styledTable}>
                     <Attributes attributes={attributes} />
-                    <Data data={data} onDelete={onDelete} />
+                    <Data data={data} onDelete={onDelete} onEditClick={onEditClick} />
                 </table>
             </div>
         </div>
     );
 }
 
-function Filters() {
+function Filters({ onAddClick, category, searchTerm, setSearchTerm, onPrint, onToggleSort }) {
+    const canSearch = category?.functions?.search;
+    const canFilter = category?.functions?.filter;
+    const canCreate = category?.rules?.create;
+
     return (
-        <div style={{ display: "flex", gap: "10px", marginBottom: "15px", flexWrap: "wrap" }}>
-            <button>Filter</button>
-            <button>Print</button>
-            <button>Add person</button>
-            <button>Add category</button>
-            <input type="text" placeholder="Пошук" style={{ padding: "5px 10px", borderRadius: "4px", border: "1px solid #ccc" }} />
+        <div className="noPrint" style={{ display: "flex", gap: "10px", marginBottom: "15px", flexWrap: "wrap", alignItems: "center" }}>
+            {canFilter && (
+                <button 
+                    type="button" 
+                    onClick={onToggleSort}
+                    style={{ padding: "8px 15px", cursor: "pointer", borderRadius: "4px", border: "1px solid #ccc", backgroundColor: "#fff" }}
+                >
+                    ⇅ Фільтр
+                </button>
+            )}
+            
+            <button 
+                type="button" 
+                onClick={onPrint}
+                style={{ padding: "8px 15px", cursor: "pointer", borderRadius: "4px", border: "1px solid #ccc", backgroundColor: "#fff" }}
+            >
+                🖨 Роздрукувати
+            </button>
+            
+            {canCreate && (
+                <button 
+                    type="button" 
+                    onClick={onAddClick}
+                    style={{ padding: "8px 15px", cursor: "pointer", borderRadius: "4px", border: "none", backgroundColor: "#4CAF50", color: "white" }}
+                >
+                    + Додати
+                </button> 
+            )}
+            
+            {canSearch && (
+                <input 
+                    type="text" 
+                    placeholder="🔍 Пошук по таблиці..." 
+                    value={searchTerm}
+                    onChange={(e) => setSearchTerm(e.target.value)}
+                    style={{ padding: "8px 15px", borderRadius: "4px", border: "1px solid #ccc", marginLeft: "auto", minWidth: "250px" }} 
+                />
+            )}
         </div>
     );
 }
@@ -53,7 +90,7 @@ function Attributes({ attributes }) {
     );
 }
 
-function Data({ data, onDelete }) {
+function Data({ data, onDelete, onEditClick }) {
     return (
         <tbody>
             {data.map((row, rowIndex) => {
@@ -68,17 +105,19 @@ function Data({ data, onDelete }) {
                             
                             return <td key={colIndex}>{safeValue}</td>;
                         })}
-                        <td>
+                        
+                        <td style={{ display: "flex", gap: "5px" }}>
                             <button 
+                                type="button"
+                                onClick={() => onEditClick(row)} 
+                                style={{ backgroundColor: "#faad14", color: "white", border: "none", padding: "5px 10px", borderRadius: "4px", cursor: "pointer" }}
+                            >
+                                Редагувати
+                            </button>
+                            <button 
+                                type="button"
                                 onClick={() => onDelete(rowId)}
-                                style={{
-                                    backgroundColor: "#ff4d4f", 
-                                    color: "white", 
-                                    border: "none", 
-                                    padding: "5px 10px", 
-                                    borderRadius: "4px", 
-                                    cursor: "pointer"
-                                }}
+                                style={{ backgroundColor: "#ff4d4f", color: "white", border: "none", padding: "5px 10px", borderRadius: "4px", cursor: "pointer" }}
                             >
                                 Видалити
                             </button>
