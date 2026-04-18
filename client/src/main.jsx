@@ -4,6 +4,7 @@ import App from './App'
 
 import "./styles/index.css";
 import "./styles/normalize.css";
+import "./styles/print.css";
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>

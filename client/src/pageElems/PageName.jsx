@@ -18,7 +18,7 @@ export default function PageName({ name }) {
     };
 
     return (
-        <header className={style.header}>
+        <header className={`${style.header} noPrint`}>
             <div className={style.title}>{name}</div>
             <button onClick={handleLogout} className={style.logoutButton} title="Вийти з системи">
                 Вихід 🚪

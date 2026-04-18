@@ -13,11 +13,28 @@ export default function Table({ data, category, onDelete, onAddClick, onEditClic
 
     const attributes = getAttributes(data);
     
+    const currentDate = new Date().toLocaleDateString('uk-UA', {
+        year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute:'2-digit'
+    });
+
     return (
         <div>
-            <Filters category={category} onAddClick={onAddClick} />
+            <Filters 
+                category={category} 
+                onAddClick={onAddClick} 
+                onPrint={() => window.print()} 
+            />
             
             <div className={style.tableWrapper}>
+
+                <div className="printOnly" style={{ textAlign: "center", marginBottom: "20px" }}>
+                    <h2 style={{ margin: "0 0 10px 0" }}>Звіт: {category.name}</h2>
+                    <p style={{ margin: 0, fontStyle: "italic" }}>
+                        Міні-супермаркет «ZLAGODA»<br/>
+                        Сформовано: {currentDate}
+                    </p>
+                </div>
+
                 <table className={style.styledTable}>
                     <Attributes attributes={attributes} />
                     <Data data={data} onDelete={onDelete} onEditClick={onEditClick} />

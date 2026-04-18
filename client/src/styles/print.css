@@ -1,0 +1,65 @@
+@media print {
+    @page {
+        size: A4 landscape;
+        margin: 0mm !important; 
+    }
+
+    * {
+        box-sizing: border-box !important;
+        box-shadow: none !important;
+        border-radius: 0 !important;
+    }
+
+    body {
+        padding: 10mm 15mm !important;
+        background-color: white !important;
+        margin: 0 !important;
+        width: 100% !important;
+        max-width: 100% !important;
+    }
+
+    div {
+        background-color: transparent !important;
+        border: none !important;
+        max-width: 100% !important; 
+    }
+
+    .noPrint {
+        display: none !important;
+    }
+
+    .printOnly {
+        display: block !important;
+    }
+
+    table th:last-child, 
+    table td:last-child {
+        display: none !important;
+    }
+
+    table {
+        width: 100% !important;
+        max-width: 100% !important;
+        border-collapse: collapse !important;
+        table-layout: auto !important;
+        margin-top: 10px !important;
+    }
+
+    th, td {
+        border: 1px solid #000 !important;
+        padding: 4px 6px !important;
+        font-size: 10px !important;
+        word-wrap: break-word !important; 
+        color: black !important;
+    }
+    
+    tr {
+        background-color: transparent !important;
+    }
+}
+
+@media screen {
+    .printOnly {
+        display: none !important;
+    }
+}
