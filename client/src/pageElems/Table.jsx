@@ -8,7 +8,7 @@ function getAttributes(data) {
 
 export default function Table({ data, category, onDelete, onAddClick, onEditClick }) {
     if (!data || data.length === 0) {
-        return <div style={{ padding: "20px" }}>Завантажую таблицю...</div>;
+        return <div className={style.waitingScreen}>Завантажую таблицю...⏳</div>;
     }
 
     const attributes = getAttributes(data);
