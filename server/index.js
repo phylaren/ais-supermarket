@@ -9,7 +9,6 @@ import employeeRoutes from './src/routes/employeeRoutes.js';
 import customerCardRoutes from './src/routes/customerCardRoutes.js';
 import productRoutes from './src/routes/productRoutes.js';
 import storeProductRoutes from './src/routes/storeProductRoutes.js';
-import roleRoutes from './src/routes/roleRoutes.js';
 import receiptRoutes from './src/routes/receiptRoutes.js';
 
 import authRoutes from './src/routes/authRoutes.js';

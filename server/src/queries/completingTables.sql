@@ -19,7 +19,7 @@ INSERT INTO Customer_Card (
 
 INSERT INTO Employee (
     id_employee, empl_surname, empl_name, empl_patronymic,
-    id_role, salary, date_of_birth, date_of_start,
+    empl_role, salary, date_of_birth, date_of_start,
     phone_number, city, street, zip_code
 )VALUES
 ('E001', 'Коваль', 'Олег', 'Петрович', 'Касир', 15000, '1990-05-10', '2020-01-15', '380671111111', 'Київ', 'Лесі Українки', '01100'),

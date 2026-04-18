@@ -1,13 +1,6 @@
 import db from "../../db.js";
-import { getAllEntities, insertEntity, deleteEntity, updateEntity } from "../service.js";
-
-export const getAll = async (req, res) => {
-  const result = await getAllEntities({
-    tableName: "Employee",
-  });
-
-  return res.status(result.status).json(result.body);
-};
+import { getAllEntities, insertEntity, deleteEntity, updateEntity } from "../service/service.js";
+import { getAllEmployeesService, getEmployeesByRoleService, getEmployeeBySurnameService } from "../service/employeeService.js";
 
 export const insertData = async (req, res) => {
   const result = await insertEntity({
@@ -74,4 +67,25 @@ export const getMe = (req, res) => {
         console.error("Помилка в getMe:", error);
         res.status(500).json({ error: "Внутрішня помилка сервера" });
     }
+};
+
+export const getAllEmployees = async (req, res) => {
+  const result = await getAllEmployeesService();
+  return res.status(result.status).json(result.body);
+};
+
+export const getEmployeesByRole = async (req, res) => {
+  const { empl_role } = req.params;
+
+  const result = await getEmployeesByRoleService(empl_role);
+
+  return res.status(result.status).json(result.body);
+};
+
+export const getEmployeeBySurname = async (req, res) => {
+  const { empl_surname } = req.params; 
+
+  const result = await getEmployeeBySurnameService(empl_surname);
+
+  return res.status(result.status).json(result.body);
 };

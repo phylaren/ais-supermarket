@@ -1,4 +1,4 @@
-import { getAllEntities, insertEntity, deleteEntity, updateEntity } from "../service.js";
+import { getAllEntities, insertEntity, deleteEntity, updateEntity } from "../service/service.js";
 
 export const getAll = async (req, res) => {
   const result = await getAllEntities({
