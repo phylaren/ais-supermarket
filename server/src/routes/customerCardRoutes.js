@@ -8,5 +8,6 @@ router.delete('/:id_card', customerCardController.deleteCustomerCard);
 router.patch('/:id_card', customerCardController.updateData);
 
 router.get('/', customerCardController.getAllCustomers);
+router.get('/:percent', customerCardController.getCustomersByDiscount);
 
 export default router;

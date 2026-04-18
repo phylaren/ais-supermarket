@@ -1,5 +1,5 @@
 import { insertEntity, deleteEntity, updateEntity } from "../service/service.js";
-import { getAllCustomersService } from "../service/customerCardService.js";
+import { getAllCustomersService, getCustomersByDiscountService} from "../service/customerCardService.js";
 
 export const insertData = async (req, res) => {
   const result = await insertEntity({
@@ -40,5 +40,13 @@ export const updateData = async (req, res) => {
 
 export const getAllCustomers = async (req, res) => {
   const result = await getAllCustomersService();
+  return res.status(result.status).json(result.body);
+};
+
+export const getCustomersByDiscount = async (req, res) => {
+  const { percent } = req.params;
+
+  const result = await getCustomersByDiscountService(percent);
+
   return res.status(result.status).json(result.body);
 };

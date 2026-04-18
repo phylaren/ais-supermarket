@@ -1,4 +1,4 @@
-import { getAllCustomersRepository } from "../repositories/customerCardRepository.js";
+import { getAllCustomersRepository, getCustomersByDiscountRepository } from "../repositories/customerCardRepository.js";
 
 export const getAllCustomersService = async () => {
   try {
@@ -19,6 +19,33 @@ export const getAllCustomersService = async () => {
         success: false,
         message: "Database error",
       },
+    };
+  }
+};
+
+export const getCustomersByDiscountService = async (discount) => {
+  if (discount === undefined || discount === null) {
+    return {
+      status: 400,
+      body: { success: false, message: "Discount percent is required" },
+    };
+  }
+
+  try {
+    const data = await getCustomersByDiscountRepository(discount);
+
+    return {
+      status: 200,
+      body: {
+        success: true,
+        data,
+      },
+    };
+  } catch (err) {
+    console.error("DB error:", err.message);
+    return {
+      status: 500,
+      body: { success: false, message: "Database error" },
     };
   }
 };
