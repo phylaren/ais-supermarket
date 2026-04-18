@@ -1,4 +1,4 @@
-import { getAllEntities, insertEntity, deleteEntity } from "../service.js";
+import { getAllEntities, insertEntity, deleteEntity, updateEntity } from "../service.js";
 
 export const getAll = async (req, res) => {
   const result = await getAllEntities({
@@ -26,6 +26,20 @@ export const deleteStoreProduct = async (req, res) => {
     idField: "UPC",
     entityName: "Товар у магазині",
     id: UPC,
+  });
+
+  return res.status(result.status).json(result.body);
+};
+
+export const updateData = async (req, res) => {
+  const { UPC } = req.params;
+
+  const result = await updateEntity({
+    tableName: "Store_Product",
+    idField: "UPC",
+    entityName: "Товар у магазині",
+    id: UPC,
+    data: req.body
   });
 
   return res.status(result.status).json(result.body);

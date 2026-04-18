@@ -1,5 +1,5 @@
 import db from "../../db.js";
-import { getAllEntities, insertEntity, deleteEntity } from "../service.js";
+import { getAllEntities, insertEntity, deleteEntity, updateEntity } from "../service.js";
 
 export const getAll = async (req, res) => {
   const result = await getAllEntities({
@@ -27,6 +27,20 @@ export const deleteEmployee = async (req, res) => {
     idField: "id_employee",
     entityName: "Працівника",
     id: id_employee,
+  });
+
+  return res.status(result.status).json(result.body);
+};
+
+export const updateData = async (req, res) => {
+  const { id_employee } = req.params;
+
+  const result = await updateEntity({
+    tableName: "Employee",
+    idField: "id_employee",
+    entityName: "Працівника",
+    id: id_employee,
+    data: req.body
   });
 
   return res.status(result.status).json(result.body);
