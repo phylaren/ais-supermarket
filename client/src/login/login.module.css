@@ -1,29 +1,79 @@
 .pageContainer {
-    width: 100%;
-    height: 100%;
+    width: 100vw;
+    height: 100vh;
     display: flex;
     justify-content: center;
     align-items: center;
+    background-color: #f8fafc; 
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
 }
 
 .loginContainer {
     display: flex;
     flex-direction: column;
-    align-items: center;
-    gap: 16px;
-    /*i should add constants*/
-}
-
-input {
+    align-items: stretch;
+    gap: 20px;
     width: 100%;
+    max-width: 400px;
+    padding: 40px;
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+    border: 1px solid #edf2f7;
+    box-sizing: border-box;
 }
 
-h1 {
+.title {
     text-align: center;
-    margin: 0;
+    margin: 0 0 10px 0;
+    color: #334155;
+    font-size: 28px;
+    font-weight: 600;
 }
 
-p {
-    color: red;
+.inputField {
+    width: 100%;
+    padding: 14px 15px;
+    font-size: 15px;
+    color: #334155;
+    background-color: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 6px;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    box-sizing: border-box;
+}
+
+.inputField:focus {
+    outline: none;
+    border-color: #475569;
+    box-shadow: 0 0 0 3px rgba(71, 85, 105, 0.1);
+}
+
+.submitButton {
+    width: 100%;
+    padding: 14px 15px;
+    font-size: 16px;
+    font-weight: 600;
+    color: #ffffff;
+    background-color: #475569;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+    margin-top: 10px;
+}
+
+.submitButton:hover {
+    background-color: #334155;
+}
+
+.errorMessage {
+    color: #dc2626;
+    background-color: #fef2f2;
+    border: 1px solid #fecaca;
+    padding: 12px;
+    border-radius: 6px;
+    font-size: 14px;
+    text-align: center;
     margin: 0;
 }

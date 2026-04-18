@@ -5,7 +5,6 @@ import { Link, Outlet, useLocation } from "react-router-dom"
 import style from "./Main.module.css"
 
 import PageName from "../pageElems/PageName"
-import headerStyle from "../pageElems/headerStyle.module.css"
 
 import {getCategories} from "./categories.js";
 
@@ -32,10 +31,13 @@ export default function Main(){
 
 export function PageCategories({categories}){
     return(
-        <ul>
+        
+        <ul className={style.categoriesGrid}>
             {categories.map(category=>(
-                <li key={category.link}>
-                    <Link to={`${category.link}`}>{category.name}</Link>
+                <li key={category.link} className={style.categoryCard}>
+                    <Link to={`${category.link}`} className={style.categoryLink}>
+                        {category.name}
+                    </Link>
                 </li>
             ))}
         </ul>

@@ -47,6 +47,7 @@ export default function Login() {
                 {errorMessage && <ErrorMessage text={errorMessage} />}
                 
                 <input
+                    className={style.inputField}
                     type="text"
                     placeholder="Введіть логін"
                     value={login}
@@ -55,6 +56,7 @@ export default function Login() {
                 />
 
                 <input
+                    className={style.inputField}
                     type="password"
                     placeholder="Введіть пароль"
                     value={password}
@@ -62,16 +64,16 @@ export default function Login() {
                     required
                 />
 
-                <button type="submit">Увійти</button>
+                <button className={style.submitButton} type="submit">Увійти</button>
             </form>
         </div>
     )
 }
 
 function PageName({ name }) {
-    return <h1>{name}</h1>
+    return <h1 className={style.title}>{name}</h1>
 }
 
 function ErrorMessage({ text }) {
-    return <p>{text}</p>
+    return <p className={style.errorMessage}>{text}</p>
 }

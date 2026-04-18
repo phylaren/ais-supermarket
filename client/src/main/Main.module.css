@@ -1,45 +1,66 @@
 .pageContainer {
+    min-height: 100vh;
     width: 100%;
-    height: 100%;
     display: flex;
     flex-direction: column;
-    justify-content: flex-start;
     align-items: center;
+    background-color: #f8fafc;
+    box-sizing: border-box;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
 }
 
-ul {
+.categoriesGrid {
     list-style: none;
-    margin: 0;
-    padding: 0;
+    margin: 0 auto;
+    padding: 40px 20px;
+    width: 100%;
+    max-width: 1000px;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 24px;
+}
+
+.categoryCard {
+    background-color: #ffffff;
+    border: 1px solid #edf2f7;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.02);
+    transition: all 0.3s ease;
+    overflow: hidden;
+}
+
+.categoryCard:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.08);
+    border-color: #cbd5e1;
+    cursor: pointer;
+}
+
+.categoryLink {
+    display: flex;
+    align-items: center;
+    justify-content: center;
     width: 100%;
     height: 100%;
+    padding: 40px 20px;
+    text-decoration: none;
+    color: #475569;
+    font-size: 22px;
+    font-weight: 600;
+    text-align: center;
+    box-sizing: border-box;
+    transition: color 0.3s ease;
+}
+
+.categoryCard:hover .categoryLink {
+    color: #0f172a;
+}
+
+.contentArea {
+    width: 100%;
+    max-width: 1400px;
+    flex-grow: 1;
     display: flex;
     flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    gap: 8px;
-}
-
-a{
-    text-decoration: none;
-    color: black;
-    font-size: 32px;
-}
-
-li{
-    padding: 8px;
-    border: 1px solid black;
-    width: 25%;
-    text-align: center;
-}
-
-li a {
-    display: block;
-    width: 100%;
-    height: 100%;
-}
-
-li:hover{
-    cursor: pointer;
-    background-color: aliceblue;
+    margin-top: 20px;
 }

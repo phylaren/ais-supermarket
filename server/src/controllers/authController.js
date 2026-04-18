@@ -15,9 +15,8 @@ export const login = (req, res) => {
         }
 
         const sql = `
-            SELECT e.id_employee, e.empl_name, r.role_name, a.password_hash 
+            SELECT e.id_employee, e.empl_name, e.empl_role, a.password_hash 
             FROM Employee e 
-            JOIN Role r ON e.id_role = r.id_role 
             JOIN Account a ON e.id_employee = a.id_employee
             WHERE e.id_employee = ?
         `;
@@ -40,12 +39,12 @@ export const login = (req, res) => {
                 }
 
                 const token = jwt.sign(
-                    { id: user.id_employee, role: user.role_name }, 
+                    { id: user.id_employee, role: user.empl_role }, 
                     SECRET_KEY, 
                     { expiresIn: '8h' }
                 );
 
-                res.json({ message: "Успішний вхід", token, role: user.role_name });
+                res.json({ message: "Успішний вхід", token, role: user.empl_role });
 
             } catch (bcryptError) {
                 console.error("Помилка хешування:", bcryptError);

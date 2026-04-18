@@ -1,5 +1,7 @@
+import style from './PageName.module.css';
+
 export default function PageName({name}) {
     return (
-        <header>{name}</header>
+        <header className={style.header}>{name}</header>
     )
 }
