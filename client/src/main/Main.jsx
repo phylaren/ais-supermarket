@@ -10,8 +10,6 @@ import headerStyle from "../pageElems/headerStyle.module.css"
 import {getCategories} from "./categories.js";
 
 export default function Main(){
-    const {page} = useContext(UserContext);
-
     const categories = getCategories();
 
     const location = useLocation();
@@ -32,7 +30,6 @@ export default function Main(){
     )
 }
 
-//array of categories
 export function PageCategories({categories}){
     return(
         <ul>
