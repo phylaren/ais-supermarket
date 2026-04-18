@@ -1,4 +1,5 @@
 import style from "./Table.module.css"; 
+import { ukrHeaders } from "./ukrHeaders.js";
 
 function getAttributes(data) {
     if (!data || data.length === 0) return [];
@@ -42,7 +43,9 @@ function Attributes({ attributes }) {
         <thead>
             <tr>
                 {attributes.map((attribute) => (
-                    <th key={attribute}>{attribute}</th>
+                    <th key={attribute}>
+                        {ukrHeaders[attribute] || attribute}
+                    </th>
                 ))}
             </tr>
         </thead>
