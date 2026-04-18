@@ -1,5 +1,4 @@
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
-import { useContext } from "react";
 
 import Login from "./login/Login.jsx";
 import Main from "./main/Main.jsx";
@@ -9,21 +8,26 @@ import { getCategories } from "./main/categories.js";
 import TableView from "./main/TableView.jsx";
 
 function ProtectedRoute({ children }) {
-    const { role } = useContext(UserContext);
+    const currentRole = localStorage.getItem('role');
 
-    if (!role || role === "null" || role === "undefined") {
+    if (!currentRole || currentRole === "null" || currentRole === "undefined") {
         return <Navigate to="/login" replace />;
     }
-
     return children;
 }
 
-//TO-DO logined users to main if dont have acces http://localhost:5173/main/category
-//TO-DO unlogined users to login
+function PublicRoute({ children }) {
+    const currentRole = localStorage.getItem('role');
+
+    if (currentRole && currentRole !== "null" && currentRole !== "undefined") {
+        return <Navigate to="/main" replace />;
+    }
+    return children;
+}
 
 function AppRouter() {
-    const { role } = useContext(UserContext);
     const categories = getCategories();
+    const currentRole = localStorage.getItem('role');
 
     return (
         <BrowserRouter>
@@ -36,23 +40,36 @@ function AppRouter() {
                         </ProtectedRoute>
                     }
                 >
-                    {categories.map((category) => {
-                        return (
-                            <Route 
-                                key={category.link}
-                                path={category.link} 
-                                element={<TableView category={category}/>} 
-                            />
-                        );
-                    })}
+                    {categories.map((category) => (
+                        <Route 
+                            key={category.link}
+                            path={category.link} 
+                            element={<TableView category={category}/>} 
+                        />
+                    ))}
+
+                    <Route path="*" element={<Navigate to="/main" replace />} />
                 </Route>
 
-                <Route path="/login" element={<Login />} />
+                <Route 
+                    path="/login" 
+                    element={
+                        <PublicRoute>
+                            <Login />
+                        </PublicRoute>
+                    } 
+                />
 
                 <Route
                     path="/"
-                    element={<Navigate to={role ? "/main" : "/login"} replace />}
+                    element={<Navigate to={currentRole ? "/main" : "/login"} replace />}
                 />
+
+                <Route 
+                    path="*" 
+                    element={<Navigate to={currentRole ? "/main" : "/login"} replace />} 
+                />
+
             </Routes>
         </BrowserRouter>
     );

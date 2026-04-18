@@ -1,7 +1,7 @@
-import { useState } from "react"
+import { useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
-
-import style from "./login.module.css"
+import { UserContext } from "../context/UserContext.jsx";
+import style from "./login.module.css";
 
 export default function Login() {
     const [login, setLogin] = useState("");
@@ -9,6 +9,8 @@ export default function Login() {
     const [errorMessage, setErrorMessage] = useState("");
 
     const navigate = useNavigate();
+
+    const { setRole } = useContext(UserContext);
 
     const handleLogin = async (e) => {
         e.preventDefault();
@@ -32,6 +34,8 @@ export default function Login() {
 
             localStorage.setItem('token', data.token);
             localStorage.setItem('role', data.role);
+
+            setRole(data.role);
 
             navigate('/main');
 
