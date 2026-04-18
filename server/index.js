@@ -30,7 +30,6 @@ app.use('/api/employee', employeeRoutes);
 app.use('/api/customer-card', customerCardRoutes);
 app.use('/api/product', productRoutes);
 app.use('/api/store-product', storeProductRoutes);
-app.use('/api/role', roleRoutes);
 app.use('/api/receipt', receiptRoutes);
 
 app.use('/api/auth', authRoutes); 
