@@ -15,8 +15,8 @@ export default function Main(){
     const location = useLocation();
     const isExactMainPage = location.pathname === "/main" || location.pathname === "/main/";
 
-    const currentCategory = categories.find(category => location.pathname.includes(category.eng));
-    const name = currentCategory ? currentCategory.ukr : "Головна";
+    const currentCategory = categories.find(category => location.pathname.includes(category.link));
+    const name = currentCategory ? currentCategory.name : "Головна";
 
     return(
         <div className={style.pageContainer}>
@@ -34,8 +34,8 @@ export function PageCategories({categories}){
     return(
         <ul>
             {categories.map(category=>(
-                <li key={category.eng}>
-                    <Link to={`${category.eng}`}>{category.ukr}</Link>
+                <li key={category.link}>
+                    <Link to={`${category.link}`}>{category.name}</Link>
                 </li>
             ))}
         </ul>

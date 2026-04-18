@@ -39,8 +39,8 @@ function AppRouter() {
                     {categories.map((category) => {
                         return (
                             <Route 
-                                key={category.eng}
-                                path={category.eng} 
+                                key={category.link}
+                                path={category.link} 
                                 element={<TableView category={category}/>} 
                             />
                         );

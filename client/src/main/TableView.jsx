@@ -11,7 +11,7 @@ export default function TableView({category}){
             try {
                 const token = localStorage.getItem('token');
                 
-                const response = await fetch(`http://localhost:5000/api/${category.eng}`, {
+                const response = await fetch(`http://localhost:5000/api/${category.link}`, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
@@ -34,7 +34,7 @@ export default function TableView({category}){
         }
 
         getData();
-    }, [category.eng]);
+    }, [category.link]);
 
     return(
             <DrawTable category={category} data={data}/>
@@ -44,7 +44,7 @@ export default function TableView({category}){
 function DrawTable({category, data}){
     return(
             <div className={style.pageContainer}>
-                {<Table category={category.eng} data={data}/>}
+                {<Table category={category.link} data={data}/>}
                 <GoToMainButton/>
             </div>
         );

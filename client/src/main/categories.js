@@ -3,28 +3,28 @@ import { UserContext } from "../context/UserContext.jsx";
 
 const manager = [
     {
-        ukr: "Працівники",
-        eng: "employee"
+        name: "Працівники",
+        link: "employee",
     },
     {
-        ukr: "Клієнти",
-        eng: "customer-card"
+        name: "Клієнти",
+        link: "customer-card"
     },
     {
-        ukr: "Категорії",
-        eng: "category"
+        name: "Категорії",
+        link: "category"
     },
     {
-        ukr: "Товари",
-        eng: "product"
+        name: "Товари",
+        link: "product"
     },
     {
-        ukr: "Товари в магазині",
-        eng: "store-product"
+        name: "Товари в магазині",
+        link: "store-product"
     },
     {
-        ukr: "Чеки",
-        eng: "receipt"
+        name: "Чеки",
+        link: "receipt"
     }
 ];
 
@@ -32,20 +32,20 @@ const manager = [
 
 const cashier = [
     {
-        ukr: "Мій профіль",
-        eng: "employee/me"
+        name: "Мій профіль",
+        link: "employee/me"
     },
     {
-        ukr: "Чеки",
-        eng: "receipt"
+        name: "Чеки",
+        link: "receipt"
     },
     {
-        ukr: "Товари",
-        eng: "product"
+        name: "Товари",
+        link: "product"
     },
     {
-        ukr: "Товари в магазині",
-        eng: "store-product"
+        name: "Товари в магазині",
+        link: "store-product"
     },
 ]
 
