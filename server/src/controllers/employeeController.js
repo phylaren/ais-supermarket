@@ -44,9 +44,8 @@ export const getMe = (req, res) => {
         const currentUserId = req.user.id; 
 
         const sql = `
-            SELECT e.*, r.role_name 
+            SELECT e.*
             FROM Employee e 
-            JOIN Role r ON e.id_role = r.id_role 
             WHERE e.id_employee = ?
         `;
 
