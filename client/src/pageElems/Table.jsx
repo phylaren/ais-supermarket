@@ -48,6 +48,7 @@ function Filters({ onAddClick, category, searchTerm, setSearchTerm, onPrint, onT
     const canSearch = category?.functions?.search;
     const canFilter = category?.functions?.filter;
     const canCreate = category?.rules?.create;
+    const canPrint = category?.functions?.print;
 
     return (
         <div className="noPrint" style={{ display: "flex", gap: "10px", marginBottom: "15px", flexWrap: "wrap", alignItems: "center" }}>
@@ -60,14 +61,16 @@ function Filters({ onAddClick, category, searchTerm, setSearchTerm, onPrint, onT
                     ⇅ Фільтр
                 </button>
             )}
-            
-            <button 
-                type="button" 
-                onClick={onPrint}
-                style={{ padding: "8px 15px", cursor: "pointer", borderRadius: "4px", border: "1px solid #ccc", backgroundColor: "#fff" }}
-            >
-                🖨 Роздрукувати
-            </button>
+
+            {canPrint && (
+                <button
+                    type="button"
+                    onClick={onPrint}
+                    style={{ padding: "8px 15px", cursor: "pointer", borderRadius: "4px", border: "1px solid #ccc", backgroundColor: "#fff" }}
+                >
+                    🖨 Роздрукувати
+                </button>
+            )}
             
             {canCreate && (
                 <button 

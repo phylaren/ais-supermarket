@@ -4,48 +4,48 @@ import { UserContext } from "../context/UserContext.jsx";
 const ALL_ACCESS = { create: true, edit: true, delete: true };
 const READ_ONLY = { create: false, edit: false, delete: false };
 
-const NO_FUNCTIONS = { search: false, filter: false };
-const ALL_FUNCTIONS = { search: true, filter: true };
+const MANAGER_FUNCTIONS = { search: true, filter: true, print: true };
+const MANAGER_NO_SEARCH = { search: false, filter: true, print: true };
 
-const ONLY_SEARCH = { search: true, filter: false };
-const ONLY_FILTER = { search: false, filter: true };
+const CASHIER_FUNCTIONS = { search: true, filter: true, print: false };
+const NO_FUNCTIONS = { search: false, filter: false, print: false };
 
 const manager = [
     {
         name: "Працівники",
         link: "employee",
         rules: ALL_ACCESS,
-        functions: NO_FUNCTIONS
+        functions: MANAGER_FUNCTIONS
     },
     {
         name: "Клієнти",
         link: "customer-card",
         rules: ALL_ACCESS,
-        functions: ALL_FUNCTIONS
+        functions: MANAGER_FUNCTIONS
     },
     {
         name: "Категорії",
         link: "category",
         rules: ALL_ACCESS,
-        functions: ALL_FUNCTIONS
+        functions: MANAGER_NO_SEARCH
+    },
+    {
+        name: "Товари",
+        link: "product",
+        rules: ALL_ACCESS,
+        functions: MANAGER_FUNCTIONS
     },
     {
         name: "Товари в магазині",
         link: "store-product",
         rules: ALL_ACCESS,
-        functions: ONLY_FILTER
-    },
-    {
-        name: "Товари",
-        link: "product",
-        rules: READ_ONLY,
-        functions: NO_FUNCTIONS
+        functions: MANAGER_FUNCTIONS
     },
     {
         name: "Чеки",
         link: "receipt",
         rules: { create: false, edit: false, delete: true },
-        functions: ONLY_SEARCH
+        functions: MANAGER_FUNCTIONS
     }
 ];
 
@@ -60,32 +60,34 @@ const cashier = [
         name: "Чеки",
         link: "receipt",
         rules: { create: true, edit: false, delete: false },
-        functions: NO_FUNCTIONS
-    },
-    {
-        name: "Товари в магазині",
-        link: "store-product",
-        rules: READ_ONLY,
-        functions: NO_FUNCTIONS
+        functions: CASHIER_FUNCTIONS
     },
     {
         name: "Товари",
         link: "product",
         rules: READ_ONLY,
-        functions: NO_FUNCTIONS
+        functions: CASHIER_FUNCTIONS
+    },
+    {
+        name: "Товари в магазині",
+        link: "store-product",
+        rules: READ_ONLY,
+        functions: CASHIER_FUNCTIONS
     },
     {
         name: "Клієнти",
         link: "customer-card",
         rules: { create: true, edit: true, delete: false },
-        functions: NO_FUNCTIONS
+        functions: CASHIER_FUNCTIONS
     }
 ];
 
 export function getCategories() {
     const { role } = useContext(UserContext);
+    
+    const activeRole = role || localStorage.getItem('role');
 
-    if (role === "Касир") return cashier;
-    if (role === "Менеджер") return manager;
+    if (activeRole === "Касир") return cashier;
+    if (activeRole === "Менеджер") return manager;
     return [];
 }
