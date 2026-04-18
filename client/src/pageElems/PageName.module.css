@@ -2,12 +2,38 @@
     width: 100%;
     background-color: #475569;
     color: #ffffff;
-    padding: 20px 40px;
-    font-size: 24px;
-    font-weight: 600;
-    text-align: center;
+    padding: 15px 40px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     box-sizing: border-box;
     margin: 0;
+    
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.title {
+    font-size: 24px;
+    font-weight: 600;
     letter-spacing: 1px;
+}
+
+.logoutButton {
+    background-color: transparent;
+    color: #ffffff;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    padding: 8px 16px;
+    border-radius: 6px;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.logoutButton:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+    border-color: #ffffff;
 }
