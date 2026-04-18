@@ -1,4 +1,4 @@
-import db from "../db.js";
+import db from "../../db.js";
 
 export const getAll = (tableName) => {
   return new Promise((resolve, reject) => {
@@ -40,6 +40,34 @@ export const deleteById = (tableName, idField, id) => {
     const sql = `DELETE FROM ${tableName} WHERE ${idField} = ?`;
 
     db.run(sql, [id], function (err) {
+      if (err) return reject(err);
+
+      resolve({
+        changes: this.changes,
+        id: id,
+      });
+    });
+  });
+};
+
+export const updateById = (tableName, idField, id, data) => {
+  return new Promise((resolve, reject) => {
+    const keys = Object.keys(data);
+    const values = Object.values(data);
+
+    if (keys.length === 0) {
+      return reject(new Error("Ніякі дані не потребують змін"));
+    }
+
+    const setClause = keys.map(key => `${key} = ?`).join(", ");
+
+    const sql = `
+      UPDATE ${tableName}
+      SET ${setClause}
+      WHERE ${idField} = ?
+    `;
+
+    db.run(sql, [...values, id], function (err) {
       if (err) return reject(err);
 
       resolve({
