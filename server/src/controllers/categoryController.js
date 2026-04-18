@@ -1,4 +1,5 @@
 import { getAllEntities, insertEntity, deleteEntity, updateEntity } from "../service/service.js";
+import { getAllCategoriesService } from "../service/categoryService.js";
 
 export const getAll = async (req, res) => {
   const result = await getAllEntities({
@@ -42,5 +43,10 @@ export const updateData = async (req, res) => {
     entityName: "Категорію",
   });
 
+  return res.status(result.status).json(result.body);
+};
+
+export const getAllCategories = async (req, res) => {
+  const result = await getAllCategoriesService();
   return res.status(result.status).json(result.body);
 };
