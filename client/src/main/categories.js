@@ -30,16 +30,16 @@ const manager = [
         functions: ALL_FUNCTIONS
     },
     {
-        name: "Товари",
-        link: "product",
-        rules: ALL_ACCESS,
-        functions: ALL_FUNCTIONS
-    },
-    {
         name: "Товари в магазині",
         link: "store-product",
         rules: ALL_ACCESS,
         functions: ONLY_FILTER
+    },
+    {
+        name: "Товари",
+        link: "product",
+        rules: READ_ONLY,
+        functions: NO_FUNCTIONS
     },
     {
         name: "Чеки",
@@ -63,14 +63,14 @@ const cashier = [
         functions: NO_FUNCTIONS
     },
     {
-        name: "Товари",
-        link: "product",
+        name: "Товари в магазині",
+        link: "store-product",
         rules: READ_ONLY,
         functions: NO_FUNCTIONS
     },
     {
-        name: "Товари в магазині",
-        link: "store-product",
+        name: "Товари",
+        link: "product",
         rules: READ_ONLY,
         functions: NO_FUNCTIONS
     },
