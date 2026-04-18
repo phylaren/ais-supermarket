@@ -50,6 +50,7 @@ function Attributes({ attributes }) {
 }
 
 function Data({ data }) {
+    console.log("Дані, які прийшли в Data:", data);
     return (
         <tbody>
             {data.map((row, rowIndex) => (

@@ -3,8 +3,8 @@ import * as saleController from '../controllers/saleController.js';
 
 const router = Router();
 
-router.get('/getAll', saleController.getAll);
-router.post('/insert-data', saleController.insertData);
-router.delete('/delete/:id_category', saleController.deleteSale);
+router.get('/', saleController.getAll);
+router.post('/', saleController.insertData);
+router.delete('/:id', saleController.deleteSale);
 
 export default router;

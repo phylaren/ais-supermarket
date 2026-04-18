@@ -3,8 +3,8 @@ import * as storeProductController from '../controllers/storeProductController.j
 
 const router = Router();
 
-router.get('/getAll', storeProductController.getAll);
-router.post('/insert-data', storeProductController.insertData);
-router.delete('/delete/:id_category', storeProductController.deleteStoreProduct);
+router.get('/', storeProductController.getAll);
+router.post('/', storeProductController.insertData);
+router.delete('/:id', storeProductController.deleteStoreProduct);
 
 export default router;

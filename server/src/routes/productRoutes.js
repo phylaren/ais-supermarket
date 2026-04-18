@@ -3,8 +3,8 @@ import * as productController from '../controllers/productController.js';
 
 const router = Router();
 
-router.get('/getAll', productController.getAll);
-router.post('/insert-data', productController.insertData);
-router.delete('/delete/:id_category', productController.deleteProduct);
+router.get('/', productController.getAll);
+router.post('/', productController.insertData);
+router.delete('/:id', productController.deleteProduct);
 
 export default router;

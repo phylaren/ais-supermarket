@@ -3,8 +3,8 @@ import * as customerCardController from '../controllers/customerCardController.j
 
 const router = Router();
 
-router.get('/getAll', customerCardController.getAll);
-router.post('/insert-data', customerCardController.insertData);
-router.delete('/delete/:id_category', customerCardController.deleteCustomerCard);
+router.get('/', customerCardController.getAll);
+router.post('/', customerCardController.insertData);
+router.delete('/:id', customerCardController.deleteCustomerCard);
 
 export default router;

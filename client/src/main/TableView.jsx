@@ -1,5 +1,4 @@
 import GoToMainButton from "../pageElems/GoToMainButton.jsx";
-import PageName from "../pageElems/PageName.jsx";
 import Table from "../pageElems/Table.jsx";
 import style from "./Main.module.css";
 import { useState, useEffect } from "react";
@@ -10,10 +9,25 @@ export default function TableView({category}){
     useEffect(() => {
         async function getData() {
             try {
-                const response = await fetch(`http://localhost:5000/api/${category.eng}`);
+                const token = localStorage.getItem('token');
+                
+                const response = await fetch(`http://localhost:5000/api/${category.eng}`, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                }
+            });
+
                 console.log("response: ", response)
-                const data = await response.json();
-                setData(data);
+
+                if (!response.ok) {
+                throw new Error(`Помилка сервера: ${response.status}`);
+            }
+
+                const resData = await response.json();
+                console.log("resData: ", resData);
+                setData(Array.isArray(resData.data) ? resData.data : [resData.data]);
             } catch (error) {
                 console.log(error);
             }

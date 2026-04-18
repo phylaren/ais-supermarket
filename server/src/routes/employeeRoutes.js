@@ -4,10 +4,11 @@ import { verifyToken, checkRole } from '../middleware/authMiddleware.js';
 
 const router = Router();
 
-router.get('/', verifyToken, checkRole(['MANAGER']), employeeController.getAll);
-//router.get('/getAll', employeeController.getAll);
-router.post('/insert-data', employeeController.insertData);
-router.delete('/delete/:id_category', employeeController.deleteEmployee);
+router.get('/me', verifyToken, employeeController.getMe);
+
+router.get('/', verifyToken, checkRole(['Менеджер']), employeeController.getAll);
+router.post('/', verifyToken, checkRole(['Менеджер']), employeeController.insertData);
+router.delete('/:id', verifyToken, checkRole(['Менеджер']), employeeController.deleteEmployee);
 
 export default router;
 

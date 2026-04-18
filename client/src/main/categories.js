@@ -33,7 +33,7 @@ const manager = [
 const cashier = [
     {
         ukr: "Мій профіль",
-        eng: "me"
+        eng: "employee/me"
     },
     {
         ukr: "Чеки",

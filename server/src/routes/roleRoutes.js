@@ -3,8 +3,8 @@ import * as roleController from '../controllers/roleController.js';
 
 const router = Router();
 
-router.get('/getAll', roleController.getAll);
-router.post('/insert-data', roleController.insertData);
-router.delete('/delete/:id_category', roleController.deleteRole);
+router.get('/', roleController.getAll);
+router.post('/', roleController.insertData);
+router.delete('/:id', roleController.deleteRole);
 
 export default router;
