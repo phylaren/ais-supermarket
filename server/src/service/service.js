@@ -1,4 +1,4 @@
-import { getAll, insert, deleteById, updateById } from "../repository/repository.js";
+import { getAll, insert, deleteById, updateById } from "../repositories/repository.js";
 
 export const getAllEntities = async ({ tableName }) => {
   try {
