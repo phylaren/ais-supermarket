@@ -1,4 +1,4 @@
-import { getAllEntities, insertEntity, deleteEntity } from "../service.js";
+import { getAllEntities, insertEntity, deleteEntity, updateEntity } from "../service.js";
 
 export const getAll = async (req, res) => {
   const result = await getAllEntities({
@@ -26,6 +26,20 @@ export const deleteCustomerCard = async (req, res) => {
     idField: "card_number",
     entityName: "Карту клієнта",
     id: card_number,
+  });
+
+  return res.status(result.status).json(result.body);
+};
+
+export const updateData = async (req, res) => {
+  const { card_number } = req.params;
+
+  const result = await updateEntity({
+    tableName: "Customer_Card",
+    idField: "card_number",
+    entityName: "Карту клієнта",
+    id: card_number,
+    data: req.body
   });
 
   return res.status(result.status).json(result.body);

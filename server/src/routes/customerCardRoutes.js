@@ -6,5 +6,6 @@ const router = Router();
 router.get('/', customerCardController.getAll);
 router.post('/', customerCardController.insertData);
 router.delete('/:id_card', customerCardController.deleteCustomerCard);
+router.patch('/:id_card', customerCardController.updateData);
 
 export default router;

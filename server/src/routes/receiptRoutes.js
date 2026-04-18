@@ -6,5 +6,6 @@ const router = Router();
 router.get('/', receiptController.getAll);
 router.post('/', receiptController.insertData);
 router.delete('/:id_check', receiptController.deleteReceipt);
+router.patch('/:id_check', receiptController.updateData);
 
 export default router;

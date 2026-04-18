@@ -15,17 +15,12 @@ CREATE TABLE IF NOT EXISTS Customer_Card (
     discount_percent INT NOT NULL
 );
 
-CREATE TABLE IF NOT EXISTS Role (
-    id_role INTEGER NOT NULL PRIMARY KEY,
-    role_name VARCHAR(50) NOT NULL
-);
-
 CREATE TABLE IF NOT EXISTS Employee (
     id_employee VARCHAR(10) NOT NULL PRIMARY KEY,
     empl_surname VARCHAR(50) NOT NULL,
     empl_name VARCHAR(50) NOT NULL,
     empl_patronymic VARCHAR(50),
-    id_role INTEGER NOT NULL,
+    empl_role VARCHAR(10) NOT NULL,
     salary CURRENCY NOT NULL,
     date_of_birth DATE NOT NULL,
     date_of_start DATE NOT NULL,
@@ -33,7 +28,6 @@ CREATE TABLE IF NOT EXISTS Employee (
     city VARCHAR(50) NOT NULL,
     street VARCHAR(50) NOT NULL,
     zip_code VARCHAR(9) NOT NULL,
-    FOREIGN KEY (id_role) REFERENCES Role (id_role) ON UPDATE CASCADE ON DELETE NO ACTION
 );
 
 CREATE TABLE IF NOT EXISTS Product (
