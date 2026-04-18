@@ -91,4 +91,7 @@ INSERT INTO Sale ( UPC, id_check, product_number, selling_price
 ('000000000016', 'CHK005', 2, 45.00);
 
 INSERT INTO Account ( id_employee, password_hash) VALUES 
-("E001", "$2b$10$NkdHIZHw0DskfSDwXd4xKue7sJhSoKfL1QQ5MtmDNrGYP/wM.0IA2");
+("E001", "$2b$10$NkdHIZHw0DskfSDwXd4xKue7sJhSoKfL1QQ5MtmDNrGYP/wM.0IA2"),
+("E002", "$2b$10$NkdHIZHw0DskfSDwXd4xKue7sJhSoKfL1QQ5MtmDNrGYP/wM.0IA2"),
+("E003", "$2b$10$NkdHIZHw0DskfSDwXd4xKue7sJhSoKfL1QQ5MtmDNrGYP/wM.0IA2"),
+("E004", "$2b$10$NkdHIZHw0DskfSDwXd4xKue7sJhSoKfL1QQ5MtmDNrGYP/wM.0IA2");

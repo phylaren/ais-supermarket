@@ -68,12 +68,12 @@ export const deleteEntity = async ({ tableName, idField, entityName, id }) => {
     };
   }
 
-  if (isNaN(id)) {
+  if (!id) {
     return {
       status: 400,
       body: {
         success: false,
-        message: `Invalid ${idField}`,
+        message: `${idField} is required`,
       },
     };
   }

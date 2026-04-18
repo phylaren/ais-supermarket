@@ -6,7 +6,7 @@ function getAttributes(data) {
     return Object.keys(data[0]);
 }
 
-export default function Table({ data, category }) {
+export default function Table({ data, onDelete }) {
     if (!data || data.length === 0) {
         return <div style={{ padding: "20px" }}>Завантажую таблицю...</div>;
     }
@@ -19,7 +19,7 @@ export default function Table({ data, category }) {
             <div className={style.tableWrapper}>
                 <table className={style.styledTable}>
                     <Attributes attributes={attributes} />
-                    <Data data={data} />
+                    <Data data={data} onDelete={onDelete} />
                 </table>
             </div>
         </div>
@@ -47,22 +47,45 @@ function Attributes({ attributes }) {
                         {ukrHeaders[attribute] || attribute}
                     </th>
                 ))}
+                <th></th>
             </tr>
         </thead>
     );
 }
 
-function Data({ data }) {
-    console.log("Дані, які прийшли в Data:", data);
+function Data({ data, onDelete }) {
     return (
         <tbody>
-            {data.map((row, rowIndex) => (
-                <tr key={rowIndex}>
-                    {Object.values(row).map((value, colIndex) => (
-                        <td key={colIndex}>{value}</td>
-                    ))}
-                </tr>
-            ))}
+            {data.map((row, rowIndex) => {
+                const rowId = Object.values(row)[0]; 
+
+                return (
+                    <tr key={rowIndex}>
+                        {Object.values(row).map((value, colIndex) => {
+                            let safeValue = value;
+                            if (value === null || value === undefined) safeValue = "—";
+                            else if (typeof value === 'boolean') safeValue = value ? "Так" : "Ні";
+                            
+                            return <td key={colIndex}>{safeValue}</td>;
+                        })}
+                        <td>
+                            <button 
+                                onClick={() => onDelete(rowId)}
+                                style={{
+                                    backgroundColor: "#ff4d4f", 
+                                    color: "white", 
+                                    border: "none", 
+                                    padding: "5px 10px", 
+                                    borderRadius: "4px", 
+                                    cursor: "pointer"
+                                }}
+                            >
+                                Видалити
+                            </button>
+                        </td>
+                    </tr>
+                );
+            })}
         </tbody>
     );
 }

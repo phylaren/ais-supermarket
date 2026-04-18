@@ -8,7 +8,7 @@ router.get('/me', verifyToken, employeeController.getMe);
 
 router.get('/', verifyToken, checkRole(['Менеджер']), employeeController.getAll);
 router.post('/', verifyToken, checkRole(['Менеджер']), employeeController.insertData);
-router.delete('/:id', verifyToken, checkRole(['Менеджер']), employeeController.deleteEmployee);
+router.delete('/:id_employee', verifyToken, checkRole(['Менеджер']), employeeController.deleteEmployee);
 
 export default router;
 

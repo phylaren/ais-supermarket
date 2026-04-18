@@ -5,6 +5,6 @@ const router = Router();
 
 router.get('/', storeProductController.getAll);
 router.post('/', storeProductController.insertData);
-router.delete('/:id', storeProductController.deleteStoreProduct);
+router.delete('/:UPC', storeProductController.deleteStoreProduct);
 
 export default router;

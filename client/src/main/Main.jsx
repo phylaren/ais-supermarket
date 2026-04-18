@@ -11,6 +11,7 @@ import {getCategories} from "./categories.js";
 
 export default function Main(){
     const categories = getCategories();
+    console.log(categories);
 
     const location = useLocation();
     const isExactMainPage = location.pathname === "/main" || location.pathname === "/main/";
@@ -29,6 +30,8 @@ export default function Main(){
         </div>
     )
 }
+
+// TO-DO store-product doesn't display right
 
 export function PageCategories({categories}){
     return(
