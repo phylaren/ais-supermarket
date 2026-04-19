@@ -21,13 +21,13 @@ const manager = [
         name: "Клієнти",
         link: "customer-card",
         rules: ALL_ACCESS,
-        functions: MANAGER_FUNCTIONS
+        functions: MANAGER_FUNCTIONS //MANAGER_NO_SEARCH
     },
     {
         name: "Категорії",
         link: "category",
         rules: ALL_ACCESS,
-        functions: MANAGER_NO_SEARCH
+        functions: MANAGER_NO_SEARCH //MANAGER_NO_SEARCH + no filter
     },
     //OR I SHOULD ADD SORT ???????
     {
@@ -40,13 +40,13 @@ const manager = [
         name: "Товари",
         link: "product",
         rules: ALL_ACCESS,
-        functions: MANAGER_FUNCTIONS
+        functions: MANAGER_FUNCTIONS //MANAGER_NO_SEARCH + no filter???????????
     },
     {
         name: "Чеки",
         link: "receipt",
         rules: { create: false, edit: false, delete: true },
-        functions: MANAGER_FUNCTIONS
+        functions: MANAGER_FUNCTIONS //MANAGER_NO_SEARCH
     }
 ];
 
