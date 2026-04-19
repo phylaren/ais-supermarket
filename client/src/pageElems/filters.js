@@ -1,34 +1,29 @@
-export const filters = {
+export const filters = { //Потрібно додати кудись виведення загальної суми чеків (всіх і конкретного касира) + окремо кількість проданого продукту (id атрибут)
     "employee": [
+        { label: "Всі працівники", value: "surname_asc" },
+        { label: "Тільки касири", value: "check_role" }
+    ],
+    "customer-card": [ //або поле щоб самостійно вводити значення знижки
         { label: "За прізвищем (А-Я)", value: "surname_asc" },
-        { label: "За прізвищем (Я-А)", value: "surname_desc" }
+        { label: "Клієнти зі 5% знижкою", value: "discount_5" },
+        { label: "Клієнти зі 10% знижкою", value: "discount_10" },
+        { label: "Клієнти зі 15% знижкою", value: "discount_15" }
     ],
-    "customer-card": [
-        { label: "За прізвищем (А-Я)", value: "surname_asc" },
-        { label: "За прізвищем (Я-А)", value: "surname_desc" },
-        { label: "За відсотком (зростання)", value: "percent_asc" },
-        { label: "За відсотком (спадання)", value: "percent_desc" }
+    "category": [], //немає фільтру взагалі
+
+    "product": [ //випадний список категорій
+        { label: "Категорія", value: "" }
     ],
-    "category": [
-        { label: "За назвою (А-Я)", value: "name_asc" },
-        { label: "За назвою (Я-А)", value: "name_desc" }
+    "store-product": [ //варіант або чотири кнопки (акційні за назвою, акційні за кількістю і не акц. те саме
+                        //або два види кнопок що поєднуються окремо товар і окремо за чим сортувати
+        { label: "Всі продукти", value: "name_asc" },
+        { label: "Акційні товари", value: "name_asc" },
+        { label: "Не акційні товари", value: "name_asc" },
+        { label: "Акційні товари", value: "quantity_asc" },
+        { label: "Не акційні товари", value: "quantity_asc" },
     ],
-    "product": [
-        { label: "За назвою (А-Я)", value: "name_asc" },
-        { label: "За назвою (Я-А)", value: "name_desc" }
-    ],
-    "store-product": [
-        { label: "За назвою (А-Я)", value: "name_asc" },
-        { label: "За назвою (Я-А)", value: "name_desc" },
-        { label: "За кількістю (зростання)", value: "quantity_asc" },
-        { label: "За кількістю (спадання)", value: "quantity_desc" },
-        { label: "Спочатку акційні", value: "promo_first" },
-        { label: "Спочатку звичайні", value: "non_promo_first" }
-    ],
-    "receipt": [
+    "receipt": [ //у менеджера: випадний список касирів або всі + дата (початок і кінець або 1 день конкретний)
+        //у касира: всі його чеки те саме але не може обрати касира, за замовчуванням стоїть він
         { label: "Спершу нові", value: "date_desc" },
-        { label: "Спершу старі", value: "date_asc" },
-        { label: "За сумою (зростання)", value: "sum_asc" },
-        { label: "За сумою (спадання)", value: "sum_desc" }
     ]
 };
