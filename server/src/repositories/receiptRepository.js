@@ -137,3 +137,22 @@ export const getTotalSumByCashierFromDB = (surname, startDate, endDate) => {
     });
   });
 };
+
+export const getTotalRevenueFromDB = (startDate, endDate) => {
+  return new Promise((resolve, reject) => {
+    const sql = `
+      SELECT
+        SUM(sum_total) AS total_sum
+      FROM Receipt
+      WHERE print_date BETWEEN ? AND ?
+    `;
+
+    db.get(sql, [startDate, endDate], (err, row) => {
+      if (err) {
+        console.error("Repository Error (Total Revenue):", err.message);
+        return reject(err);
+      }
+      resolve(row);
+    });
+  });
+};

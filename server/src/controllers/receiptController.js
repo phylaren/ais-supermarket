@@ -85,3 +85,11 @@ export const getCashierTotalRevenue = async (req, res) => {
   
   return res.status(result.status).json(result);
 };
+
+export const getTotalRevenue = async (req, res) => {
+  const { start, end } = req.query;
+
+  const result = await service.getTotalRevenueService(start, end);
+  
+  return res.status(result.status).json(result);
+};

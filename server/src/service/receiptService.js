@@ -140,3 +140,33 @@ export const getCashierTotalRevenueService = async (surname, start, end) => {
     };
   }
 };
+
+export const getTotalRevenueService = async (start, end) => {
+  if (!start || !end) {
+    return {
+      status: 400,
+      success: false,
+      message: "Потрібно вказати початкову та кінцеву дати"
+    };
+  }
+
+  try {
+    const result = await repo.getTotalRevenueFromDB(start, end);
+    const total = result.total_sum || 0;
+
+    return {
+      status: 200,
+      success: true,
+      data: {
+        period: { start, end },
+        total_revenue: total
+      }
+    };
+  } catch (error) {
+    return {
+      status: 500,
+      success: false,
+      message: "Помилка сервера при підрахунку виручки: " + error.message
+    };
+  }
+};
