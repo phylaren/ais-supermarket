@@ -29,15 +29,16 @@ const manager = [
         rules: ALL_ACCESS,
         functions: MANAGER_NO_SEARCH
     },
+    //OR I SHOULD ADD SORT ???????
     {
-        name: "Товари",
-        link: "product",
+        name: "Товари в магазині",
+        link: "store-product",
         rules: ALL_ACCESS,
         functions: MANAGER_FUNCTIONS
     },
     {
-        name: "Товари в магазині",
-        link: "store-product",
+        name: "Товари",
+        link: "product",
         rules: ALL_ACCESS,
         functions: MANAGER_FUNCTIONS
     },
@@ -63,14 +64,14 @@ const cashier = [
         functions: CASHIER_FUNCTIONS
     },
     {
-        name: "Товари",
-        link: "product",
+        name: "Товари в магазині",
+        link: "store-product",
         rules: READ_ONLY,
         functions: CASHIER_FUNCTIONS
     },
     {
-        name: "Товари в магазині",
-        link: "store-product",
+        name: "Товари",
+        link: "product",
         rules: READ_ONLY,
         functions: CASHIER_FUNCTIONS
     },
