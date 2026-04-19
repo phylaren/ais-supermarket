@@ -1,5 +1,6 @@
 import { getAllStoreProductsByCountFromDB, getStoreProductsOrderedByNameFromDB, getStoreProductByUPCFromDB,
-    getStoreProductsByCategoryFromDB, getStoreProductByNameFromDB } from "../repositories/storeProductRepository.js";
+    getStoreProductsByCategoryFromDB, getStoreProductByNameFromDB, findStoreProducts
+} from "../repositories/storeProductRepository.js";
 
 export const getAllStoreProductsByCountService = async () => {
   try {
@@ -131,6 +132,29 @@ export const getStoreProductByNameService = async (productName) => {
     return {
       status: 500,
       body: { success: false, message: "Database error" },
+    };
+  }
+};
+
+import * as repo from "../repositories/storeProductRepository.js";
+
+export const getStoreProductsData = async (type, sort) => {
+  try {
+    const isPromo = (type === 'promotional');
+    
+    const data = await repo.findStoreProducts(isPromo, sort);
+
+    return {
+      status: 200,
+      success: true,
+      data
+    };
+  } catch (error) {
+    console.error("Service Error:", error.message);
+    return {
+      status: 500,
+      success: false,
+      message: "Помилка при отриманні даних з бази"
     };
   }
 };

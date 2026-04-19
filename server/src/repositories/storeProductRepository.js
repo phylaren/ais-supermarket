@@ -110,3 +110,31 @@ export const getStoreProductByNameFromDB = (productName) => {
     });
   });
 };
+
+export const findStoreProducts = (isPromotional, sortBy) => {
+  return new Promise((resolve, reject) => {
+    const order = sortBy === 'number' 
+      ? 'sp.products_number DESC' 
+      : 'p.product_name ASC';
+
+    const promoValue = isPromotional ? 1 : 0;
+
+    const sql = `
+      SELECT 
+        sp.UPC, 
+        p.product_name, 
+        sp.selling_price, 
+        sp.products_number,
+        sp.promotional_product
+      FROM Store_Product AS sp
+      INNER JOIN Product AS p ON sp.id_product = p.id_product
+      WHERE sp.promotional_product = ?
+      ORDER BY ${order}
+    `;
+
+    db.all(sql, [promoValue], (err, rows) => {
+      if (err) return reject(err);
+      resolve(rows);
+    });
+  });
+};

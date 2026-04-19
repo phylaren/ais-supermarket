@@ -12,5 +12,7 @@ router.get('/all-by-name/', storeProductController.getAllStoreProductsByName);
 router.get('/upc/:upc', storeProductController.getStoreProductByUPC);
 router.get('/all-in-category/:categoryName', storeProductController.getStoreProductsByCategory);
 router.get('/by-name/:productName', storeProductController.getStoreProductByName);
+router.get('/promotional', storeProductController.getPromotional);
+router.get('/non-promotional', storeProductController.getNonPromotional);
 
 export default router;
