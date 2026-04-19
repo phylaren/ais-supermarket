@@ -1,5 +1,5 @@
 import { getAllStoreProductsByCountFromDB, getStoreProductsOrderedByNameFromDB, getStoreProductByUPCFromDB,
-    getStoreProductsByCategoryFromDB } from "../repositories/storeProductRepository.js";
+    getStoreProductsByCategoryFromDB, getStoreProductByNameFromDB } from "../repositories/storeProductRepository.js";
 
 export const getAllStoreProductsByCountService = async () => {
   try {
@@ -91,6 +91,33 @@ export const getStoreProductsByCategoryService = async (categoryName) => {
 
   try {
     const data = await getStoreProductsByCategoryFromDB(categoryName);
+
+    return {
+      status: 200,
+      body: {
+        success: true,
+        data,
+      },
+    };
+  } catch (err) {
+    console.error("DB error:", err.message);
+    return {
+      status: 500,
+      body: { success: false, message: "Database error" },
+    };
+  }
+};
+
+export const getStoreProductByNameService = async (productName) => {
+  if (!productName) {
+    return {
+      status: 400,
+      body: { success: false, message: "Product name is required" },
+    };
+  }
+
+  try {
+    const data = await getStoreProductByNameFromDB(productName);
 
     return {
       status: 200,

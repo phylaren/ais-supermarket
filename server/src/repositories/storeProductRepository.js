@@ -87,3 +87,26 @@ export const getStoreProductsByCategoryFromDB = (categoryName) => {
     });
   });
 };
+
+export const getStoreProductByNameFromDB = (productName) => {
+  return new Promise((resolve, reject) => {
+    const sql = `
+      SELECT
+        sp.UPC,
+        p.product_name,
+        sp.selling_price,
+        sp.products_number,
+        sp.promotional_product,
+        c.category_name
+      FROM Store_Product AS sp
+      INNER JOIN Product AS p ON sp.id_product = p.id_product
+      INNER JOIN Category AS c ON p.id_category = c.id_category
+      WHERE p.product_name = ?
+    `;
+
+    db.all(sql, [productName], (err, rows) => {
+      if (err) return reject(err);
+      resolve(rows);
+    });
+  });
+};

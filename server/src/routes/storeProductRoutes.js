@@ -11,5 +11,6 @@ router.get('/all-by-count/', storeProductController.getAllStoreProductsByCount);
 router.get('/all-by-name/', storeProductController.getAllStoreProductsByName);
 router.get('/upc/:upc', storeProductController.getStoreProductByUPC);
 router.get('/all-in-category/:categoryName', storeProductController.getStoreProductsByCategory);
+router.get('/by-name/:productName', storeProductController.getStoreProductByName);
 
 export default router;
