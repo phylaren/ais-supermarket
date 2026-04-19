@@ -1,12 +1,5 @@
-import { getAllEntities, insertEntity, deleteEntity, updateEntity } from "../service/service.js";
-
-export const getAll = async (req, res) => {
-  const result = await getAllEntities({
-    tableName: "Store_Product",
-  });
-
-  return res.status(result.status).json(result.body);
-};
+import { insertEntity, deleteEntity, updateEntity } from "../service/service.js";
+import { getAllStoreProductsByCountService, getStoreProductsByNameService, getStoreProductByUPCService } from "../service/storeProductService.js";
 
 export const insertData = async (req, res) => {
   const result = await insertEntity({
@@ -41,6 +34,24 @@ export const updateData = async (req, res) => {
     id: UPC,
     data: req.body
   });
+
+  return res.status(result.status).json(result.body);
+};
+
+export const getAllStoreProductsByCount = async (req, res) => {
+  const result = await getAllStoreProductsByCountService();
+  return res.status(result.status).json(result.body);
+};
+
+export const getAllStoreProductsByName = async (req, res) => {
+  const result = await getStoreProductsByNameService();
+  return res.status(result.status).json(result.body);
+};
+
+export const getStoreProductByUPC = async (req, res) => {
+  const { upc } = req.params;
+
+  const result = await getStoreProductByUPCService(upc);
 
   return res.status(result.status).json(result.body);
 };
