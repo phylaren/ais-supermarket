@@ -32,7 +32,7 @@ const manager = [
     //OR I SHOULD ADD SORT ???????
     {
         name: "Товари в магазині",
-        link: "store-product",
+        link: "store-product/all-by-count",
         rules: ALL_ACCESS,
         functions: MANAGER_FUNCTIONS
     },
@@ -65,7 +65,7 @@ const cashier = [
     },
     {
         name: "Товари в магазині",
-        link: "store-product",
+        link: "store-product/all-by-name",
         rules: READ_ONLY,
         functions: CASHIER_FUNCTIONS
     },
