@@ -5,13 +5,14 @@ export const popupSchemas = {
         { name: "empl_surname", label: "Прізвище", type: "text", required: true },
         { name: "empl_patronymic", label: "По батькові", type: "text", required: false },
         { 
-            name: "id_role", 
+            name: "empl_role", 
             label: "Посада (Роль)", 
             type: "select", 
             required: true,
-            endpoint: "role",
-            valueKey: "id_role",
-            labelKey: "role_name"
+            options: [
+                { value: "Касир", label: "Касир" },
+                { value: "Менеджер", label: "Менеджер" }
+            ]
         },
         { name: "salary", label: "Зарплата", type: "number", step: "0.01", required: true },
         { name: "date_of_birth", label: "Дата народження", type: "date", required: true },
@@ -38,10 +39,6 @@ export const popupSchemas = {
     category: [
         { name: "id_category", label: "ID Категорії", type: "number", required: true },
         { name: "category_name", label: "Назва категорії", type: "text", required: true }
-    ],
-    role: [
-        { name: "id_role", label: "ID Посади", type: "number", required: true },
-        { name: "role_name", label: "Назва посади", type: "text", required: true }
     ],
     "customer-card": [
         { name: "id_card", label: "ID Картки", type: "text", required: true },

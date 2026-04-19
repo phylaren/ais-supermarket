@@ -8,7 +8,7 @@ router.get('/me', verifyToken, employeeController.getMe);
 
 router.post('/', verifyToken, checkRole(['Менеджер']), employeeController.insertData);
 router.delete('/:id_employee', verifyToken, checkRole(['Менеджер']), employeeController.deleteEmployee);
-router.patch('/:id_employee', checkRole(['Менеджер']), employeeController.updateData);
+router.patch('/:id_employee', verifyToken, checkRole(['Менеджер']), employeeController.updateData);
 
 router.get("/", employeeController.getAllEmployees);
 router.get("/role/:empl_role", employeeController.getEmployeesByRole);

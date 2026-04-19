@@ -21,6 +21,19 @@ export default function TableView({ category }) {
                 }
             });
 
+            if (response.status === 401) {
+                alert("⏳ Час вашої сесії вийшов. Будь ласка, увійдіть знову");
+                localStorage.removeItem('token');
+                localStorage.removeItem('role');
+                window.location.href = '/login';
+                return;
+            }
+
+            if (response.status === 403) {
+                alert("🚫 У вас немає прав доступу до цієї дії чи таблиці");
+                return;
+            }
+
             if (!response.ok) throw new Error(`Помилка сервера: ${response.status}`);
 
             const resData = await response.json();
@@ -44,7 +57,20 @@ export default function TableView({ category }) {
                 method: 'DELETE',
                 headers: { 'Authorization': `Bearer ${token}` }
             });
-            
+
+            if (response.status === 401) {
+                alert("⏳ Час вашої сесії вийшов. Будь ласка, увійдіть знову");
+                localStorage.removeItem('token');
+                localStorage.removeItem('role');
+                window.location.href = '/login';
+                return;
+            }
+
+            if (response.status === 403) {
+                alert("🚫 У вас немає прав доступу до цієї дії чи таблиці");
+                return;
+            }
+
             if (!response.ok) throw new Error('Помилка при видаленні');
 
             setData(prevData => prevData.filter(row => Object.values(row)[0] !== id));
@@ -67,22 +93,22 @@ export default function TableView({ category }) {
     return (
         <div className={style.pageContainer}>
             {isPopupOpen && (
-                <Popup 
-                    category={category} 
-                    onClose={() => setIsPopupOpen(false)} 
-                    onSuccess={fetchData} 
-                    initialData={editingRecord} 
+                <Popup
+                    category={category}
+                    onClose={() => setIsPopupOpen(false)}
+                    onSuccess={fetchData}
+                    initialData={editingRecord}
                 />
             )}
 
-            <Table 
-                data={data} 
-                category={category} 
-                onDelete={handleDelete} 
-                onAddClick={handleAddClick} 
-                onEditClick={handleEditClick} 
+            <Table
+                data={data}
+                category={category}
+                onDelete={handleDelete}
+                onAddClick={handleAddClick}
+                onEditClick={handleEditClick}
             />
-            
+
             <GoToMainButton />
         </div>
     );
