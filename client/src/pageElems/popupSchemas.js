@@ -43,7 +43,7 @@ export const popupSchemas = {
         { name: "id_role", label: "ID Посади", type: "number", required: true },
         { name: "role_name", label: "Назва посади", type: "text", required: true }
     ],
-    customer_card: [
+    "customer-card": [
         { name: "id_card", label: "ID Картки", type: "text", required: true },
         { name: "cust_surname", label: "Прізвище клієнта", type: "text", required: true },
         { name: "cust_name", label: "Ім’я клієнта", type: "text", required: true },

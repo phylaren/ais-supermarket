@@ -2,6 +2,8 @@ import { useState, useEffect } from "react";
 import { popupSchemas } from "./popupSchemas.js";
 import style from "./Popup.module.css"; 
 
+const EMPTY_SCHEMA = [];
+
 const generateId = (fieldName) => {
     const randomDigits = (length) => Math.floor(Math.random() * Math.pow(10, length)).toString().padStart(length, '0');
     
@@ -18,7 +20,7 @@ const generateId = (fieldName) => {
 
 export default function Popup({ category, onClose, onSuccess, initialData }) {
     const isEditing = Boolean(initialData); 
-    const currentSchema = popupSchemas[category.link] || [];
+    const currentSchema = popupSchemas[category.link] || EMPTY_SCHEMA;
 
     const [selectOptions, setSelectOptions] = useState({});
 
