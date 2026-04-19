@@ -53,3 +53,11 @@ export const getCashierReport = async (req, res) => {
   
   return res.status(result.status).json(result);
 };
+
+export const getGeneralSalesReport = async (req, res) => {
+  const { start, end } = req.query;
+
+  const result = await service.getGeneralSalesReportService(start, end);
+  
+  return res.status(result.status).json(result);
+};

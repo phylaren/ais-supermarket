@@ -24,3 +24,28 @@ export const getCashierReportService = async (surname, start, end) => {
     };
   }
 };
+
+export const getGeneralSalesReportService = async (start, end) => {
+  if (!start || !end) {
+    return {
+      status: 400,
+      success: false,
+      message: "Необхідно вказати обидві дати: start та end"
+    };
+  }
+
+  try {
+    const data = await repo.getGeneralSalesReportFromDB(start, end);
+    return {
+      status: 200,
+      success: true,
+      data
+    };
+  } catch (error) {
+    return {
+      status: 500,
+      success: false,
+      message: "Помилка сервера: " + error.message
+    };
+  }
+};

@@ -30,3 +30,34 @@ export const findReceiptsByCashierAndDateFromDB = (surname, startDate, endDate) 
     });
   });
 };
+
+export const getGeneralSalesReportFromDB = (startDate, endDate) => {
+  return new Promise((resolve, reject) => {
+    const sql = `
+      SELECT
+        r.id_check,
+        r.print_date,
+        e.empl_surname,
+        p.product_name,
+        s.product_number,
+        s.selling_price,
+        r.sum_total,
+        r.vat
+      FROM Receipt AS r
+      INNER JOIN Employee AS e ON r.id_employee = e.id_employee
+      INNER JOIN Sale AS s ON r.id_check = s.id_check
+      INNER JOIN Store_Product AS sp ON s.UPC = sp.UPC
+      INNER JOIN Product AS p ON sp.id_product = p.id_product
+      WHERE r.print_date BETWEEN ? AND ?
+      ORDER BY r.print_date DESC
+    `;
+
+    db.all(sql, [startDate, endDate], (err, rows) => {
+      if (err) {
+        console.error("DB Repository Error:", err.message);
+        return reject(err);
+      }
+      resolve(rows);
+    });
+  });
+};
