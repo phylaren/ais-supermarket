@@ -8,4 +8,6 @@ router.post('/', saleController.insertData);
 router.delete('/:id_sale', saleController.deleteSale);
 router.patch('/:id_sale', saleController.updateData);
 
+router.get('/stats', saleController.getProductSalesStats);
+
 export default router;
