@@ -1,4 +1,5 @@
-import { getAllStoreProductsByCountFromDB, getStoreProductsOrderedByNameFromDB, getStoreProductByUPCFromDB } from "../repositories/storeProductRepository.js";
+import { getAllStoreProductsByCountFromDB, getStoreProductsOrderedByNameFromDB, getStoreProductByUPCFromDB,
+    getStoreProductsByCategoryFromDB } from "../repositories/storeProductRepository.js";
 
 export const getAllStoreProductsByCountService = async () => {
   try {
@@ -63,6 +64,33 @@ export const getStoreProductByUPCService = async (upc) => {
         body: { success: false, message: "Product with this UPC not found" },
       };
     }
+
+    return {
+      status: 200,
+      body: {
+        success: true,
+        data,
+      },
+    };
+  } catch (err) {
+    console.error("DB error:", err.message);
+    return {
+      status: 500,
+      body: { success: false, message: "Database error" },
+    };
+  }
+};
+
+export const getStoreProductsByCategoryService = async (categoryName) => {
+  if (!categoryName) {
+    return {
+      status: 400,
+      body: { success: false, message: "Category name is required" },
+    };
+  }
+
+  try {
+    const data = await getStoreProductsByCategoryFromDB(categoryName);
 
     return {
       status: 200,

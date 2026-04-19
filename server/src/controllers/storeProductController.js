@@ -1,5 +1,7 @@
 import { insertEntity, deleteEntity, updateEntity } from "../service/service.js";
-import { getAllStoreProductsByCountService, getStoreProductsByNameService, getStoreProductByUPCService } from "../service/storeProductService.js";
+import { getAllStoreProductsByCountService, getStoreProductsByNameService, getStoreProductByUPCService,
+  getStoreProductsByCategoryService
+ } from "../service/storeProductService.js";
 
 export const insertData = async (req, res) => {
   const result = await insertEntity({
@@ -52,6 +54,14 @@ export const getStoreProductByUPC = async (req, res) => {
   const { upc } = req.params;
 
   const result = await getStoreProductByUPCService(upc);
+
+  return res.status(result.status).json(result.body);
+};
+
+export const getStoreProductsByCategory = async (req, res) => {
+  const { categoryName } = req.params;
+
+  const result = await getStoreProductsByCategoryService(categoryName);
 
   return res.status(result.status).json(result.body);
 };

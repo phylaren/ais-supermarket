@@ -62,3 +62,28 @@ export const getStoreProductByUPCFromDB = (upc) => {
     });
   });
 };
+
+export const getStoreProductsByCategoryFromDB = (categoryName) => {
+  return new Promise((resolve, reject) => {
+    const sql = `
+      SELECT
+        s.UPC,
+        p.product_name,
+        c.category_name,
+        s.products_number,
+        s.selling_price,
+        s.promotional_product,
+        p.characteristics
+      FROM Store_Product AS s
+      INNER JOIN Product AS p ON s.id_product = p.id_product
+      INNER JOIN Category AS c ON p.id_category = c.id_category
+      WHERE c.category_name = ?
+      ORDER BY p.product_name ASC
+    `;
+
+    db.all(sql, [categoryName], (err, rows) => {
+      if (err) return reject(err);
+      resolve(rows);
+    });
+  });
+};
