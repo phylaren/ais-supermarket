@@ -116,3 +116,24 @@ export const getReceiptDetailsFromDB = (idCheck) => {
     });
   });
 };
+
+export const getTotalSumByCashierFromDB = (surname, startDate, endDate) => {
+  return new Promise((resolve, reject) => {
+    const sql = `
+      SELECT
+        SUM(r.sum_total) AS total_sum
+      FROM Receipt AS r
+      INNER JOIN Employee AS e ON r.id_employee = e.id_employee
+      WHERE e.empl_surname = ? 
+        AND r.print_date BETWEEN ? AND ?
+    `;
+
+    db.get(sql, [surname, startDate, endDate], (err, row) => {
+      if (err) {
+        console.error("Repository Error (Total Sum):", err.message);
+        return reject(err);
+      }
+      resolve(row);
+    });
+  });
+};

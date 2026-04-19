@@ -12,5 +12,6 @@ router.get('/report-cashier', receiptController.getCashierReport);
 router.get('/sales-report', receiptController.getGeneralSalesReport);
 router.get('/daily-cashier-report', receiptController.getCashierDailyReport);
 router.get('/by-id/:id', receiptController.getReceiptDetails);
+router.get('/cashier-revenue', receiptController.getCashierTotalRevenue);
 
 export default router;

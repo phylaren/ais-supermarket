@@ -77,3 +77,11 @@ export const getReceiptDetails = async (req, res) => {
   
   return res.status(result.status).json(result);
 };
+
+export const getCashierTotalRevenue = async (req, res) => {
+  const { surname, start, end } = req.query;
+
+  const result = await service.getCashierTotalRevenueService(surname, start, end);
+  
+  return res.status(result.status).json(result);
+};

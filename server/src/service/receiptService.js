@@ -108,3 +108,35 @@ export const getReceiptDetailsService = async (idCheck) => {
     };
   }
 };
+
+export const getCashierTotalRevenueService = async (surname, start, end) => {
+  if (!surname || !start || !end) {
+    return {
+      status: 400,
+      success: false,
+      message: "Прізвище та часовий проміжок (start, end) обов'язкові"
+    };
+  }
+
+  try {
+    const result = await repo.getTotalSumByCashierFromDB(surname, start, end);
+    
+    const total = result.total_sum || 0;
+
+    return {
+      status: 200,
+      success: true,
+      data: {
+        cashier: surname,
+        period: { start, end },
+        total_sum: total
+      }
+    };
+  } catch (error) {
+    return {
+      status: 500,
+      success: false,
+      message: "Помилка при обчисленні виручки: " + error.message
+    };
+  }
+};
