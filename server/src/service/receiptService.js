@@ -75,3 +75,36 @@ export const getCashierDailyReportService = async (surname, date) => {
   }
 };
 
+export const getReceiptDetailsService = async (idCheck) => {
+  if (!idCheck) {
+    return {
+      status: 400,
+      success: false,
+      message: "Номер чека (id_check) є обов'язковим"
+    };
+  }
+
+  try {
+    const data = await repo.getReceiptDetailsFromDB(idCheck);
+
+    if (data.length === 0) {
+      return {
+        status: 404,
+        success: false,
+        message: "Чек з таким номером не знайдено"
+      };
+    }
+
+    return {
+      status: 200,
+      success: true,
+      data
+    };
+  } catch (error) {
+    return {
+      status: 500,
+      success: false,
+      message: "Помилка при отриманні деталей чека: " + error.message
+    };
+  }
+};

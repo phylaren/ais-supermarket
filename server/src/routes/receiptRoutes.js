@@ -11,5 +11,6 @@ router.patch('/:id_check', receiptController.updateData);
 router.get('/report-cashier', receiptController.getCashierReport);
 router.get('/sales-report', receiptController.getGeneralSalesReport);
 router.get('/daily-cashier-report', receiptController.getCashierDailyReport);
+router.get('/by-id/:id', receiptController.getReceiptDetails);
 
 export default router;

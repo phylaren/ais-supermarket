@@ -69,3 +69,11 @@ export const getCashierDailyReport = async (req, res) => {
   
   return res.status(result.status).json(result);
 };
+
+export const getReceiptDetails = async (req, res) => {
+  const { id } = req.params;
+
+  const result = await service.getReceiptDetailsService(id);
+  
+  return res.status(result.status).json(result);
+};
