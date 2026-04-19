@@ -1,5 +1,5 @@
 import { getAllEntities, insertEntity, deleteEntity, updateEntity } from "../service/service.js";
-import { getAllProductsService } from "../service/productService.js";
+import { getAllProductsService, getProductsByCategoryService } from "../service/productService.js";
 
 export const insertData = async (req, res) => {
   const result = await insertEntity({
@@ -40,5 +40,13 @@ export const updateData = async (req, res) => {
 
 export const getAllProducts = async (req, res) => {
   const result = await getAllProductsService();
+  return res.status(result.status).json(result.body);
+};
+
+export const getProductsByCategory = async (req, res) => {
+  const { categoryName } = req.params;
+
+  const result = await getProductsByCategoryService(categoryName);
+
   return res.status(result.status).json(result.body);
 };

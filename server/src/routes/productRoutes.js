@@ -8,5 +8,6 @@ router.delete('/:id_product', productController.deleteProduct);
 router.patch('/:id_product', productController.updateData);
 
 router.get('/', productController.getAllProducts);
+router.get('/:categoryName', productController.getProductsByCategory);
 
 export default router;
