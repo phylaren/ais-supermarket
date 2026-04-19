@@ -8,6 +8,6 @@ router.delete('/:UPC', storeProductController.deleteStoreProduct);
 router.patch('/:UPC', storeProductController.updateData);
 
 router.get('/all-by-count/', storeProductController.getAllStoreProductsByCount);
-
+router.get('/all-by-name/', storeProductController.getAllStoreProductsByName);
 
 export default router;

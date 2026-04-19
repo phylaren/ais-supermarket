@@ -20,3 +20,24 @@ export const getAllStoreProductsByCountFromDB = () => {
     });
   });
 };
+
+export const getStoreProductsOrderedByNameFromDB = () => {
+  return new Promise((resolve, reject) => {
+    const sql = `
+      SELECT
+        s.UPC,
+        p.product_name,
+        s.selling_price,
+        s.products_number,
+        s.promotional_product
+      FROM Store_Product AS s
+      INNER JOIN Product AS p ON s.id_product = p.id_product
+      ORDER BY p.product_name ASC
+    `;
+
+    db.all(sql, [], (err, rows) => {
+      if (err) return reject(err);
+      resolve(rows);
+    });
+  });
+};
