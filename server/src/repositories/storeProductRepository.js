@@ -41,3 +41,24 @@ export const getStoreProductsOrderedByNameFromDB = () => {
     });
   });
 };
+
+export const getStoreProductByUPCFromDB = (upc) => {
+  return new Promise((resolve, reject) => {
+    const sql = `
+      SELECT
+        sp.UPC,
+        p.product_name,
+        sp.selling_price,
+        sp.products_number,
+        p.characteristics
+      FROM Store_Product AS sp
+      INNER JOIN Product AS p ON sp.id_product = p.id_product
+      WHERE sp.UPC = ?
+    `;
+
+    db.get(sql, [upc], (err, row) => {
+      if (err) return reject(err);
+      resolve(row);
+    });
+  });
+};

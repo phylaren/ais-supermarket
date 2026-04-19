@@ -9,5 +9,6 @@ router.patch('/:UPC', storeProductController.updateData);
 
 router.get('/all-by-count/', storeProductController.getAllStoreProductsByCount);
 router.get('/all-by-name/', storeProductController.getAllStoreProductsByName);
+router.get('/upc/:upc', storeProductController.getStoreProductByUPC);
 
 export default router;
