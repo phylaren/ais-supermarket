@@ -1,8 +1,9 @@
 import style from "./Table.module.css";
 import { ukrHeaders } from "./ukrHeaders.js";
 import { filters } from "./filters.js";
+import FiltersPanel from "./FiltersPanel.jsx";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 const NO_FILTERS = [];
 function getAttributes(data) {
@@ -14,6 +15,40 @@ export default function Table({ data, category, onDelete, onAddClick, onEditClic
     const [isFilterOpen, setIsFilterOpen] = useState(false);
     const [activeSort, setActiveSort] = useState(null);
     
+    const [filterValues, setFilterValues] = useState({});
+  
+    const [selectOptions, setSelectOptions] = useState({});
+
+    const userRole = localStorage.getItem('role');
+
+    const currentFilters = filters[category.link] || NO_FILTERS;
+
+    useEffect(() => {
+        if (!isFilterOpen || currentFilters.length === 0) return;
+        const fetchFilterOptions = async () => {
+            const newOptions = {};
+            for (const filter of currentFilters) {
+                if (filter.type === "select" && filter.endpoint) {
+                    try {
+                        const token = localStorage.getItem('token');
+                        const res = await fetch(`http://localhost:5000/api/${filter.endpoint}`, {
+                            headers: { 'Authorization': `Bearer ${token}` }
+                        });
+                        if (res.ok) {
+                            const result = await res.json();
+                            newOptions[filter.name] = result.data || result;
+                        }
+                    } catch (error) {
+                        console.error(`Помилка завантаження фільтра ${filter.name}:`, error);
+                    }
+                }
+            }
+            setSelectOptions(newOptions);
+        };
+
+        fetchFilterOptions();
+    }, [isFilterOpen, category.link]);
+
     if (!data || data.length === 0) {
         return <div className={style.waitingScreen}>Завантажую таблицю...⏳</div>;
     }
@@ -24,10 +59,17 @@ export default function Table({ data, category, onDelete, onAddClick, onEditClic
         year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit'
     });
 
-    const currentFilters = filters[category.link] || NO_FILTERS;
-
     const handleSortClick = (value) => {
         setActiveSort(activeSort === value ? null : value);
+        console.log("Вибрано сортування:", value);
+    };
+
+    const handleInputChange = (name, value) => {
+        setFilterValues(prev => ({ ...prev, [name]: value }));
+    };
+
+    const handleApplyFilters = () => {
+        console.log("Застосовано фільтри:", filterValues);
     };
     
     return (
@@ -41,37 +83,16 @@ export default function Table({ data, category, onDelete, onAddClick, onEditClic
             />
 
             {isFilterOpen && currentFilters.length > 0 && (
-                <div className="noPrint" style={{ 
-                    padding: "15px", 
-                    backgroundColor: "#f8fafc", 
-                    border: "1px solid #e2e8f0", 
-                    borderRadius: "6px", 
-                    marginBottom: "15px", 
-                    display: "flex", 
-                    gap: "10px", 
-                    flexWrap: "wrap" 
-                }}>
-                    <span style={{ fontWeight: "600", color: "#475569", display: "flex", alignItems: "center", marginRight: "10px" }}>
-                        Сортувати за:
-                    </span>
-                    {currentFilters.map((filter) => (
-                        <button
-                            key={filter.value}
-                            onClick={() => handleSortClick(filter.value)}
-                            style={{
-                                padding: "6px 12px",
-                                borderRadius: "4px",
-                                border: activeSort === filter.value ? "1px solid #1677ff" : "1px solid #d9d9d9",
-                                backgroundColor: activeSort === filter.value ? "#e6f4ff" : "#fff",
-                                color: activeSort === filter.value ? "#1677ff" : "#000",
-                                cursor: "pointer",
-                                transition: "all 0.2s ease"
-                            }}
-                        >
-                            {filter.label}
-                        </button>
-                    ))}
-                </div>
+                <FiltersPanel
+                    currentFilters={currentFilters}
+                    userRole={userRole}
+                    activeSort={activeSort}
+                    handleSortClick={handleSortClick}
+                    filterValues={filterValues}
+                    handleInputChange={handleInputChange}
+                    selectOptions={selectOptions}
+                    handleApplyFilters={handleApplyFilters}
+                />
             )}
 
             <div className={style.tableWrapper}>

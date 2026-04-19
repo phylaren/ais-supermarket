@@ -59,7 +59,7 @@ const cashier = [
     },
     {
         name: "Чеки",
-        link: "receipt",
+        link: "receipt/my-receipts",
         rules: { create: true, edit: false, delete: false },
         functions: CASHIER_FUNCTIONS
     },

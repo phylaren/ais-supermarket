@@ -1,29 +1,76 @@
-export const filters = { //Потрібно додати кудись виведення загальної суми чеків (всіх і конкретного касира) + окремо кількість проданого продукту (id атрибут)
+export const filters = {
     "employee": [
-        { label: "Всі працівники", value: "surname_asc" },
-        { label: "Тільки касири", value: "check_role" }
+        { type: "button", label: "Всі працівники", link: "surname_asc" },
+        { type: "button", label: "Тільки касири", link: "check_role" },
+        { type: "action", actionType: "total_sum", label: "💰 Загальна сума чеків" } 
     ],
-    "customer-card": [ //або поле щоб самостійно вводити значення знижки
-        { label: "За прізвищем (А-Я)", value: "surname_asc" },
-        { label: "Клієнти зі 5% знижкою", value: "discount_5" },
-        { label: "Клієнти зі 10% знижкою", value: "discount_10" },
-        { label: "Клієнти зі 15% знижкою", value: "discount_15" }
-    ],
-    "category": [], //немає фільтру взагалі
 
-    "product": [ //випадний список категорій
-        { label: "Категорія", value: "" }
+    "customer-card": [
+        { type: "button", label: "За прізвищем (А-Я)", link: "surname_asc" },
+        { 
+            type: "input", 
+            inputType: "number", 
+            name: "discount_percent", 
+            label: "Знайти за % знижки", 
+            placeholder: "Наприклад: 5" 
+        }
     ],
-    "store-product": [ //варіант або чотири кнопки (акційні за назвою, акційні за кількістю і не акц. те саме
-                        //або два види кнопок що поєднуються окремо товар і окремо за чим сортувати
-        { label: "Всі продукти", value: "name_asc" },
-        { label: "Акційні товари", value: "name_asc" },
-        { label: "Не акційні товари", value: "name_asc" },
-        { label: "Акційні товари", value: "quantity_asc" },
-        { label: "Не акційні товари", value: "quantity_asc" },
+
+    "product": [
+        { 
+            type: "select", 
+            name: "id_category", 
+            label: "Оберіть категорію", 
+            endpoint: "category",
+            valueKey: "id_category", 
+            labelKey: "category_name" 
+        },
+        {
+            type: "input",
+            inputType: "text",
+            name: "product_sold_qty",
+            label: "К-сть проданого (за ID)",
+            placeholder: "Введіть ID товару",
+            actionType: "search_sold_qty"
+        }
     ],
-    "receipt": [ //у менеджера: випадний список касирів або всі + дата (початок і кінець або 1 день конкретний)
-        //у касира: всі його чеки те саме але не може обрати касира, за замовчуванням стоїть він
-        { label: "Спершу нові", value: "date_desc" },
+
+    "store-product": [
+        {
+            type: "select",
+            name: "promo_status",
+            label: "Тип товару",
+            options: [
+                { value: "all", label: "Всі продукти" },
+                { value: "true", label: "Тільки акційні" },
+                { value: "false", label: "Не акційні" }
+            ]
+        },
+        {
+            type: "select",
+            name: "sort_by",
+            label: "Сортувати за",
+            options: [
+                { value: "name_asc", label: "Назвою (А-Я)" },
+                { value: "quantity_asc", label: "Кількістю (зростання)" }
+            ]
+        }
+    ],
+    "receipt": [
+        { type: "button", label: "Спершу нові", link: "date_desc" },
+        { 
+            type: "date-range", 
+            name: "receipt_date", 
+            label: "Період чеків" 
+        },
+        {
+            type: "select",
+            name: "id_employee",
+            label: "Касир",
+            endpoint: "employee/role/Касир",
+            valueKey: "id_employee",
+            labelKey: "surname",
+            requiresManager: true
+        }
     ]
 };
