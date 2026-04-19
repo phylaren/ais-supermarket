@@ -61,3 +61,28 @@ export const getGeneralSalesReportFromDB = (startDate, endDate) => {
     });
   });
 };
+
+export const findReceiptsByCashierAndExactDateFromDB = (surname, exactDate) => {
+  return new Promise((resolve, reject) => {
+    const sql = `
+      SELECT
+        r.id_check,
+        r.print_date,
+        e.empl_surname,
+        r.sum_total,
+        r.vat
+      FROM Receipt AS r
+      INNER JOIN Employee AS e ON r.id_employee = e.id_employee
+      WHERE e.empl_surname = ? 
+        AND date(r.print_date) = date(?)
+    `;
+
+    db.all(sql, [surname, exactDate], (err, rows) => {
+      if (err) {
+        console.error("Repository Error:", err.message);
+        return reject(err);
+      }
+      resolve(rows);
+    });
+  });
+};

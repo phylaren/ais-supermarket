@@ -49,3 +49,29 @@ export const getGeneralSalesReportService = async (start, end) => {
     };
   }
 };
+
+export const getCashierDailyReportService = async (surname, date) => {
+  if (!surname || !date) {
+    return {
+      status: 400,
+      success: false,
+      message: "Прізвище та дата є обов'язковими параметрами"
+    };
+  }
+
+  try {
+    const data = await repo.findReceiptsByCashierAndExactDateFromDB(surname, date);
+    return {
+      status: 200,
+      success: true,
+      data
+    };
+  } catch (error) {
+    return {
+      status: 500,
+      success: false,
+      message: "Помилка бази даних: " + error.message
+    };
+  }
+};
+

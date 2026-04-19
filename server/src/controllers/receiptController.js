@@ -61,3 +61,11 @@ export const getGeneralSalesReport = async (req, res) => {
   
   return res.status(result.status).json(result);
 };
+
+export const getCashierDailyReport = async (req, res) => {
+  const { surname, date } = req.query;
+
+  const result = await service.getCashierDailyReportService(surname, date);
+  
+  return res.status(result.status).json(result);
+};
