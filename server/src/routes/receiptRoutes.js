@@ -8,4 +8,6 @@ router.post('/', receiptController.insertData);
 router.delete('/:id_check', receiptController.deleteReceipt);
 router.patch('/:id_check', receiptController.updateData);
 
+router.get('/report-cashier', receiptController.getCashierReport);
+
 export default router;

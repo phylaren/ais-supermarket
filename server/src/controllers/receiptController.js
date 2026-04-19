@@ -1,4 +1,5 @@
 import { getAllEntities, insertEntity, deleteEntity, updateEntity } from "../service/service.js";
+import * as service from "../service/receiptService.js";
 
 export const getAll = async (req, res) => {
   const result = await getAllEntities({
@@ -43,4 +44,12 @@ export const updateData = async (req, res) => {
   });
 
   return res.status(result.status).json(result.body);
+};
+
+export const getCashierReport = async (req, res) => {
+  const { surname, start, end } = req.query;
+
+  const result = await service.getCashierReportService(surname, start, end);
+  
+  return res.status(result.status).json(result);
 };
