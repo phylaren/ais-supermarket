@@ -147,12 +147,12 @@ export default function Popup({ category, onClose, onSuccess, initialData }) {
                         }
 
                         if (field.type === "select") {
-                            let defaultSelectValue = initialData?.[field.name] || "";
+                            let defaultSelectValue = initialData?.[field.name] || (field.labelKey ? initialData?.[field.labelKey] : "") || "";
 
-                            if (field.endpoint && selectOptions[field.name]) {
+                            if (field.endpoint && selectOptions[field.name]) { 
                                 const matchedOption = selectOptions[field.name].find(
-                                    opt => String(opt[field.valueKey]) === String(defaultSelectValue) ||
-                                        String(opt[field.labelKey]) === String(defaultSelectValue)
+                                    opt => String(opt[field.valueKey]).trim() === String(defaultSelectValue).trim() ||
+                                        String(opt[field.labelKey]).trim() === String(defaultSelectValue).trim()
                                 );
 
                                 if (matchedOption) {
