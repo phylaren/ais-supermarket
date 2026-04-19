@@ -1,4 +1,5 @@
 import { getAllEntities, insertEntity, deleteEntity, updateEntity } from "../service/service.js";
+import * as service from "../service/saleService.js";
 
 export const getAll = async (req, res) => {
   const result = await getAllEntities({
@@ -43,4 +44,12 @@ export const updateData = async (req, res) => {
   });
 
   return res.status(result.status).json(result.body);
+};
+
+export const getProductSalesStats = async (req, res) => {
+  const { upc, start, end } = req.query;
+
+  const result = await service.getProductSalesStatsService(upc, start, end);
+  
+  return res.status(result.status).json(result);
 };

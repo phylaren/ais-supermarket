@@ -1,4 +1,5 @@
 import { getAllEntities, insertEntity, deleteEntity, updateEntity } from "../service/service.js";
+import * as service from "../service/receiptService.js";
 
 export const getAll = async (req, res) => {
   const result = await getAllEntities({
@@ -43,4 +44,52 @@ export const updateData = async (req, res) => {
   });
 
   return res.status(result.status).json(result.body);
+};
+
+export const getCashierReport = async (req, res) => {
+  const { surname, start, end } = req.query;
+
+  const result = await service.getCashierReportService(surname, start, end);
+  
+  return res.status(result.status).json(result);
+};
+
+export const getGeneralSalesReport = async (req, res) => {
+  const { start, end } = req.query;
+
+  const result = await service.getGeneralSalesReportService(start, end);
+  
+  return res.status(result.status).json(result);
+};
+
+export const getCashierDailyReport = async (req, res) => {
+  const { surname, date } = req.query;
+
+  const result = await service.getCashierDailyReportService(surname, date);
+  
+  return res.status(result.status).json(result);
+};
+
+export const getReceiptDetails = async (req, res) => {
+  const { id } = req.params;
+
+  const result = await service.getReceiptDetailsService(id);
+  
+  return res.status(result.status).json(result);
+};
+
+export const getCashierTotalRevenue = async (req, res) => {
+  const { surname, start, end } = req.query;
+
+  const result = await service.getCashierTotalRevenueService(surname, start, end);
+  
+  return res.status(result.status).json(result);
+};
+
+export const getTotalRevenue = async (req, res) => {
+  const { start, end } = req.query;
+
+  const result = await service.getTotalRevenueService(start, end);
+  
+  return res.status(result.status).json(result);
 };

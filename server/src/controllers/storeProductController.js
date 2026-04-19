@@ -1,5 +1,7 @@
 import { insertEntity, deleteEntity, updateEntity } from "../service/service.js";
-import { getAllStoreProductsByCountService, getStoreProductsByNameService, getStoreProductByUPCService } from "../service/storeProductService.js";
+import { getAllStoreProductsByCountService, getStoreProductsByNameService, getStoreProductByUPCService,
+  getStoreProductsByCategoryService, getStoreProductByNameService, getStoreProductsData
+ } from "../service/storeProductService.js";
 
 export const insertData = async (req, res) => {
   const result = await insertEntity({
@@ -54,4 +56,31 @@ export const getStoreProductByUPC = async (req, res) => {
   const result = await getStoreProductByUPCService(upc);
 
   return res.status(result.status).json(result.body);
+};
+
+export const getStoreProductsByCategory = async (req, res) => {
+  const { categoryName } = req.params;
+
+  const result = await getStoreProductsByCategoryService(categoryName);
+
+  return res.status(result.status).json(result.body);
+};
+
+export const getStoreProductByName = async (req, res) => {
+  const { productName } = req.params;
+
+  const result = await getStoreProductByNameService(productName);
+  return res.status(result.status).json(result.body);
+};
+
+export const getPromotional = async (req, res) => {
+  const { sort } = req.query;
+  const result = await getStoreProductsData('promotional', sort);
+  return res.status(result.status).json(result);
+};
+
+export const getNonPromotional = async (req, res) => {
+  const { sort } = req.query;
+  const result = await getStoreProductsData('non-promotional', sort);
+  return res.status(result.status).json(result);
 };
