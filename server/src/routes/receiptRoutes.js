@@ -14,11 +14,11 @@ router.get('/report-cashier', verifyToken, checkRole(['Менеджер', 'Ка�
 //all receipts in the store for a certain period
 router.get('/sales-report', verifyToken, checkRole(['Менеджер']), receiptController.getGeneralSalesReport);
 //all receipts of a certain cashier for a day (for the cashier)
-router.get('/daily-cashier-report', checkRole(['Касир']), verifyToken, checkRole(['Менеджер']), receiptController.getCashierDailyReport);
+router.get('/daily-cashier-report', verifyToken, checkRole(['Касир']), checkRole(['Менеджер']), receiptController.getCashierDailyReport);
 //search for information by receipt number (for the cashier)
 router.get('/by-id/:id', verifyToken, checkRole(['Касир']), receiptController.getReceiptDetails);
 //Total sum of receipts for a specific cashier over a specific time
-router.get('/cashier-revenue', checkRole(['Менеджер']), verifyToken, receiptController.getCashierTotalRevenue);
+router.get('/cashier-revenue', verifyToken, checkRole(['Менеджер']), receiptController.getCashierTotalRevenue);
 //Total sum of store receipts for a specific period
 router.get('/total-revenue', verifyToken, checkRole(['Менеджер']), receiptController.getTotalRevenue);
 

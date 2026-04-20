@@ -47,6 +47,12 @@ const manager = [
         link: "receipt",
         rules: { create: false, edit: false, delete: true },
         functions: MANAGER_NO_SEARCH
+    },
+    {
+        name: "Статистика",
+        link: "receipt/statistics",
+        rules: READ_ONLY,
+        functions: MANAGER_NO_SEARCH
     }
 ];
 

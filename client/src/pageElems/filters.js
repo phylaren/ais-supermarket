@@ -2,7 +2,6 @@ export const filters = {
     "employee": [
         { type: "button", label: "Всі працівники", link: "surname_asc" },
         { type: "button", label: "Тільки касири", link: "check_role" },
-        { type: "action", actionType: "total_sum", label: "💰 Загальна сума чеків" } 
     ],
 
     "customer-card": [
@@ -57,7 +56,22 @@ export const filters = {
         }
     ],
     "receipt": [
-        { type: "button", label: "Спершу нові", link: "date_desc" },
+        { 
+            type: "date-range", 
+            name: "receipt_date", 
+            label: "Період чеків" 
+        },
+        {
+            type: "select",
+            name: "id_employee",
+            label: "Касир",
+            endpoint: "employee/role/Касир",
+            valueKey: "id_employee",
+            labelKey: "surname",
+            requiresManager: true
+        }
+    ],
+    "receipt-statistics": [
         { 
             type: "date-range", 
             name: "receipt_date", 

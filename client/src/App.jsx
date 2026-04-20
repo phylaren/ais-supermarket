@@ -6,6 +6,7 @@ import { UserProvider, UserContext } from "./context/UserContext.jsx";
 import { getCategories } from "./main/categories.js";
 
 import TableView from "./main/TableView.jsx";
+import StatisticsView from "./pageElems/StatisticsView.jsx";
 
 function ProtectedRoute({ children }) {
     const currentRole = localStorage.getItem('role');
@@ -40,13 +41,24 @@ function AppRouter() {
                         </ProtectedRoute>
                     }
                 >
-                    {categories.map((category) => (
-                        <Route 
-                            key={category.link}
-                            path={category.link} 
-                            element={<TableView category={category}/>} 
-                        />
-                    ))}
+                    {categories.map((category) => {
+                        if (category.link === "receipt/statistics") {
+                            return (
+                                <Route 
+                                    key={category.link}
+                                    path={category.link} 
+                                    element={<StatisticsView category={category} />} 
+                                />
+                            );
+                        }
+                        return (
+                            <Route 
+                                key={category.link}
+                                path={category.link} 
+                                element={<TableView category={category} />} 
+                            />
+                        );
+                    })}
 
                     <Route path="*" element={<Navigate to="/main" replace />} />
                 </Route>
