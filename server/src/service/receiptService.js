@@ -1,5 +1,22 @@
 import * as repo from "../repositories/receiptRepository.js";
 
+export const getReceiptsService = async () => {
+  try {
+    const data = await repo.getAllFromDB();
+    return {
+      status: 200,
+      success: true,
+      data
+    };
+  } catch (error) {
+    return {
+      status: 500,
+      success: false,
+      message: "Помилка сервера при отриманні чеків: " + error.message
+    };
+  }
+};
+
 export const getCashierReportService = async (surname, start, end) => {
   if (!surname || !start || !end) {
     return {

@@ -1,5 +1,30 @@
 import db from "../../db.js";
 
+export const getAllFromDB = () => {
+  return new Promise((resolve, reject) => {
+    const sql = `
+      SELECT 
+        r.id_check,
+        r.print_date,
+        r.sum_total,
+        r.vat,
+        e.empl_surname,
+        c.cust_surname
+      FROM (Receipt AS r
+      INNER JOIN Employee AS e ON r.id_employee = e.id_employee)
+      INNER JOIN Customer_Card AS c ON r.id_card = c.id_card
+    `;
+
+    db.all(sql, [], (err, rows) => {
+      if (err) {
+        console.error("Repository Error:", err.message);
+        return reject(err);
+      }
+      resolve(rows);
+    });
+  });
+};
+
 export const findReceiptsByCashierAndDateFromDB = (surname, startDate, endDate) => {
   return new Promise((resolve, reject) => {
     const sql = `
