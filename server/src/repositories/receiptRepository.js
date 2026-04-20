@@ -12,12 +12,38 @@ export const getAllFromDB = () => {
         c.cust_surname
       FROM (Receipt AS r
       INNER JOIN Employee AS e ON r.id_employee = e.id_employee)
-      INNER JOIN Customer_Card AS c ON r.id_card = c.id_card
+      LEFT JOIN  Customer_Card AS c ON r.id_card = c.id_card
     `;
 
     db.all(sql, [], (err, rows) => {
       if (err) {
         console.error("Repository Error:", err.message);
+        return reject(err);
+      }
+      resolve(rows);
+    });
+  });
+};
+
+export const getReceiptsByEmployeeFromDB = (employeeId) => {
+  return new Promise((resolve, reject) => {
+    const sql = `
+      SELECT 
+        r.id_check,
+        r.print_date,
+        r.sum_total,
+        e.empl_surname,
+        c.cust_surname
+      FROM (Receipt AS r
+      INNER JOIN Employee AS e ON r.id_employee = e.id_employee)
+      LEFT JOIN Customer_Card AS c ON r.id_card = c.id_card
+      WHERE e.id_employee = ?
+    `;
+
+    // Передаємо employeeId у масив параметрів
+    db.all(sql, [employeeId], (err, rows) => {
+      if (err) {
+        console.error("Repository Error (By Employee):", err.message);
         return reject(err);
       }
       resolve(rows);
