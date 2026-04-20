@@ -71,7 +71,7 @@ export const filters = {
             requiresManager: true
         }
     ],
-    "receipt-statistics": [
+    "statistics": [
         { 
             type: "date-range", 
             name: "receipt_date", 

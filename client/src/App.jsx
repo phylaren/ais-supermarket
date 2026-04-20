@@ -42,7 +42,7 @@ function AppRouter() {
                     }
                 >
                     {categories.map((category) => {
-                        if (category.link === "receipt/statistics") {
+                        if (category.link === "statistics") {
                             return (
                                 <Route 
                                     key={category.link}

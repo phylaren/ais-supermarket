@@ -50,7 +50,7 @@ const manager = [
     },
     {
         name: "Статистика",
-        link: "receipt/statistics",
+        link: "statistics",
         rules: READ_ONLY,
         functions: MANAGER_NO_SEARCH
     }
