@@ -17,6 +17,27 @@ export const getReceiptsService = async () => {
   }
 };
 
+export const getReceiptsByEmployeeService = async (employeeId) => {
+  if (!employeeId) {
+    return { status: 400, success: false, message: "ID працівника обов'язковий" };
+  }
+
+  try {
+    const data = await repo.getReceiptsByEmployeeFromDB(employeeId);
+    return {
+      status: 200,
+      success: true,
+      data
+    };
+  } catch (error) {
+    return {
+      status: 500,
+      success: false,
+      message: "Помилка при отриманні чеків працівника: " + error.message
+    };
+  }
+};
+
 export const getCashierReportService = async (surname, start, end) => {
   if (!surname || !start || !end) {
     return {

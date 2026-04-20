@@ -6,6 +6,13 @@ export const getReceipts = async (req, res) => {
   return res.status(result.status).json(result);
 };
 
+export const getReceiptsByEmployee = async (req, res) => {
+  const { id } = req.params; 
+  
+  const result = await receiptService.getReceiptsByEmployeeService(id);
+  return res.status(result.status).json(result);
+};
+
 export const insertData = async (req, res) => {
   const result = await insertEntity({
     tableName: "Receipt",
