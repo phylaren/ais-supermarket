@@ -29,6 +29,7 @@ export const getAllStoreProductsByCountFromDB = (filters = {}) => {
       SELECT
         s.UPC,
         p.product_name,
+        p.id_category,
         s.selling_price,
         s.products_number,
         s.promotional_product
@@ -61,6 +62,7 @@ export const getStoreProductsOrderedByNameFromDB = (filters = {}) => {
       SELECT
         s.UPC,
         p.product_name,
+        p.id_category,
         s.selling_price,
         s.products_number,
         s.promotional_product
@@ -156,8 +158,8 @@ export const getStoreProductByNameFromDB = (productName) => {
 
 export const findStoreProducts = (isPromotional, sortBy) => {
   return new Promise((resolve, reject) => {
-    const order = sortBy === 'number' 
-      ? 'sp.products_number DESC' 
+    const order = sortBy === 'number'
+      ? 'sp.products_number DESC'
       : 'p.product_name ASC';
 
     const promoValue = isPromotional ? 1 : 0;

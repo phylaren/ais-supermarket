@@ -16,3 +16,18 @@ export const getAllCustomersService = async (filters = {}) => {
     };
   }
 };
+
+export const getCustomerByIdService = async (id_card) => {
+  try {
+    const data = await repo.getCustomerByIdRepository(id_card);
+
+    if (!data) {
+      return { status: 404, body: { success: false, message: "Картку не знайдено" } };
+    }
+
+    return { status: 200, body: { success: true, data } };
+  } catch (err) {
+    console.error("DB error:", err.message);
+    return { status: 500, body: { success: false, message: "Database error" } };
+  }
+};

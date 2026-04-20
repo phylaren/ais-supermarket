@@ -6,7 +6,7 @@ const applyFilters = (sql, params, filters) => {
   if (filters.search) {
     filteredSql += ` AND cust_surname LIKE ?`;
     params.push(`%${filters.search}%`);
-  } 
+  }
   else if (filters.discount_percent) {
     filteredSql += ` AND discount_percent = ?`;
     params.push(Number(filters.discount_percent));
@@ -43,6 +43,17 @@ export const getAllCustomersFromDB = (filters = {}) => {
         return reject(err);
       }
       resolve(rows);
+    });
+  });
+};
+
+export const getCustomerByIdRepository = (id_card) => {
+  return new Promise((resolve, reject) => {
+    const sql = `SELECT * FROM Customer_Card WHERE id_card = ?`;
+
+    db.get(sql, [id_card], (err, row) => {
+      if (err) return reject(err);
+      resolve(row);
     });
   });
 };
