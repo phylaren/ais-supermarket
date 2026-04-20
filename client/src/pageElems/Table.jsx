@@ -12,11 +12,13 @@ function getAttributes(data) {
     return Object.keys(data[0]);
 }
 
-export default function Table({ data, category, onDelete, onAddClick, onEditClick }) {
+export default function Table({
+    data, category, onDelete, onAddClick, onEditClick,
+    searchTerm, setSearchTerm, filterValues, setFilterValues,
+    onApplyFilters, isLoading
+}) {
     const [isFilterOpen, setIsFilterOpen] = useState(false);
     const [activeSort, setActiveSort] = useState(null);
-
-    const [filterValues, setFilterValues] = useState({});
 
     const [selectOptions, setSelectOptions] = useState({});
 
@@ -39,6 +41,9 @@ export default function Table({ data, category, onDelete, onAddClick, onEditClic
         const fetchFilterOptions = async () => {
             const newOptions = {};
             for (const filter of currentFilters) {
+                if (filter.requiresManager && userRole !== 'Менеджер') {
+                    continue;
+                }
                 if (filter.type === "select" && filter.endpoint) {
                     try {
                         const token = localStorage.getItem('token');
@@ -60,9 +65,6 @@ export default function Table({ data, category, onDelete, onAddClick, onEditClic
         fetchFilterOptions();
     }, [isFilterOpen, category.link]);
 
-    if (!data || data.length === 0) {
-        return <div className={style.waitingScreen}>Завантажую таблицю...⏳</div>;
-    }
 
     const attributes = getAttributes(data);
 
@@ -80,7 +82,7 @@ export default function Table({ data, category, onDelete, onAddClick, onEditClic
     };
 
     const handleApplyFilters = () => {
-        console.log("Застосовано фільтри:", filterValues);
+        onApplyFilters();
     };
 
     return (
@@ -91,6 +93,9 @@ export default function Table({ data, category, onDelete, onAddClick, onEditClic
                 onPrint={() => window.print()}
                 isFilterOpen={isFilterOpen}
                 onToggleSort={() => setIsFilterOpen(!isFilterOpen)}
+                searchTerm={searchTerm}
+                setSearchTerm={setSearchTerm}
+                onSearchEnter={onApplyFilters}
             />
 
             {isFilterOpen && currentFilters.length > 0 && (
@@ -116,21 +121,32 @@ export default function Table({ data, category, onDelete, onAddClick, onEditClic
                     </p>
                 </div>
 
-                <table className={style.styledTable}>
-                    <Attributes attributes={attributes} />
-                    <Data
-                        data={data}
-                        onDelete={onDelete}
-                        onEditClick={onEditClick}
-                        category={category}
-                    />
-                </table>
+                {isLoading ? (
+                    <div className={style.waitingScreen}>Завантажую дані... ⏳</div>
+                ) : data.length === 0 ? (
+                    <div className={style.waitingScreen} style={{ color: "#64748b" }}>
+                        Даних немає 😕 <br />
+                        <span style={{ fontSize: "14px", fontWeight: "normal" }}>
+                            (Або таблиця пуста, або за вашими фільтрами нічого не знайдено)
+                        </span>
+                    </div>
+                ) : (
+                    <table className={style.styledTable}>
+                        <Attributes attributes={attributes} />
+                        <Data
+                            data={data}
+                            onDelete={onDelete}
+                            onEditClick={onEditClick}
+                            category={category}
+                        />
+                    </table>
+                )}
             </div>
         </div>
     );
 }
 
-function Filters({ onAddClick, category, searchTerm, setSearchTerm, onPrint, onToggleSort, isFilterOpen }) {
+function Filters({ onAddClick, category, searchTerm, setSearchTerm, onPrint, onToggleSort, isFilterOpen, onSearchEnter }) {
     const canSearch = category?.functions?.search;
     const canFilter = category?.functions?.filter;
     const canCreate = category?.rules?.create;
@@ -181,8 +197,9 @@ function Filters({ onAddClick, category, searchTerm, setSearchTerm, onPrint, onT
                 <input
                     type="text"
                     placeholder="🔍 Пошук по таблиці..."
-                    value={searchTerm}
+                    value={searchTerm || ""}
                     onChange={(e) => setSearchTerm(e.target.value)}
+                    onKeyDown={(e) => { if (e.key === 'Enter') onSearchEnter(); }}
                     style={{ padding: "8px 15px", borderRadius: "4px", border: "1px solid #ccc", marginLeft: "auto", minWidth: "250px" }}
                 />
             )}

@@ -1,8 +1,8 @@
 import * as repo from "../repositories/receiptRepository.js";
 
-export const getReceiptsService = async () => {
+export const getReceiptsService = async (filters = {}) => {
   try {
-    const data = await repo.getAllFromDB();
+    const data = await repo.getAllFromDB(filters);
     return {
       status: 200,
       success: true,
@@ -17,13 +17,13 @@ export const getReceiptsService = async () => {
   }
 };
 
-export const getReceiptsByEmployeeService = async (id_employee) => {
+export const getReceiptsByEmployeeService = async (id_employee, filters = {}) => {
   if (!id_employee) {
     return { status: 400, success: false, message: "ID працівника обов'язковий" };
   }
 
   try {
-    const data = await repo.getReceiptsByEmployeeFromDB(id_employee);
+    const data = await repo.getReceiptsByEmployeeFromDB(id_employee, filters);
     return {
       status: 200,
       success: true,
@@ -158,7 +158,7 @@ export const getCashierTotalRevenueService = async (surname, start, end) => {
 
   try {
     const result = await repo.getTotalSumByCashierFromDB(surname, start, end);
-    
+
     const total = result.total_sum || 0;
 
     return {

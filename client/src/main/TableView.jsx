@@ -6,40 +6,47 @@ import style from "./Main.module.css";
 
 export default function TableView({ category }) {
     const [data, setData] = useState([]);
-
     const [isPopupOpen, setIsPopupOpen] = useState(false);
+    const [isLoading, setIsLoading] = useState(true);
     const [editingRecord, setEditingRecord] = useState(null);
+
+    const [searchTerm, setSearchTerm] = useState("");
+    const [filterValues, setFilterValues] = useState({});
 
     const fetchData = async () => {
         try {
+            setIsLoading(true);
             const token = localStorage.getItem('token');
-            const response = await fetch(`http://localhost:5000/api/${category.link}`, {
-                method: 'GET',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${token}`
-                }
+            let urlPath = category.apiLink || category.link;
+
+            const queryParams = new URLSearchParams();
+
+            if (searchTerm) {
+                queryParams.append('search', searchTerm);
+            }
+
+            if (filterValues) {
+                Object.entries(filterValues).forEach(([key, value]) => {
+                    if (value && value !== 'all') {
+                        queryParams.append(key, value);
+                    }
+                });
+            }
+
+            const queryString = queryParams.toString() ? `?${queryParams.toString()}` : '';
+
+            const response = await fetch(`http://localhost:5000/api/${urlPath}${queryString}`, {
+                headers: { 'Authorization': `Bearer ${token}` }
             });
 
-            if (response.status === 401) {
-                alert("⏳ Час вашої сесії вийшов. Будь ласка, увійдіть знову");
-                localStorage.removeItem('token');
-                localStorage.removeItem('role');
-                window.location.href = '/login';
-                return;
+            if (response.ok) {
+                const result = await response.json();
+                setData(Array.isArray(result.data) ? result.data : []);
             }
-
-            if (response.status === 403) {
-                alert("🚫 У вас немає прав доступу до цієї дії чи таблиці");
-                return;
-            }
-
-            if (!response.ok) throw new Error(`Помилка сервера: ${response.status}`);
-
-            const resData = await response.json();
-            setData(Array.isArray(resData.data) ? resData.data : [resData.data]);
         } catch (error) {
-            console.error(error);
+            console.error("Помилка завантаження таблиці:", error);
+        } finally {
+            setIsLoading(false);
         }
     };
 
@@ -107,6 +114,12 @@ export default function TableView({ category }) {
                 onDelete={handleDelete}
                 onAddClick={handleAddClick}
                 onEditClick={handleEditClick}
+                searchTerm={searchTerm}
+                setSearchTerm={setSearchTerm}
+                filterValues={filterValues}
+                setFilterValues={setFilterValues}
+                onApplyFilters={fetchData}
+                isLoading={isLoading}
             />
 
             <GoToMainButton />

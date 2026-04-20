@@ -9,20 +9,20 @@ export default function FiltersPanel({
     handleApplyFilters
 }) {
     return (
-        <div className="noPrint" style={{ 
-            padding: "20px", 
-            backgroundColor: "#f8fafc", 
-            border: "1px solid #e2e8f0", 
-            borderRadius: "8px", 
-            marginBottom: "20px", 
-            display: "flex", 
+        <div className="noPrint" style={{
+            padding: "20px",
+            backgroundColor: "#f8fafc",
+            border: "1px solid #e2e8f0",
+            borderRadius: "8px",
+            marginBottom: "20px",
+            display: "flex",
             flexDirection: "column",
-            gap: "15px" 
+            gap: "15px"
         }}>
             <span style={{ fontWeight: "600", color: "#475569", fontSize: "16px" }}>
                 Панель інструментів та фільтрів
             </span>
-            
+
             <div style={{ display: "flex", gap: "15px", flexWrap: "wrap", alignItems: "flex-end" }}>
                 {currentFilters.map((filter, idx) => {
                     if (filter.requiresManager && userRole !== "Менеджер") return null;
@@ -55,8 +55,8 @@ export default function FiltersPanel({
                         return (
                             <div key={idx} style={{ display: "flex", flexDirection: "column", gap: "5px" }}>
                                 <label style={{ fontSize: "13px", color: "#64748b" }}>{filter.label}</label>
-                                <input 
-                                    type={filter.inputType} 
+                                <input
+                                    type={filter.inputType}
                                     placeholder={filter.placeholder}
                                     value={filterValues[filter.name] || ""}
                                     onChange={(e) => handleInputChange(filter.name, e.target.value)}
@@ -76,7 +76,7 @@ export default function FiltersPanel({
                                     style={{ padding: "8px 12px", borderRadius: "6px", border: "1px solid #ccc", height: "38px", minWidth: "150px" }}
                                 >
                                     <option value="">-- Всі --</option>
-                                    
+
                                     {filter.options && filter.options.map(opt => (
                                         <option key={opt.value} value={opt.value}>{opt.label}</option>
                                     ))}
@@ -96,18 +96,23 @@ export default function FiltersPanel({
                             <div key={idx} style={{ display: "flex", flexDirection: "column", gap: "5px" }}>
                                 <label style={{ fontSize: "13px", color: "#64748b" }}>{filter.label}</label>
                                 <div style={{ display: "flex", gap: "5px", alignItems: "center" }}>
-                                    <input 
-                                        type="date" 
-                                        value={filterValues[`${filter.name}_from`] || ""}
-                                        onChange={(e) => handleInputChange(`${filter.name}_from`, e.target.value)}
-                                        style={{ padding: "8px", borderRadius: "6px", border: "1px solid #ccc", height: "38px", boxSizing: "border-box" }}
+                                    <input
+                                        type="date"
+                                        value={filterValues.receipt_date_from || ""}
+                                        onChange={(e) => handleInputChange('receipt_date_from', e.target.value)}
+                                        onKeyDown={(e) => e.preventDefault()}
+
+                                        max={filterValues.receipt_date_to || "2099-12-31"}
                                     />
                                     <span style={{ color: "#94a3b8" }}>—</span>
-                                    <input 
-                                        type="date" 
-                                        value={filterValues[`${filter.name}_to`] || ""}
-                                        onChange={(e) => handleInputChange(`${filter.name}_to`, e.target.value)}
-                                        style={{ padding: "8px", borderRadius: "6px", border: "1px solid #ccc", height: "38px", boxSizing: "border-box" }}
+                                    <input
+                                        type="date"
+                                        value={filterValues.receipt_date_to || ""}
+                                        onChange={(e) => handleInputChange('receipt_date_to', e.target.value)}
+                                        onKeyDown={(e) => e.preventDefault()}
+
+                                        min={filterValues.receipt_date_from || ""}
+                                        max="2099-12-31"
                                     />
                                 </div>
                             </div>
@@ -118,15 +123,15 @@ export default function FiltersPanel({
                 })}
 
                 {currentFilters.some(f => f.type !== "button" && f.type !== "action") && (
-                    <button 
+                    <button
                         onClick={handleApplyFilters}
                         style={{
-                            padding: "0 20px", 
-                            height: "38px", 
-                            backgroundColor: "#1677ff", 
-                            color: "white", 
-                            border: "none", 
-                            borderRadius: "6px", 
+                            padding: "0 20px",
+                            height: "38px",
+                            backgroundColor: "#1677ff",
+                            color: "white",
+                            border: "none",
+                            borderRadius: "6px",
                             cursor: "pointer",
                             fontWeight: "500",
                             marginLeft: "auto"

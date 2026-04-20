@@ -1,8 +1,35 @@
 import db from "../../db.js";
 
-export const getAllFromDB = () => {
+const applyFilters = (sql, params, filters) => {
+  let filteredSql = sql;
+
+  if (filters.search) {
+    filteredSql += ` AND (r.id_check LIKE ? OR e.empl_surname LIKE ? OR c.cust_surname LIKE ?)`;
+    const searchString = `%${filters.search}%`;
+    params.push(searchString, searchString, searchString);
+  }
+
+  if (filters.receipt_date_from) {
+    filteredSql += ` AND r.print_date >= ?`;
+    params.push(`${filters.receipt_date_from} 00:00:00`);
+  }
+
+  if (filters.receipt_date_to) {
+    filteredSql += ` AND r.print_date <= ?`;
+    params.push(`${filters.receipt_date_to} 23:59:59`);
+  }
+
+  if (filters.id_employee && filters.id_employee !== 'all') {
+    filteredSql += ` AND r.id_employee = ?`;
+    params.push(filters.id_employee);
+  }
+
+  return filteredSql;
+};
+
+export const getAllFromDB = (filters = {}) => {
   return new Promise((resolve, reject) => {
-    const sql = `
+    let sql = `
       SELECT 
         r.id_check,
         r.print_date,
@@ -10,14 +37,21 @@ export const getAllFromDB = () => {
         r.vat,
         e.empl_surname,
         c.cust_surname
-      FROM (Receipt AS r
-      INNER JOIN Employee AS e ON r.id_employee = e.id_employee)
-      LEFT JOIN  Customer_Card AS c ON r.id_card = c.id_card
+      FROM Receipt AS r
+      INNER JOIN Employee AS e ON r.id_employee = e.id_employee
+      LEFT JOIN Customer_Card AS c ON r.id_card = c.id_card
+      WHERE 1=1
     `;
 
-    db.all(sql, [], (err, rows) => {
+    let params = [];
+
+    sql = applyFilters(sql, params, filters);
+
+    sql += ` ORDER BY r.print_date DESC`;
+
+    db.all(sql, params, (err, rows) => {
       if (err) {
-        console.error("Repository Error:", err.message);
+        console.error("Repository Error (getAllFromDB):", err.message);
         return reject(err);
       }
       resolve(rows);
@@ -25,23 +59,31 @@ export const getAllFromDB = () => {
   });
 };
 
-export const getReceiptsByEmployeeFromDB = (employeeId) => {
+export const getReceiptsByEmployeeFromDB = (employeeId, filters = {}) => {
   return new Promise((resolve, reject) => {
-    const sql = `
+    let sql = `
       SELECT 
         r.id_check,
         r.print_date,
         r.sum_total,
         e.empl_surname,
         c.cust_surname
-      FROM (Receipt AS r
-      INNER JOIN Employee AS e ON r.id_employee = e.id_employee)
+      FROM Receipt AS r
+      INNER JOIN Employee AS e ON r.id_employee = e.id_employee
       LEFT JOIN Customer_Card AS c ON r.id_card = c.id_card
       WHERE e.id_employee = ?
     `;
 
-    // Передаємо employeeId у масив параметрів
-    db.all(sql, [employeeId], (err, rows) => {
+    let params = [employeeId];
+
+    const safeFilters = { ...filters };
+    delete safeFilters.id_employee;
+
+    sql = applyFilters(sql, params, safeFilters);
+
+    sql += ` ORDER BY r.print_date DESC`;
+
+    db.all(sql, params, (err, rows) => {
       if (err) {
         console.error("Repository Error (By Employee):", err.message);
         return reject(err);

@@ -32,13 +32,13 @@ export const filters = {
             placeholder: "Введіть ID товару",
             actionType: "search_sold_qty"
         },
-        { 
-            type: "select", 
-            name: "id_category", 
-            label: "Оберіть категорію", 
+        {
+            type: "select",
+            name: "id_category",
+            label: "Оберіть категорію",
             endpoint: "category",
-            valueKey: "id_category", 
-            labelKey: "category_name" 
+            valueKey: "id_category",
+            labelKey: "category_name"
         },
         {
             type: "input",
@@ -92,15 +92,6 @@ export const filters = {
             type: "date-range",
             name: "receipt_date",
             label: "Період чеків"
-        },
-        {
-            type: "select",
-            name: "id_employee",
-            label: "Касир",
-            endpoint: "employee/role/Касир",
-            valueKey: "id_employee",
-            labelKey: "surname",
-            requiresManager: true
         }
     ],
     "receipt": [
