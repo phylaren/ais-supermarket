@@ -12,13 +12,13 @@ export const insertData = async (req, res) => {
 };
 
 export const deleteCustomerCard = async (req, res) => {
-  const { card_number } = req.params;
+  const { id_card } = req.params;
 
   const result = await deleteEntity({
     tableName: "Customer_Card",
-    idField: "card_number",
+    idField: "id_card",
     entityName: "Карту клієнта",
-    id: card_number,
+    id: id_card,
   });
 
   return res.status(result.status).json(result.body);

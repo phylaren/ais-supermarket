@@ -4,7 +4,6 @@ const storeProductFilters = [
         name: "promo_status",
         label: "Тип товару",
         options: [
-            { value: "all", label: "Всі продукти" },
             { value: "true", label: "Тільки акційні" },
             { value: "false", label: "Не акційні" }
         ]
@@ -35,7 +34,6 @@ export const filters = {
             name: "empl_role",
             label: "Посада",
             options: [
-                { value: "all", label: "Всі працівники" },
                 { value: "Касир", label: "Тільки касири" },
                 { value: "Менеджер", label: "Тільки менеджери" }
             ]
