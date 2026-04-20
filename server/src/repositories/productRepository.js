@@ -1,8 +1,20 @@
 import db from "../../db.js";
 
-export const getAllProductsWithCategoriesFromDB = () => {
+const applyFilters = (sql, params, filters) => {
+  let filteredSql = sql;
+
+  // Фільтрація за ID категорії (це надійніше, ніж за назвою)
+  if (filters.id_category && filters.id_category !== 'all') {
+    filteredSql += ` AND p.id_category = ?`;
+    params.push(filters.id_category);
+  }
+
+  return filteredSql;
+};
+
+export const getAllProductsFromDB = (filters = {}) => {
   return new Promise((resolve, reject) => {
-    const sql = `
+    let sql = `
       SELECT
         p.id_product,
         p.product_name,
@@ -10,32 +22,20 @@ export const getAllProductsWithCategoriesFromDB = () => {
         c.category_name
       FROM Product AS p
       INNER JOIN Category AS c ON p.id_category = c.id_category
-      ORDER BY p.product_name ASC
+      WHERE 1=1
     `;
+    
+    let params = [];
+    sql = applyFilters(sql, params, filters);
 
-    db.all(sql, [], (err, rows) => {
-      if (err) return reject(err);
-      resolve(rows);
-    });
-  });
-};
+    // Сортування ЗАВЖДИ за назвою товару (А-Я)
+    sql += ` ORDER BY p.product_name ASC`;
 
-export const getProductsByCategoryFromDB = (categoryName) => {
-  return new Promise((resolve, reject) => {
-    const sql = `
-      SELECT
-        p.id_product,
-        p.product_name,
-        c.category_name,
-        p.characteristics
-      FROM Product AS p
-      INNER JOIN Category AS c ON p.id_category = c.id_category
-      WHERE c.category_name = ?
-      ORDER BY p.product_name ASC
-    `;
-
-    db.all(sql, [categoryName], (err, rows) => {
-      if (err) return reject(err);
+    db.all(sql, params, (err, rows) => {
+      if (err) {
+        console.error("Repository Error (Product):", err.message);
+        return reject(err);
+      }
       resolve(rows);
     });
   });

@@ -9,6 +9,5 @@ router.delete('/:id_product', verifyToken, checkRole(['Менеджер']), prod
 router.patch('/:id_product', verifyToken, checkRole(['Менеджер']), productController.updateData);
 
 router.get('/', verifyToken, checkRole(['Менеджер', 'Касир']), productController.getAllProducts);
-router.get('/:categoryName', verifyToken, checkRole(['Менеджер', 'Касир']), productController.getProductsByCategory);
 
 export default router;
