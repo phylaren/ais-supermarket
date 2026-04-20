@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import FiltersPanel from "../pageElems/FiltersPanel.jsx";
 import style from "../main/Main.module.css";
 import tableStyle from "./table.module.css";
+import GoToMainButton from "./GoToMainButton.jsx";
 
 export default function StatisticsView({ category }) {
     const [totalRevenue, setTotalRevenue] = useState(0);
@@ -34,9 +35,16 @@ export default function StatisticsView({ category }) {
             const headers = { 'Authorization': `Bearer ${token}` };
 
             const totalParams = new URLSearchParams();
-            if (filters.receipt_date_from) totalParams.append('start', filters.receipt_date_from);
-            if (filters.receipt_date_to) totalParams.append('end', filters.receipt_date_to);
-            const totalQuery = totalParams.toString();
+
+if (filters.receipt_date_from) {
+    totalParams.append('start', `${filters.receipt_date_from} 00:00:00`);
+}
+
+if (filters.receipt_date_to) {
+    totalParams.append('end', `${filters.receipt_date_to} 23:59:59`);
+}
+
+const totalQuery = totalParams.toString();
 
             const cashierParams = new URLSearchParams(totalParams);
             if (filters.surname) cashierParams.append('surname', filters.surname);
@@ -71,7 +79,13 @@ export default function StatisticsView({ category }) {
             const cashierData = await cashierRes.json();
 
 
-            setTotalRevenue(totalData.data?.total_revenue || totalData.data || 0);
+            let rawTotal = totalData.data?.total_revenue ?? totalData.data?.total_sum ?? totalData.data ?? 0;
+
+            if (typeof rawTotal === 'object' || isNaN(Number(rawTotal))) {
+                rawTotal = 0;
+            }
+
+            setTotalRevenue(rawTotal);
 
             let cRev = cashierData.data || cashierData;
             setCashierRevenue(Array.isArray(cRev) ? cRev : (cRev ? [cRev] : []));
@@ -103,6 +117,16 @@ export default function StatisticsView({ category }) {
     }, []);
 
     const handleApplyFilters = () => {
+        if (!filterValues.receipt_date_from || !filterValues.receipt_date_to) {
+            alert("⚠️ Будь ласка, оберіть і початкову, і кінцеву дату");
+            return;
+        }
+
+        if (filterValues.receipt_date_from > filterValues.receipt_date_to) {
+            alert("⚠️ Помилка: Початкова дата не може бути пізнішою за кінцеву!");
+            return;
+        }
+
         setAppliedFilters(filterValues);
         fetchStats(filterValues);
     };
@@ -147,43 +171,44 @@ export default function StatisticsView({ category }) {
                         <div className={style.tableContainer}>
 
                             {!appliedFilters.surname ? (
-                            <div className={tableStyle.waitingScreen} style={{ border: "none", boxShadow: "none", marginTop: 0 }}>
-                                👆 Оберіть касира у панелі фільтрів вище та натисніть "Знайти", щоб побачити його особисту виручку
-                            </div>
-                        ) : cashierRevenue.length > 0 ? (
-                            <table className={tableStyle.styledTable}>
-                                <thead>
-                                    <tr>
-                                        <th>Прізвище</th>
-                                        <th style={{ textAlign: "right" }}>Особиста виручка</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {cashierRevenue.map((item, idx) => {
-                                        const surnameToDisplay = item.empl_surname || item.surname || item.name || appliedFilters.surname;
-                                        const revenueToDisplay = item.total_revenue || item.total_sum || item.revenue || item.sum || 0;
+                                <div className={tableStyle.waitingScreen} style={{ border: "none", boxShadow: "none", marginTop: 0 }}>
+                                    👆 Оберіть касира у панелі фільтрів вище та натисніть "Знайти", щоб побачити його особисту виручку
+                                </div>
+                            ) : cashierRevenue.length > 0 ? (
+                                <table className={tableStyle.styledTable}>
+                                    <thead>
+                                        <tr>
+                                            <th>Прізвище</th>
+                                            <th style={{ textAlign: "right" }}>Особиста виручка</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {cashierRevenue.map((item, idx) => {
+                                            const surnameToDisplay = item.empl_surname || item.surname || item.name || appliedFilters.surname;
+                                            const revenueToDisplay = item.total_revenue || item.total_sum || item.revenue || item.sum || 0;
 
-                                        return (
-                                            <tr key={idx}>
-                                                <td>{surnameToDisplay}</td>
-                                                <td style={{ textAlign: "right", fontWeight: "bold", color: "#0f172a" }}>
-                                                    {Number(revenueToDisplay).toLocaleString('uk-UA', { minimumFractionDigits: 2 })} ₴
-                                                </td>
-                                            </tr>
-                                        );
-                                    })}
-                                </tbody>
-                            </table>
-                        ) : (
-                            <div className={tableStyle.waitingScreen} style={{ border: "none", boxShadow: "none", marginTop: 0, color: "#ef4444" }}>
-                                За обраний період цей касир не має чеків
-                            </div>
-                        )}
-                    
+                                            return (
+                                                <tr key={idx}>
+                                                    <td>{surnameToDisplay}</td>
+                                                    <td style={{ textAlign: "right", fontWeight: "bold", color: "#0f172a" }}>
+                                                        {Number(revenueToDisplay).toLocaleString('uk-UA', { minimumFractionDigits: 2 })} ₴
+                                                    </td>
+                                                </tr>
+                                            );
+                                        })}
+                                    </tbody>
+                                </table>
+                            ) : (
+                                <div className={tableStyle.waitingScreen} style={{ border: "none", boxShadow: "none", marginTop: 0, color: "#ef4444" }}>
+                                    За обраний період цей касир не має чеків
+                                </div>
+                            )}
+
                         </div>
                     </div>
                 </div>
             )}
+            <GoToMainButton></GoToMainButton>
         </div>
     );
 }
