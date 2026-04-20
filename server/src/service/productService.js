@@ -1,8 +1,8 @@
-import { getAllProductsWithCategoriesFromDB, getProductsByCategoryFromDB } from "../repositories/productRepository.js";
+import { getAllProductsFromDB } from "../repositories/productRepository.js";
 
-export const getAllProductsService = async () => {
+export const getAllProductsService = async (filters = {}) => {
   try {
-    const data = await getAllProductsWithCategoriesFromDB();
+    const data = await getAllProductsFromDB(filters);
 
     return {
       status: 200,
@@ -12,40 +12,13 @@ export const getAllProductsService = async () => {
       },
     };
   } catch (err) {
-    console.error("DB error:", err.message);
+    console.error("Service error:", err.message);
     return {
       status: 500,
       body: {
         success: false,
-        message: "Database error",
+        message: "Помилка бази даних при отриманні продуктів",
       },
-    };
-  }
-};
-
-export const getProductsByCategoryService = async (categoryName) => {
-  if (!categoryName) {
-    return {
-      status: 400,
-      body: { success: false, message: "Category name is required" },
-    };
-  }
-
-  try {
-    const data = await getProductsByCategoryFromDB(categoryName);
-
-    return {
-      status: 200,
-      body: {
-        success: true,
-        data,
-      },
-    };
-  } catch (err) {
-    console.error("DB error:", err.message);
-    return {
-      status: 500,
-      body: { success: false, message: "Database error" },
     };
   }
 };
