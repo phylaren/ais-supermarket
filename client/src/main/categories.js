@@ -88,8 +88,8 @@ const cashier = [
         functions: MANAGER_NO_SEARCH
     },
     {
-        name: "Чеки",
-        link: "receipt",
+        name: "Мої чеки",
+        link: "receipt/my-receipts",
         rules: { create: true, edit: false, delete: false },
         functions: CASHIER_FUNCTIONS
     },

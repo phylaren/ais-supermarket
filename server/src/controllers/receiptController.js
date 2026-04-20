@@ -7,9 +7,13 @@ export const getReceipts = async (req, res) => {
 };
 
 export const getReceiptsByEmployee = async (req, res) => {
-  const { id } = req.params; 
+  const employeeId = req.user.id; 
   
-  const result = await receiptService.getReceiptsByEmployeeService(id);
+  if (!employeeId) {
+      return res.status(401).json({ success: false, message: "Не вдалося ідентифікувати користувача з токена" });
+  }
+
+  const result = await service.getReceiptsByEmployeeService(employeeId);
   return res.status(result.status).json(result);
 };
 

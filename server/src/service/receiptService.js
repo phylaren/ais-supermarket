@@ -17,13 +17,13 @@ export const getReceiptsService = async () => {
   }
 };
 
-export const getReceiptsByEmployeeService = async (employeeId) => {
-  if (!employeeId) {
+export const getReceiptsByEmployeeService = async (id_employee) => {
+  if (!id_employee) {
     return { status: 400, success: false, message: "ID працівника обов'язковий" };
   }
 
   try {
-    const data = await repo.getReceiptsByEmployeeFromDB(employeeId);
+    const data = await repo.getReceiptsByEmployeeFromDB(id_employee);
     return {
       status: 200,
       success: true,
