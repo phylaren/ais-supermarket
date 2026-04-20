@@ -1,3 +1,33 @@
+const storeProductFilters = [
+    {
+        type: "select",
+        name: "promo_status",
+        label: "Тип товару",
+        options: [
+            { value: "all", label: "Всі продукти" },
+            { value: "true", label: "Тільки акційні" },
+            { value: "false", label: "Не акційні" }
+        ]
+    },
+    {
+        type: "select",
+        name: "sort_by",
+        label: "Сортувати за",
+        options: [
+            { value: "name_asc", label: "Назвою (А-Я)" },
+            { value: "quantity_asc", label: "Кількістю (зростання)" }
+        ]
+    },
+    {
+        type: "select",
+        name: "id_category",
+        label: "Оберіть категорію",
+        endpoint: "category",
+        valueKey: "id_category",
+        labelKey: "category_name"
+    }
+];
+
 export const filters = {
     "employee": [
         { type: "button", label: "Всі працівники", link: "surname_asc" },
@@ -11,7 +41,7 @@ export const filters = {
             name: "discount_percent",
             label: "Знайти за % знижки",
             placeholder: "Наприклад: 5",
-            min: 1,   
+            min: 1,
             max: 100
         }
     ],
@@ -27,43 +57,9 @@ export const filters = {
         }
     ],
 
-    "store-product": [
-        {
-            type: "select",
-            name: "promo_status",
-            label: "Тип товару",
-            options: [
-                { value: "all", label: "Всі продукти" },
-                { value: "true", label: "Тільки акційні" },
-                { value: "false", label: "Не акційні" }
-            ]
-        },
-        {
-            type: "select",
-            name: "sort_by",
-            label: "Сортувати за",
-            options: [
-                { value: "name_asc", label: "Назвою (А-Я)" },
-                { value: "quantity_asc", label: "Кількістю (зростання)" }
-            ]
-        },
-        {
-            type: "select",
-            name: "id_category",
-            label: "Оберіть категорію",
-            endpoint: "category",
-            valueKey: "id_category",
-            labelKey: "category_name"
-        },
-        {
-            type: "input",
-            inputType: "text",
-            name: "product_sold_qty",
-            label: "К-сть проданого (за ID)",
-            placeholder: "Введіть ID товару",
-            actionType: "search_sold_qty"
-        }
-    ],
+    "store-product/all-by-count": storeProductFilters,
+    "store-product/all-by-name": storeProductFilters,
+
     "receipt/my-receipts": [
         {
             type: "date-range",
@@ -101,6 +97,14 @@ export const filters = {
             valueKey: "id_employee",
             labelKey: "surname",
             requiresManager: true
+        },
+        {
+            type: "input",
+            inputType: "text",
+            name: "product_sold_qty",
+            label: "К-сть проданого (за ID)",
+            placeholder: "Введіть ID товару",
+            actionType: "search_sold_qty"
         }
     ]
 };

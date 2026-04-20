@@ -2,49 +2,21 @@ import { getAllStoreProductsByCountFromDB, getStoreProductsOrderedByNameFromDB, 
     getStoreProductsByCategoryFromDB, getStoreProductByNameFromDB, findStoreProducts
 } from "../repositories/storeProductRepository.js";
 
-export const getAllStoreProductsByCountService = async () => {
+export const getAllStoreProductsByCountService = async (filters = {}) => {
   try {
-    const data = await getAllStoreProductsByCountFromDB();
-
-    return {
-      status: 200,
-      body: {
-        success: true,
-        data,
-      },
-    };
-  } catch (err) {
-    console.error("DB error:", err.message);
-    return {
-      status: 500,
-      body: {
-        success: false,
-        message: "Database error",
-      },
-    };
+    const data = await repo.getAllStoreProductsByCountFromDB(filters);
+    return { status: 200, body: { success: true, data } };
+  } catch (error) {
+    return { status: 500, body: { success: false, message: error.message } };
   }
 };
 
-export const getStoreProductsByNameService = async () => {
+export const getStoreProductsByNameService = async (filters = {}) => {
   try {
-    const data = await getStoreProductsOrderedByNameFromDB();
-
-    return {
-      status: 200,
-      body: {
-        success: true,
-        data,
-      },
-    };
-  } catch (err) {
-    console.error("DB error:", err.message);
-    return {
-      status: 500,
-      body: {
-        success: false,
-        message: "Database error",
-      },
-    };
+    const data = await repo.getStoreProductsOrderedByNameFromDB(filters);
+    return { status: 200, body: { success: true, data } };
+  } catch (error) {
+    return { status: 500, body: { success: false, message: error.message } };
   }
 };
 
