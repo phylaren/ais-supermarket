@@ -73,7 +73,7 @@ const cashier = [
         name: "Товари",
         link: "product",
         rules: READ_ONLY,
-        functions: CASHIER_FUNCTIONS
+        functions: { search: false, filter: true, print: false }
     },
     {
         name: "Клієнти",

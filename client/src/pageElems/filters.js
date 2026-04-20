@@ -22,30 +22,6 @@ export const filters = {
             endpoint: "category",
             valueKey: "id_category",
             labelKey: "category_name"
-        },
-        {
-            type: "input",
-            inputType: "text",
-            name: "product_sold_qty",
-            label: "К-сть проданого (за ID)",
-            placeholder: "Введіть ID товару",
-            actionType: "search_sold_qty"
-        },
-        {
-            type: "select",
-            name: "id_category",
-            label: "Оберіть категорію",
-            endpoint: "category",
-            valueKey: "id_category",
-            labelKey: "category_name"
-        },
-        {
-            type: "input",
-            inputType: "text",
-            name: "product_sold_qty",
-            label: "К-сть проданого (за ID)",
-            placeholder: "Введіть ID товару",
-            actionType: "search_sold_qty"
         }
     ],
 
