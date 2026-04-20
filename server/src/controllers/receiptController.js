@@ -1,12 +1,9 @@
 import { getAllEntities, insertEntity, deleteEntity, updateEntity } from "../service/service.js";
 import * as service from "../service/receiptService.js";
 
-export const getAll = async (req, res) => {
-  const result = await getAllEntities({
-    tableName: "Receipt",
-  });
-
-  return res.status(result.status).json(result.body);
+export const getReceipts = async (req, res) => {
+  const result = await service.getReceiptsService();
+  return res.status(result.status).json(result);
 };
 
 export const insertData = async (req, res) => {
