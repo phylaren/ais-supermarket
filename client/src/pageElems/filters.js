@@ -10,7 +10,9 @@ export const filters = {
             inputType: "number",
             name: "discount_percent",
             label: "Знайти за % знижки",
-            placeholder: "Наприклад: 5"
+            placeholder: "Наприклад: 5",
+            min: 1,   
+            max: 100
         }
     ],
 

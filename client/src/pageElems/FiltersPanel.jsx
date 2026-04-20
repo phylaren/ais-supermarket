@@ -54,13 +54,42 @@ export default function FiltersPanel({
                     if (filter.type === "input") {
                         return (
                             <div key={idx} style={{ display: "flex", flexDirection: "column", gap: "5px" }}>
-                                <label style={{ fontSize: "13px", color: "#64748b" }}>{filter.label}</label>
+                                <label style={{ fontSize: "14px", fontWeight: "500" }}>{filter.label}</label>
                                 <input
-                                    type={filter.inputType}
-                                    placeholder={filter.placeholder}
+                                    type={filter.inputType || "text"}
                                     value={filterValues[filter.name] || ""}
+                                    placeholder={filter.placeholder}
+
+                                    min={filter.min}
+                                    max={filter.max}
+
                                     onChange={(e) => handleInputChange(filter.name, e.target.value)}
-                                    style={{ padding: "8px 12px", borderRadius: "6px", border: "1px solid #ccc", height: "38px", boxSizing: "border-box" }}
+
+                                    onKeyDown={(e) => {
+                                        if (filter.inputType === "number") {
+                                            if (['-', '+', 'e', 'E'].includes(e.key)) {
+                                                e.preventDefault();
+                                            }
+
+                                            if (e.key === '0' && e.target.value === "") {
+                                                e.preventDefault();
+                                            }
+                                        }
+                                    }}
+
+                                    onBlur={(e) => {
+                                        if (filter.inputType === "number" && e.target.value !== "") {
+                                            let num = Number(e.target.value);
+                                            if (filter.max !== undefined && num > filter.max) {
+                                                handleInputChange(filter.name, filter.max);
+                                            }
+                                            if (filter.min !== undefined && num < filter.min) {
+                                                handleInputChange(filter.name, filter.min);
+                                            }
+                                        }
+                                    }}
+
+                                    style={{ padding: "8px", borderRadius: "4px", border: "1px solid #ccc", minWidth: "200px" }}
                                 />
                             </div>
                         );
