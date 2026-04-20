@@ -30,10 +30,17 @@ const storeProductFilters = [
 
 export const filters = {
     "employee": [
-        { type: "button", label: "Всі працівники", link: "surname_asc" },
-        { type: "button", label: "Тільки касири", link: "check_role" },
+        {
+            type: "select",
+            name: "empl_role",
+            label: "Посада",
+            options: [
+                { value: "all", label: "Всі працівники" },
+                { value: "Касир", label: "Тільки касири" },
+                { value: "Менеджер", label: "Тільки менеджери" }
+            ]
+        }
     ],
-
     "customer-card": [
         {
             type: "input",
