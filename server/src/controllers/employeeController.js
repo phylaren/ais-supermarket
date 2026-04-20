@@ -1,6 +1,6 @@
 import db from "../../db.js";
-import { getAllEntities, insertEntity, deleteEntity, updateEntity } from "../service/service.js";
-import { getAllEmployeesService, getEmployeesByRoleService, getEmployeeBySurnameService } from "../service/employeeService.js";
+import { insertEntity, deleteEntity, updateEntity } from "../service/service.js";
+import * as employeeService from "../service/employeeService.js";
 
 export const insertData = async (req, res) => {
   const result = await insertEntity({
@@ -39,52 +39,22 @@ export const updateData = async (req, res) => {
   return res.status(result.status).json(result.body);
 };
 
-export const getMe = (req, res) => {
-    try {
-        const currentUserId = req.user.id; 
-
-        const sql = `
-            SELECT e.*
-            FROM Employee e 
-            WHERE e.id_employee = ?
-        `;
-
-        db.get(sql, [currentUserId], (err, row) => {
-            if (err) {
-                console.error("Помилка бази даних:", err);
-                return res.status(500).json({ error: "Помилка сервера при отриманні профілю" });
-            }
-
-            if (!row) {
-                return res.status(404).json({ error: "Користувача не знайдено" });
-            }
-
-            res.json({ success: true, data: row });
-        });
-
-    } catch (error) {
-        console.error("Помилка в getMe:", error);
-        res.status(500).json({ error: "Внутрішня помилка сервера" });
-    }
-};
-
 export const getAllEmployees = async (req, res) => {
-  const result = await getAllEmployeesService();
-  return res.status(result.status).json(result.body);
+  try {
+    const result = await employeeService.getAllEmployeesService(req.query);
+    return res.status(result.status).json(result.body);
+  } catch (error) {
+    return res.status(500).json({ success: false, message: error.message });
+  }
 };
 
-export const getEmployeesByRole = async (req, res) => {
-  const { empl_role } = req.params;
+export const getMe = (req, res) => {
+  const currentUserId = req.user.id; 
+  const sql = `SELECT * FROM Employee WHERE id_employee = ?`;
 
-  const result = await getEmployeesByRoleService(empl_role);
-
-  return res.status(result.status).json(result.body);
-};
-
-export const getEmployeeBySurname = async (req, res) => {
-  const { empl_surname } = req.params; 
-
-  const result = await getEmployeeBySurnameService(empl_surname);
-
-  return res.status(result.status).json(result.body);
+  db.get(sql, [currentUserId], (err, row) => {
+    if (err) return res.status(500).json({ error: "Помилка сервера" });
+    if (!row) return res.status(404).json({ error: "Користувача не знайдено" });
+    res.json({ success: true, data: row });
+  });
 };
