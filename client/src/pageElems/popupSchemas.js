@@ -1,3 +1,28 @@
+const storeProductSchema = [
+        { name: "UPC", label: "Штрих-код (UPC)", type: "text", required: true },
+        { 
+            name: "id_product", 
+            label: "Товар (з каталогу)", 
+            type: "select", 
+            required: true,
+            endpoint: "product",
+            valueKey: "id_product",
+            labelKey: "product_name" 
+        },
+        { name: "selling_price", label: "Ціна продажу", type: "number", step: "0.01", required: true },
+        { name: "products_number", label: "Кількість (залишок)", type: "number", required: true },
+        { 
+            name: "promotional_product", 
+            label: "Акційний товар?", 
+            type: "select", 
+            required: true,
+            options: [
+                { value: "0", label: "Ні" },
+                { value: "1", label: "Так" }
+            ]
+        }
+    ];
+
 export const popupSchemas = {
     employee: [
         { name: "id_employee", label: "ID Працівника", type: "text", required: true },
@@ -71,19 +96,21 @@ export const popupSchemas = {
             label: "Картка клієнта", 
             type: "select", 
             required: false,
-            endpoint: "customer_card",
+            endpoint: "customer-card",
             valueKey: "id_card",
             labelKey: "cust_surname"
         }
     ],
-    
+    "store-product/all-by-count": storeProductSchema,
+    "store-product/all-by-name": storeProductSchema,
+
     sale: [
         { 
             name: "UPC", 
             label: "Товар (UPC)", 
             type: "select", 
             required: true,
-            endpoint: "store_product",
+            endpoint: "store-product",
             valueKey: "UPC",
             labelKey: "UPC"
         },
