@@ -4,10 +4,12 @@ const applyFilters = (sql, params, filters) => {
   let filteredSql = sql;
 
   if (filters.search) {
-    filteredSql += ` AND empl_surname LIKE ?`;
-    params.push(`%${filters.search}%`);
-  } 
-  else if (filters.empl_role) {
+    filteredSql += ` AND (empl_surname LIKE ? OR phone_number LIKE ?)`;
+    const searchString = `%${filters.search}%`;
+    params.push(searchString, searchString);
+  }
+
+  if (filters.empl_role && filters.empl_role !== 'all') {
     filteredSql += ` AND empl_role = ?`;
     params.push(filters.empl_role);
   }
@@ -36,9 +38,16 @@ export const getAllEmployeesFromDB = (filters = {}) => {
     `;
 
     let params = [];
+
     sql = applyFilters(sql, params, filters);
 
-    sql += ` ORDER BY empl_surname ASC`;
+    if (filters.sort_by === 'salary_desc') {
+      sql += ` ORDER BY salary DESC`;
+    } else if (filters.sort_by === 'salary_asc') {
+      sql += ` ORDER BY salary ASC`;
+    } else {
+      sql += ` ORDER BY empl_surname ASC`;
+    }
 
     db.all(sql, params, (err, rows) => {
       if (err) {
