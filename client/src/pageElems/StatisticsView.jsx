@@ -36,15 +36,15 @@ export default function StatisticsView({ category }) {
 
             const totalParams = new URLSearchParams();
 
-if (filters.receipt_date_from) {
-    totalParams.append('start', `${filters.receipt_date_from} 00:00:00`);
-}
+            if (filters.receipt_date_from) {
+                totalParams.append('start', `${filters.receipt_date_from} 00:00:00`);
+            }
 
-if (filters.receipt_date_to) {
-    totalParams.append('end', `${filters.receipt_date_to} 23:59:59`);
-}
+            if (filters.receipt_date_to) {
+                totalParams.append('end', `${filters.receipt_date_to} 23:59:59`);
+            }
 
-const totalQuery = totalParams.toString();
+            const totalQuery = totalParams.toString();
 
             const cashierParams = new URLSearchParams(totalParams);
             if (filters.surname) cashierParams.append('surname', filters.surname);
@@ -102,7 +102,7 @@ const totalQuery = totalParams.toString();
     useEffect(() => {
         const loadOptions = async () => {
             const token = localStorage.getItem('token');
-            const res = await fetch(`http://localhost:5000/api/employee/role/Касир`, {
+            const res = await fetch(`http://localhost:5000/api/employee?empl_role=Касир`, {
                 headers: { 'Authorization': `Bearer ${token}` }
             });
             if (res.ok) {

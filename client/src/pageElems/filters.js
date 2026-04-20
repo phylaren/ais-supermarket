@@ -82,9 +82,9 @@ export const filters = {
             type: "select",
             name: "id_employee",
             label: "Касир",
-            endpoint: "employee/role/Касир",
+            endpoint: "employee?empl_role=Касир", 
             valueKey: "id_employee",
-            labelKey: "surname",
+            labelKey: "empl_surname", 
             requiresManager: true
         }
     ],
@@ -98,18 +98,10 @@ export const filters = {
             type: "select",
             name: "id_employee",
             label: "Касир",
-            endpoint: "employee/role/Касир",
+            endpoint: "employee?empl_role=Касир", 
             valueKey: "id_employee",
-            labelKey: "surname",
+            labelKey: "empl_surname", 
             requiresManager: true
-        },
-        {
-            type: "input",
-            inputType: "text",
-            name: "product_sold_qty",
-            label: "К-сть проданого (за ID)",
-            placeholder: "Введіть ID товару",
-            actionType: "search_sold_qty"
         }
     ]
 };

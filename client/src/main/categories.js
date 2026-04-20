@@ -29,7 +29,6 @@ const manager = [
         rules: ALL_ACCESS,
         functions: { search: false, filter: false, print: true }
     },
-    //OR I SHOULD ADD SORT ???????
     {
         name: "Товари в магазині",
         link: "store-product/all-by-count",
