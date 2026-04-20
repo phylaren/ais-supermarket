@@ -10,8 +10,6 @@ router.post('/', verifyToken, checkRole(['Менеджер']), employeeControlle
 router.delete('/:id_employee', verifyToken, checkRole(['Менеджер']), employeeController.deleteEmployee);
 router.patch('/:id_employee', verifyToken, checkRole(['Менеджер']), employeeController.updateData);
 
-router.get("/", verifyToken, checkRole(['Менеджер']), employeeController.getAllEmployees);
-router.get("/role/:empl_role", verifyToken, checkRole(['Менеджер']), employeeController.getEmployeesByRole);
-router.get("/:empl_surname", verifyToken, checkRole(['Менеджер']), employeeController.getEmployeeBySurname);
+router.get('/', verifyToken, checkRole(['Менеджер']), employeeController.getAllEmployees);
 
 export default router;

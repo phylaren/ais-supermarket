@@ -1,35 +1,23 @@
 import db from "../../db.js";
 
-export const getAllEmployees = () => {
-  return new Promise((resolve, reject) => {
-    const sql = `
-      SELECT
-        id_employee,
-        empl_surname,
-        empl_name,
-        empl_patronymic,
-        empl_role,
-        salary,
-        date_of_birth,
-        date_of_start,
-        phone_number,
-        city,
-        street,
-        zip_code
-      FROM Employee
-      ORDER BY empl_surname
-    `;
+const applyFilters = (sql, params, filters) => {
+  let filteredSql = sql;
 
-    db.all(sql, (err, rows) => {
-      if (err) return reject(err);
-      resolve(rows);
-    });
-  });
+  if (filters.search) {
+    filteredSql += ` AND empl_surname LIKE ?`;
+    params.push(`%${filters.search}%`);
+  } 
+  else if (filters.empl_role) {
+    filteredSql += ` AND empl_role = ?`;
+    params.push(filters.empl_role);
+  }
+
+  return filteredSql;
 };
 
-export const getEmployeesByRole = (empl_role) => {
+export const getAllEmployeesFromDB = (filters = {}) => {
   return new Promise((resolve, reject) => {
-    const sql = `
+    let sql = `
       SELECT
         id_employee,
         empl_surname,
@@ -44,39 +32,19 @@ export const getEmployeesByRole = (empl_role) => {
         street,
         zip_code
       FROM Employee
-      WHERE empl_role = ?
-      ORDER BY empl_surname
+      WHERE 1=1
     `;
 
-    db.all(sql, [empl_role], (err, rows) => {
-      if (err) return reject(err);
-      resolve(rows);
-    });
-  });
-};
+    let params = [];
+    sql = applyFilters(sql, params, filters);
 
-export const getEmployeeBySurname = (empl_surname) => {
-  return new Promise((resolve, reject) => {
-    const sql = `
-      SELECT
-        id_employee,
-        empl_surname,
-        empl_name,
-        empl_patronymic,
-        empl_role,
-        salary,
-        date_of_birth,
-        date_of_start,
-        phone_number,
-        city,
-        street,
-        zip_code
-      FROM Employee
-      WHERE empl_surname = ?
-    `;
+    sql += ` ORDER BY empl_surname ASC`;
 
-    db.all(sql, [empl_surname], (err, rows) => {
-      if (err) return reject(err);
+    db.all(sql, params, (err, rows) => {
+      if (err) {
+        console.error("Repository Error (Employee):", err.message);
+        return reject(err);
+      }
       resolve(rows);
     });
   });
