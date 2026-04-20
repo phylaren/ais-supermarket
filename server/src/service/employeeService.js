@@ -1,9 +1,8 @@
-import { getAllEmployees, getEmployeesByRole, getEmployeeBySurname } from "../repositories/employeeRepository.js";
+import { getAllEmployeesFromDB } from "../repositories/employeeRepository.js";
 
-export const getAllEmployeesService = async () => {
+export const getAllEmployeesService = async (filters = {}) => {
   try {
-    const data = await getAllEmployees();
-
+    const data = await getAllEmployeesFromDB(filters);
     return {
       status: 200,
       body: {
@@ -12,74 +11,13 @@ export const getAllEmployeesService = async () => {
       },
     };
   } catch (err) {
-    console.error("DB error:", err.message);
+    console.error("Service error:", err.message);
     return {
       status: 500,
       body: {
         success: false,
-        message: "Database error",
+        message: "Помилка бази даних при отриманні списку працівників",
       },
-    };
-  }
-};
-
-export const getEmployeesByRoleService = async (empl_role) => {
-  if (!empl_role) {
-    return {
-      status: 400,
-      body: {
-        success: false,
-        message: "Role is required",
-      },
-    };
-  }
-
-  try {
-    const data = await getEmployeesByRole(empl_role);
-
-    return {
-      status: 200,
-      body: {
-        success: true,
-        data,
-      },
-    };
-  } catch (err) {
-    console.error("DB error:", err.message);
-
-    return {
-      status: 500,
-      body: {
-        success: false,
-        message: "Database error",
-      },
-    };
-  }
-};
-
-export const getEmployeeBySurnameService = async (empl_surname) => {
-  if (!empl_surname) {
-    return {
-      status: 400,
-      body: { success: false, message: "Surname is required" },
-    };
-  }
-
-  try {
-    const data = await getEmployeeBySurname(empl_surname);
-
-    return {
-      status: 200,
-      body: {
-        success: true,
-        data,
-      },
-    };
-  } catch (err) {
-    console.error("DB error:", err.message);
-    return {
-      status: 500,
-      body: { success: false, message: "Database error" },
     };
   }
 };

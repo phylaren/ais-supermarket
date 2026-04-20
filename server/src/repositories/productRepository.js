@@ -3,7 +3,6 @@ import db from "../../db.js";
 const applyFilters = (sql, params, filters) => {
   let filteredSql = sql;
 
-  // Фільтрація за ID категорії (це надійніше, ніж за назвою)
   if (filters.id_category && filters.id_category !== 'all') {
     filteredSql += ` AND p.id_category = ?`;
     params.push(filters.id_category);
@@ -28,7 +27,6 @@ export const getAllProductsFromDB = (filters = {}) => {
     let params = [];
     sql = applyFilters(sql, params, filters);
 
-    // Сортування ЗАВЖДИ за назвою товару (А-Я)
     sql += ` ORDER BY p.product_name ASC`;
 
     db.all(sql, params, (err, rows) => {
