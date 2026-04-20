@@ -1,5 +1,5 @@
 import { insertEntity, deleteEntity, updateEntity } from "../service/service.js";
-import { getAllCustomersService, getCustomersByDiscountService, getCustomerBySurnameService} from "../service/customerCardService.js";
+import * as customerService from "../service/customerCardService.js";
 
 export const insertData = async (req, res) => {
   const result = await insertEntity({
@@ -39,22 +39,14 @@ export const updateData = async (req, res) => {
 };
 
 export const getAllCustomers = async (req, res) => {
-  const result = await getAllCustomersService();
-  return res.status(result.status).json(result.body);
-};
-
-export const getCustomersByDiscount = async (req, res) => {
-  const { percent } = req.params;
-
-  const result = await getCustomersByDiscountService(percent);
-
-  return res.status(result.status).json(result.body);
-};
-
-export const getCustomerBySurname = async (req, res) => {
-  const { surname } = req.params;
-
-  const result = await getCustomerBySurnameService(surname);
-
-  return res.status(result.status).json(result.body);
+  try {
+    const result = await customerService.getAllCustomersService(req.query);
+    if (!result || !result.body) {
+       return res.status(500).json({ success: false, message: "Service returned invalid format" });
+    }
+    return res.status(result.status).json(result.body);
+  } catch (error) {
+    console.error("Controller Error:", error);
+    return res.status(500).json({ success: false, message: error.message });
+  }
 };

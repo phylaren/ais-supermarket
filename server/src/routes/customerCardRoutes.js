@@ -9,7 +9,5 @@ router.delete('/:id_card', verifyToken, checkRole(['Менеджер']), custome
 router.patch('/:id_card', verifyToken, checkRole(['Менеджер', 'Касир']), customerCardController.updateData);
 
 router.get('/', verifyToken, checkRole(['Менеджер', 'Касир']), customerCardController.getAllCustomers);
-router.get('/discount/:percent', verifyToken, checkRole(['Менеджер', 'Касир']), customerCardController.getCustomersByDiscount);
-router.get('/surname/:surname', verifyToken, checkRole(['Касир']), customerCardController.getCustomerBySurname);
 
 export default router;

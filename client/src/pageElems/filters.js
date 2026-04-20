@@ -5,7 +5,6 @@ export const filters = {
     ],
 
     "customer-card": [
-        { type: "button", label: "За прізвищем (А-Я)", link: "surname_asc" },
         {
             type: "input",
             inputType: "number",
