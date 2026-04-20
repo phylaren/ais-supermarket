@@ -28,13 +28,20 @@ export const getReceiptsByEmployee = async (req, res) => {
 };
 
 export const insertData = async (req, res) => {
-  const result = await insertEntity({
-    tableName: "Receipt",
-    data: req.body,
-    entityName: "Чек",
-  });
+  try {
+    const { sum_total, vat, id_card, items } = req.body;
 
-  return res.status(result.status).json(result.body);
+    const id_employee = req.user.id;
+
+    const receiptData = { sum_total, vat, id_card, id_employee };
+
+    const result = await service.createReceiptWithItemsService(receiptData, items);
+
+    return res.status(result.status).json(result);
+  } catch (error) {
+    console.error("Controller Error:", error);
+    return res.status(500).json({ success: false, message: "Помилка сервера: " + error.message });
+  }
 };
 
 export const deleteReceipt = async (req, res) => {

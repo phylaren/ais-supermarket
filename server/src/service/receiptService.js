@@ -208,3 +208,36 @@ export const getTotalRevenueService = async (start, end) => {
     };
   }
 };
+
+export const createReceiptWithItemsService = async (receiptData, items) => {
+  if (!items || items.length === 0) {
+    return { status: 400, success: false, message: "Кошик порожній, неможливо створити чек" };
+  }
+
+  try {
+    const id_check = `CHK${Date.now().toString().slice(-7)}`;
+
+    const print_date = new Date().toISOString().replace('T', ' ').slice(0, 19);
+
+    const receipt = {
+      id_check,
+      id_employee: receiptData.id_employee,
+      id_card: receiptData.id_card,
+      print_date,
+      sum_total: receiptData.sum_total,
+      vat: receiptData.vat
+    };
+
+    await repo.createReceiptTransaction(receipt, items);
+
+    return {
+      status: 201,
+      success: true,
+      message: "Чек успішно створено!",
+      data: { id_check, print_date }
+    };
+  } catch (error) {
+    console.error("Transaction failed:", error);
+    return { status: 500, success: false, message: "Помилка при збереженні чека: " + error.message };
+  }
+};

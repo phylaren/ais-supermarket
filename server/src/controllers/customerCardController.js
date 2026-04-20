@@ -42,11 +42,19 @@ export const getAllCustomers = async (req, res) => {
   try {
     const result = await customerService.getAllCustomersService(req.query);
     if (!result || !result.body) {
-       return res.status(500).json({ success: false, message: "Service returned invalid format" });
+      return res.status(500).json({ success: false, message: "Service returned invalid format" });
     }
     return res.status(result.status).json(result.body);
   } catch (error) {
     console.error("Controller Error:", error);
     return res.status(500).json({ success: false, message: error.message });
   }
+};
+
+export const getCustomerById = async (req, res) => {
+  const { id_card } = req.params;
+
+  const result = await customerService.getCustomerByIdService(id_card);
+
+  return res.status(result.status).json(result.body);
 };

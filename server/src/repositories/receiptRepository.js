@@ -249,3 +249,36 @@ export const getTotalRevenueFromDB = (startDate, endDate) => {
     });
   });
 };
+
+const runAsync = (sql, params = []) => {
+  return new Promise((resolve, reject) => {
+    db.run(sql, params, function (err) {
+      if (err) reject(err);
+      else resolve(this);
+    });
+  });
+};
+
+export const createReceiptTransaction = async (receipt, items) => {
+  try {
+    await runAsync("BEGIN TRANSACTION");
+
+    const sqlReceipt = `INSERT INTO Receipt (id_check, id_employee, id_card, print_date, sum_total, vat) VALUES (?, ?, ?, ?, ?, ?)`;
+    await runAsync(sqlReceipt, [receipt.id_check, receipt.id_employee, receipt.id_card || null, receipt.print_date, receipt.sum_total, receipt.vat]);
+
+    for (const item of items) {
+      const sqlSale = `INSERT INTO Sale (UPC, id_check, product_number, selling_price) VALUES (?, ?, ?, ?)`;
+      await runAsync(sqlSale, [item.UPC, receipt.id_check, item.product_number, item.selling_price]);
+
+      const sqlUpdateStock = `UPDATE Store_Product SET products_number = products_number - ? WHERE UPC = ?`;
+      await runAsync(sqlUpdateStock, [item.product_number, item.UPC]);
+    }
+
+
+    await runAsync("COMMIT");
+    return { success: true };
+  } catch (error) {
+    await runAsync("ROLLBACK");
+    throw error;
+  }
+};
