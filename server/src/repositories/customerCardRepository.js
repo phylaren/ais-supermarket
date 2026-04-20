@@ -1,32 +1,23 @@
 import db from "../../db.js";
 
-export const getAllCustomersRepository= () => {
-  return new Promise((resolve, reject) => {
-    const sql = `
-      SELECT
-        id_card,
-        cust_surname,
-        cust_name,
-        cust_patronymic,
-        phone_number,
-        city,
-        street,
-        zip_code,
-        discount_percent
-      FROM Customer_Card
-      ORDER BY cust_surname ASC
-    `;
+const applyFilters = (sql, params, filters) => {
+  let filteredSql = sql;
 
-    db.all(sql, [], (err, rows) => {
-      if (err) return reject(err);
-      resolve(rows);
-    });
-  });
+  if (filters.search) {
+    filteredSql += ` AND cust_surname LIKE ?`;
+    params.push(`%${filters.search}%`);
+  } 
+  else if (filters.discount_percent) {
+    filteredSql += ` AND discount_percent = ?`;
+    params.push(Number(filters.discount_percent));
+  }
+
+  return filteredSql;
 };
 
-export const getCustomersByDiscountRepository = (discount) => {
+export const getAllCustomersFromDB = (filters = {}) => {
   return new Promise((resolve, reject) => {
-    const sql = `
+    let sql = `
       SELECT
         id_card,
         cust_surname,
@@ -38,36 +29,19 @@ export const getCustomersByDiscountRepository = (discount) => {
         zip_code,
         discount_percent
       FROM Customer_Card
-      WHERE discount_percent = ?
-      ORDER BY cust_surname
+      WHERE 1=1
     `;
 
-    db.all(sql, [discount], (err, rows) => {
-      if (err) return reject(err);
-      resolve(rows);
-    });
-  });
-};
+    let params = [];
+    sql = applyFilters(sql, params, filters);
 
-export const getCustomerBySurnameRepository = (surname) => {
-  return new Promise((resolve, reject) => {
-    const sql = `
-      SELECT
-        id_card,
-        cust_surname,
-        cust_name,
-        cust_patronymic,
-        phone_number,
-        city,
-        street,
-        zip_code,
-        discount_percent
-      FROM Customer_Card
-      WHERE cust_surname = ?
-    `;
+    sql += ` ORDER BY cust_surname ASC`;
 
-    db.all(sql, [surname], (err, rows) => {
-      if (err) return reject(err);
+    db.all(sql, params, (err, rows) => {
+      if (err) {
+        console.error("Repository Error (Customer_Card):", err.message);
+        return reject(err);
+      }
       resolve(rows);
     });
   });

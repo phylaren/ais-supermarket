@@ -1,78 +1,18 @@
-import { getAllCustomersRepository, getCustomersByDiscountRepository, getCustomerBySurnameRepository } from "../repositories/customerCardRepository.js";
+import * as repo from "../repositories/customerCardRepository.js";
 
-export const getAllCustomersService = async () => {
+export const getAllCustomersService = async (filters = {}) => {
   try {
-    const data = await getAllCustomersRepository();
-
+    const data = await repo.getAllCustomersFromDB(filters);
     return {
       status: 200,
-      body: {
-        success: true,
-        data,
-      },
+      success: true,
+      body: { data }
     };
-  } catch (err) {
-    console.error("DB error:", err.message);
+  } catch (error) {
     return {
       status: 500,
-      body: {
-        success: false,
-        message: "Database error",
-      },
-    };
-  }
-};
-
-export const getCustomersByDiscountService = async (discount) => {
-  if (discount === undefined || discount === null) {
-    return {
-      status: 400,
-      body: { success: false, message: "Discount percent is required" },
-    };
-  }
-
-  try {
-    const data = await getCustomersByDiscountRepository(discount);
-
-    return {
-      status: 200,
-      body: {
-        success: true,
-        data,
-      },
-    };
-  } catch (err) {
-    console.error("DB error:", err.message);
-    return {
-      status: 500,
-      body: { success: false, message: "Database error" },
-    };
-  }
-};
-
-export const getCustomerBySurnameService = async (surname) => {
-  if (!surname) {
-    return {
-      status: 400,
-      body: { success: false, message: "Surname is required" },
-    };
-  }
-
-  try {
-    const data = await getCustomerBySurnameRepository(surname);
-
-    return {
-      status: 200,
-      body: {
-        success: true,
-        data,
-      },
-    };
-  } catch (err) {
-    console.error("DB error:", err.message);
-    return {
-      status: 500,
-      body: { success: false, message: "Database error" },
+      success: false,
+      message: "Помилка при отриманні карток клієнтів: " + error.message
     };
   }
 };
