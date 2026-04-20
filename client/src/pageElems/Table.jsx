@@ -27,7 +27,7 @@ export default function Table({ data, category, onDelete, onAddClick, onEditClic
     const navigate = useNavigate();
 
     const handleCustomAddClick = () => {
-        if (category.link === "receipt") {
+        if (category.link === "receipt/my-receipts") {
             navigate("/main/receipt/create");
         } else {
             onAddClick();

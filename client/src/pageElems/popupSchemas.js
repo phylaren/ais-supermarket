@@ -22,6 +22,7 @@ export const popupSchemas = {
         { name: "street", label: "Вулиця", type: "text", required: true },
         { name: "zip_code", label: "Індекс", type: "text", required: true }
     ],
+    
     product: [
         { name: "id_product", label: "ID Товару", type: "number", required: true },
         { name: "product_name", label: "Назва товару", type: "text", required: true },
@@ -75,6 +76,7 @@ export const popupSchemas = {
             labelKey: "cust_surname"
         }
     ],
+    
     sale: [
         { 
             name: "UPC", 
