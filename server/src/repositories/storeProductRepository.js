@@ -1,8 +1,31 @@
 import db from "../../db.js";
 
-export const getAllStoreProductsByCountFromDB = () => {
+const applyFilters = (sql, params, filters) => {
+  let filteredSql = sql;
+
+  if (filters.search) {
+    filteredSql += ` AND (s.UPC LIKE ? OR p.product_name LIKE ?)`;
+    const searchString = `%${filters.search}%`;
+    params.push(searchString, searchString);
+  }
+
+  if (filters.id_category && filters.id_category !== 'all') {
+    filteredSql += ` AND p.id_category = ?`;
+    params.push(filters.id_category);
+  }
+
+  if (filters.promo_status === 'true') {
+    filteredSql += ` AND s.promotional_product = 1`;
+  } else if (filters.promo_status === 'false') {
+    filteredSql += ` AND s.promotional_product = 0`;
+  }
+
+  return filteredSql;
+};
+
+export const getAllStoreProductsByCountFromDB = (filters = {}) => {
   return new Promise((resolve, reject) => {
-    const sql = `
+    let sql = `
       SELECT
         s.UPC,
         p.product_name,
@@ -11,19 +34,30 @@ export const getAllStoreProductsByCountFromDB = () => {
         s.promotional_product
       FROM Store_Product AS s
       INNER JOIN Product AS p ON s.id_product = p.id_product
-      ORDER BY s.products_number DESC
+      WHERE 1=1
     `;
+    let params = [];
 
-    db.all(sql, [], (err, rows) => {
+    sql = applyFilters(sql, params, filters);
+
+    if (filters.sort_by === 'name_asc') {
+      sql += ` ORDER BY p.product_name ASC`;
+    } else if (filters.sort_by === 'quantity_asc') {
+      sql += ` ORDER BY s.products_number ASC`;
+    } else {
+      sql += ` ORDER BY s.products_number DESC`;
+    }
+
+    db.all(sql, params, (err, rows) => {
       if (err) return reject(err);
       resolve(rows);
     });
   });
 };
 
-export const getStoreProductsOrderedByNameFromDB = () => {
+export const getStoreProductsOrderedByNameFromDB = (filters = {}) => {
   return new Promise((resolve, reject) => {
-    const sql = `
+    let sql = `
       SELECT
         s.UPC,
         p.product_name,
@@ -32,10 +66,19 @@ export const getStoreProductsOrderedByNameFromDB = () => {
         s.promotional_product
       FROM Store_Product AS s
       INNER JOIN Product AS p ON s.id_product = p.id_product
-      ORDER BY p.product_name ASC
+      WHERE 1=1
     `;
+    let params = [];
 
-    db.all(sql, [], (err, rows) => {
+    sql = applyFilters(sql, params, filters);
+
+    if (filters.sort_by === 'quantity_asc') {
+      sql += ` ORDER BY s.products_number ASC`;
+    } else {
+      sql += ` ORDER BY p.product_name ASC`;
+    }
+
+    db.all(sql, params, (err, rows) => {
       if (err) return reject(err);
       resolve(rows);
     });

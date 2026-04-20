@@ -41,12 +41,14 @@ export const updateData = async (req, res) => {
 };
 
 export const getAllStoreProductsByCount = async (req, res) => {
-  const result = await getAllStoreProductsByCountService();
+  const filters = req.query;
+  const result = await getAllStoreProductsByCountService(filters);
   return res.status(result.status).json(result.body);
 };
 
 export const getAllStoreProductsByName = async (req, res) => {
-  const result = await getStoreProductsByNameService();
+  const filters = req.query;
+  const result = await getStoreProductsByNameService(filters);
   return res.status(result.status).json(result.body);
 };
 
