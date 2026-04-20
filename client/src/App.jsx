@@ -7,6 +7,7 @@ import { getCategories } from "./main/categories.js";
 
 import TableView from "./main/TableView.jsx";
 import StatisticsView from "./pageElems/StatisticsView.jsx";
+import CreateReceiptView from "./pageElems/CreateReceiptView.jsx";
 
 function ProtectedRoute({ children }) {
     const currentRole = localStorage.getItem('role');
@@ -33,8 +34,8 @@ function AppRouter() {
     return (
         <BrowserRouter>
             <Routes>
-                <Route 
-                    path="/main" 
+                <Route
+                    path="/main"
                     element={
                         <ProtectedRoute>
                             <Main />
@@ -44,18 +45,21 @@ function AppRouter() {
                     {categories.map((category) => {
                         if (category.link === "statistics") {
                             return (
-                                <Route 
+                                <Route
                                     key={category.link}
-                                    path={category.link} 
-                                    element={<StatisticsView category={category} />} 
+                                    path={category.link}
+                                    element={<StatisticsView category={category} />}
                                 />
                             );
                         }
+                        if (category.link === "receipt/create") {
+                            return <Route key={category.link} path={category.link} element={<CreateReceiptView category={category} />} />;
+                        }
                         return (
-                            <Route 
+                            <Route
                                 key={category.link}
-                                path={category.link} 
-                                element={<TableView category={category} />} 
+                                path={category.link}
+                                element={<TableView category={category} />}
                             />
                         );
                     })}
@@ -63,13 +67,13 @@ function AppRouter() {
                     <Route path="*" element={<Navigate to="/main" replace />} />
                 </Route>
 
-                <Route 
-                    path="/login" 
+                <Route
+                    path="/login"
                     element={
                         <PublicRoute>
                             <Login />
                         </PublicRoute>
-                    } 
+                    }
                 />
 
                 <Route
@@ -77,9 +81,9 @@ function AppRouter() {
                     element={<Navigate to={currentRole ? "/main" : "/login"} replace />}
                 />
 
-                <Route 
-                    path="*" 
-                    element={<Navigate to={currentRole ? "/main" : "/login"} replace />} 
+                <Route
+                    path="*"
+                    element={<Navigate to={currentRole ? "/main" : "/login"} replace />}
                 />
 
             </Routes>

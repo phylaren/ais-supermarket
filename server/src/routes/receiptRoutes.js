@@ -4,7 +4,7 @@ import { verifyToken, checkRole } from '../middleware/authMiddleware.js';
 
 const router = Router();
 
-router.get('/', verifyToken,  checkRole(['Менеджер']), receiptController.getReceipts);
+router.get('/', verifyToken,  checkRole(['Менеджер', 'Касир']), receiptController.getReceipts);
 router.post('/', verifyToken, checkRole(['Касир']), receiptController.insertData);
 router.delete('/:id_check', verifyToken, checkRole(['Менеджер']), receiptController.deleteReceipt);
 router.patch('/:id_check', receiptController.updateData);//delete

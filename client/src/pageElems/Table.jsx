@@ -4,6 +4,7 @@ import { filters } from "./filters.js";
 import FiltersPanel from "./FiltersPanel.jsx";
 
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
 const NO_FILTERS = [];
 function getAttributes(data) {
@@ -14,14 +15,24 @@ function getAttributes(data) {
 export default function Table({ data, category, onDelete, onAddClick, onEditClick }) {
     const [isFilterOpen, setIsFilterOpen] = useState(false);
     const [activeSort, setActiveSort] = useState(null);
-    
+
     const [filterValues, setFilterValues] = useState({});
-  
+
     const [selectOptions, setSelectOptions] = useState({});
 
     const userRole = localStorage.getItem('role');
 
     const currentFilters = filters[category.link] || NO_FILTERS;
+
+    const navigate = useNavigate();
+
+    const handleCustomAddClick = () => {
+        if (category.link === "receipt") {
+            navigate("/main/receipt/create");
+        } else {
+            onAddClick();
+        }
+    };
 
     useEffect(() => {
         if (!isFilterOpen || currentFilters.length === 0) return;
@@ -52,7 +63,7 @@ export default function Table({ data, category, onDelete, onAddClick, onEditClic
     if (!data || data.length === 0) {
         return <div className={style.waitingScreen}>Завантажую таблицю...⏳</div>;
     }
-    
+
     const attributes = getAttributes(data);
 
     const currentDate = new Date().toLocaleDateString('uk-UA', {
@@ -71,15 +82,15 @@ export default function Table({ data, category, onDelete, onAddClick, onEditClic
     const handleApplyFilters = () => {
         console.log("Застосовано фільтри:", filterValues);
     };
-    
+
     return (
         <div>
             <Filters
                 category={category}
-                onAddClick={onAddClick}
+                onAddClick={handleCustomAddClick}
                 onPrint={() => window.print()}
                 isFilterOpen={isFilterOpen}
-                onToggleSort={()=> setIsFilterOpen(!isFilterOpen)}
+                onToggleSort={() => setIsFilterOpen(!isFilterOpen)}
             />
 
             {isFilterOpen && currentFilters.length > 0 && (
@@ -131,11 +142,11 @@ function Filters({ onAddClick, category, searchTerm, setSearchTerm, onPrint, onT
                 <button
                     type="button"
                     onClick={onToggleSort}
-                    style={{ 
-                        padding: "8px 15px", 
-                        cursor: "pointer", 
-                        borderRadius: "4px", 
-                        border: isFilterOpen ? "1px solid #1677ff" : "1px solid #ccc", 
+                    style={{
+                        padding: "8px 15px",
+                        cursor: "pointer",
+                        borderRadius: "4px",
+                        border: isFilterOpen ? "1px solid #1677ff" : "1px solid #ccc",
                         backgroundColor: isFilterOpen ? "#e6f4ff" : "#fff",
                         color: isFilterOpen ? "#1677ff" : "#000",
                         transition: "all 0.2s ease",

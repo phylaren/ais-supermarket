@@ -64,12 +64,6 @@ const cashier = [
         functions: NO_FUNCTIONS
     },
     {
-        name: "Чеки",
-        link: "receipt/my-receipts",
-        rules: { create: true, edit: false, delete: false },
-        functions: CASHIER_FUNCTIONS
-    },
-    {
         name: "Товари в магазині",
         link: "store-product/all-by-name",
         rules: READ_ONLY,
@@ -86,7 +80,19 @@ const cashier = [
         link: "customer-card",
         rules: { create: true, edit: true, delete: false },
         functions: CASHIER_FUNCTIONS
-    }
+    },
+    {
+        name: "Створити чек",
+        link: "receipt/create",
+        rules: READ_ONLY,
+        functions: MANAGER_NO_SEARCH
+    },
+    {
+        name: "Чеки",
+        link: "receipt",
+        rules: { create: true, edit: false, delete: false },
+        functions: CASHIER_FUNCTIONS
+    },
 ];
 
 export function getCategories() {
