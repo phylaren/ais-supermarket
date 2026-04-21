@@ -6,7 +6,7 @@ const router = Router();
 
 router.get('/me', verifyToken, checkRole(['Касир']), employeeController.getMe);
 
-router.post('/', verifyToken, checkRole(['Менеджер']), employeeController.insertData);
+router.post('/', verifyToken, checkRole(['Менеджер']), employeeController.insertEmployee);
 router.delete('/:id_employee', verifyToken, checkRole(['Менеджер']), employeeController.deleteEmployee);
 router.patch('/:id_employee', verifyToken, checkRole(['Менеджер']), employeeController.updateData);
 

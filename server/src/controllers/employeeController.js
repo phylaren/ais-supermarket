@@ -2,14 +2,9 @@ import db from "../../db.js";
 import { insertEntity, deleteEntity, updateEntity } from "../service/service.js";
 import * as employeeService from "../service/employeeService.js";
 
-export const insertData = async (req, res) => {
-  const result = await insertEntity({
-    tableName: "Employee",
-    data: req.body,
-    entityName: "Працівника",
-  });
-
-  return res.status(result.status).json(result.body);
+export const insertEmployee = async (req, res) => {
+    const result = await employeeService.createEmployeeWithAccount(req.body);
+    res.status(result.status).json(result);
 };
 
 export const deleteEmployee = async (req, res) => {

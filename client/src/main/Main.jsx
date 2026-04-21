@@ -11,7 +11,6 @@ import { getUserRole } from '../pageElems/getUserRole.js';
 
 export default function Main(){
     const userRole = getUserRole(); 
-    console.log(userRole);
     const allCategories = getCategories();
 
     const categories = allCategories.filter(category => {

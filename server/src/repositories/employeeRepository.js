@@ -1,5 +1,14 @@
 import db from "../../db.js";
 
+const runAsync = (sql, params = []) => {
+  return new Promise((resolve, reject) => {
+    db.run(sql, params, function (err) {
+      if (err) reject(err);
+      else resolve(this);
+    });
+  });
+};
+
 const applyFilters = (sql, params, filters) => {
   let filteredSql = sql;
 
@@ -74,4 +83,49 @@ export const getAllEmployeesFromDB = (filters = {}) => {
       resolve(rows);
     });
   });
+};
+
+export const createEmployeeTransaction = async (employee, account) => {
+    try {
+        await runAsync("BEGIN TRANSACTION");
+
+        const sqlEmp = `
+            INSERT INTO Employee (
+                id_employee, empl_name, empl_surname, empl_role, 
+                salary, date_of_birth, date_of_start, 
+                phone_number, city, street, zip_code
+            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
+
+        const empParams = [
+            employee.id_employee,
+            employee.empl_name,
+            employee.empl_surname,
+            employee.empl_role,
+            employee.salary,
+            employee.date_of_birth,
+            employee.date_of_start,
+            employee.phone_number,
+            employee.city,
+            employee.street,
+            employee.zip_code
+        ];
+
+        await runAsync(sqlEmp, empParams);
+
+        const sqlAcc = `INSERT INTO Account (id_employee, password_hash) VALUES (?, ?)`;
+        
+        const accParams = [
+            account.id_employee,
+            account.password_hash
+        ];
+
+        await runAsync(sqlAcc, accParams);
+
+        await runAsync("COMMIT");
+        return { success: true };
+    } catch (error) {
+        await runAsync("ROLLBACK");
+        console.error("Помилка транзакції працівника:", error.message);
+        throw error;
+    }
 };
