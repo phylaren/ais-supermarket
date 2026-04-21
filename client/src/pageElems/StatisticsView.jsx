@@ -63,7 +63,7 @@ export default function StatisticsView({ category }) {
             ]);
 
             if (totalRes.status === 401 || cashierRes.status === 401) {
-                alert("⏳ Час вашої сесії вийшов. Будь ласка, увійдіть знову");
+                alert("Час вашої сесії вийшов. Будь ласка, увійдіть знову");
                 localStorage.removeItem('token');
                 localStorage.removeItem('role');
                 window.location.href = '/login';
@@ -71,7 +71,7 @@ export default function StatisticsView({ category }) {
             }
 
             if (totalRes.status === 403 || cashierRes.status === 403) {
-                alert("🚫 У вас немає прав доступу до цієї статистики");
+                alert("У вас немає прав доступу до цієї статистики");
                 return;
             }
 
@@ -172,7 +172,7 @@ export default function StatisticsView({ category }) {
             />
 
             {isLoading ? (
-                <div className={style.waitingScreen}>Аналізуємо дані... 📊⏳</div>
+                <div className={style.waitingScreen}>Аналізуємо дані...</div>
             ) : (
                 <div style={{ display: "grid", gap: "20px", marginTop: "20px" }}>
 
@@ -192,7 +192,7 @@ export default function StatisticsView({ category }) {
 
                             {!appliedFilters.surname ? (
                                 <div className={tableStyle.waitingScreen} style={{ border: "none", boxShadow: "none", marginTop: 0 }}>
-                                    👆 Оберіть касира у панелі фільтрів вище та натисніть "Знайти", щоб побачити його особисту виручку
+                                    Оберіть касира у панелі фільтрів вище та натисніть "Знайти", щоб побачити його особисту виручку
                                 </div>
                             ) : cashierRevenue.length > 0 ? (
                                 <table className={tableStyle.styledTable}>

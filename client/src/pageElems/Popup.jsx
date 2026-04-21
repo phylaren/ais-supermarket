@@ -101,7 +101,7 @@ export default function Popup({ category, onClose, onSuccess, initialData }) {
             }
 
             if (response.status === 403) {
-                alert("🚫 У вас немає прав доступу до цієї дії чи таблиці");
+                alert("У вас немає прав доступу до цієї дії чи таблиці");
                 return;
             }
 

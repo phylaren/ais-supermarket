@@ -1,6 +1,5 @@
 const today = new Date();
 
-// 1. ОБМЕЖЕННЯ ВІКУ: від поточної дати відняти 18 років
 const maxBirthDate = new Date(today.getFullYear() - 18, today.getMonth(), today.getDate()).toISOString().split('T')[0];
 const minBirthDate = new Date(today.getFullYear() - 100, today.getMonth(), today.getDate()).toISOString().split('T')[0];
 

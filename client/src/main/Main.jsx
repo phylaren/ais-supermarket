@@ -1,5 +1,4 @@
 import { useContext } from "react";
-// import { UserContext } from "../context/UserContext.jsx" // Якщо не використовуєш, можна видалити
 
 import { Link, Outlet, useLocation } from "react-router-dom";
 import style from "./Main.module.css";
