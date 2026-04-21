@@ -8,9 +8,10 @@ import { getCategories } from "./main/categories.js";
 import TableView from "./main/TableView.jsx";
 import StatisticsView from "./pageElems/StatisticsView.jsx";
 import CreateReceiptView from "./pageElems/CreateReceiptView.jsx";
+import { getUserRole } from "./pageElems/getUserRole.js";
 
 function ProtectedRoute({ children }) {
-    const currentRole = localStorage.getItem('role');
+    const currentRole = getUserRole();
 
     if (!currentRole || currentRole === "null" || currentRole === "undefined") {
         return <Navigate to="/login" replace />;
@@ -19,7 +20,7 @@ function ProtectedRoute({ children }) {
 }
 
 function PublicRoute({ children }) {
-    const currentRole = localStorage.getItem('role');
+    const currentRole = getUserRole();
 
     if (currentRole && currentRole !== "null" && currentRole !== "undefined") {
         return <Navigate to="/main" replace />;
@@ -29,7 +30,7 @@ function PublicRoute({ children }) {
 
 function AppRouter() {
     const categories = getCategories();
-    const currentRole = localStorage.getItem('role');
+    const currentRole = getUserRole();
 
     return (
         <BrowserRouter>

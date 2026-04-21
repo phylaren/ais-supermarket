@@ -1,15 +1,35 @@
-import { useContext } from "react"
-import { UserContext } from "../context/UserContext.jsx"
+import { useContext } from "react";
+// import { UserContext } from "../context/UserContext.jsx" // Якщо не використовуєш, можна видалити
 
-import { Link, Outlet, useLocation } from "react-router-dom"
-import style from "./Main.module.css"
+import { Link, Outlet, useLocation } from "react-router-dom";
+import style from "./Main.module.css";
 
-import PageName from "../pageElems/PageName"
+import PageName from "../pageElems/PageName";
+import { getCategories } from "./categories.js";
 
-import {getCategories} from "./categories.js";
+
+import { getUserRole } from '../pageElems/getUserRole.js';
 
 export default function Main(){
-    const categories = getCategories();
+    const userRole = getUserRole(); 
+    console.log(userRole);
+    const allCategories = getCategories();
+
+    const categories = allCategories.filter(category => {
+        if (category.link === "create-receipt" || category.link === "receipt/create") {
+            return userRole === "Касир";
+        }
+        
+        if (category.link === "employee") {
+            return userRole === "Менеджер";
+        }
+
+        if (category.link === "statistics") {
+             return userRole === "Менеджер";
+        }
+
+        return true; 
+    });
 
     const location = useLocation();
     const isExactMainPage = location.pathname === "/main" || location.pathname === "/main/";
@@ -20,6 +40,7 @@ export default function Main(){
     return(
         <div className={style.pageContainer}>
             <PageName name={name}/>
+            
             {isExactMainPage && <PageCategories categories={categories} />}
             
             <div className={style.contentArea}>
@@ -31,7 +52,6 @@ export default function Main(){
 
 export function PageCategories({categories}){
     return(
-        
         <ul className={style.categoriesGrid}>
             {categories.map(category=>(
                 <li key={category.link} className={style.categoryCard}>

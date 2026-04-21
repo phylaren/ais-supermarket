@@ -1,6 +1,8 @@
 import { useContext } from "react";
 import { UserContext } from "../context/UserContext.jsx";
 
+import { getUserRole } from "../pageElems/getUserRole.js";
+
 const ALL_ACCESS = { create: true, edit: true, delete: true };
 const READ_ONLY = { create: false, edit: false, delete: false };
 
@@ -97,7 +99,7 @@ const cashier = [
 export function getCategories() {
     const { role } = useContext(UserContext);
     
-    const activeRole = role || localStorage.getItem('role');
+    const activeRole = getUserRole() || role;
 
     if (activeRole === "Касир") return cashier;
     if (activeRole === "Менеджер") return manager;

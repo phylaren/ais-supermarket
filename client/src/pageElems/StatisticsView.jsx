@@ -3,6 +3,7 @@ import FiltersPanel from "../pageElems/FiltersPanel.jsx";
 import style from "../main/Main.module.css";
 import tableStyle from "./table.module.css";
 import GoToMainButton from "./GoToMainButton.jsx";
+import { getUserRole } from './getUserRole.js'
 
 export default function StatisticsView({ category }) {
     const [totalRevenue, setTotalRevenue] = useState(0);
@@ -26,7 +27,7 @@ export default function StatisticsView({ category }) {
     });
 
     const [selectOptions, setSelectOptions] = useState({});
-    const userRole = localStorage.getItem('role');
+    const userRole = getUserRole();
 
     const fetchStats = async (filters) => {
         setIsLoading(true);

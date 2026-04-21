@@ -6,6 +6,8 @@ import FiltersPanel from "./FiltersPanel.jsx";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
+import { getUserRole } from './getUserRole.js'
+
 const NO_FILTERS = [];
 function getAttributes(data) {
     if (!data || data.length === 0) return [];
@@ -22,7 +24,7 @@ export default function Table({
 
     const [selectOptions, setSelectOptions] = useState({});
 
-    const userRole = localStorage.getItem('role');
+    const userRole = getUserRole();
 
     const currentFilters = filters[category.link] || NO_FILTERS;
 
