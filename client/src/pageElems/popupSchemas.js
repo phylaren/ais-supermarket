@@ -120,11 +120,30 @@ export const popupSchemas = {
     "store-product/all-by-count": storeProductSchema,
     "store-product/all-by-name": storeProductSchema,
 
-    account: [
+    product: [
+        { name: "id_product", label: "ID Продукту", type: "text", required: true, maxLength: 13 },
         {
-            name: "id_employee", label: "Оберіть працівника", type: "select", required: true,
-            endpoint: "employee", valueKey: "id_employee", labelKey: "empl_surname"
+            name: "id_category",
+            label: "Категорія товару",
+            type: "select",
+            required: true,
+            endpoint: "category",
+            valueKey: "id_category",
+            labelKey: "category_name"
         },
-        { name: "password_hash", label: "Встановіть пароль", type: "password", required: true, minLength: 4 }
+        {
+            name: "product_name",
+            label: "Назва товару",
+            type: "text",
+            required: true,
+            maxLength: 50
+        },
+        {
+            name: "characteristics",
+            label: "Характеристики",
+            type: "text",
+            required: true,
+            maxLength: 100
+        }
     ]
 };
