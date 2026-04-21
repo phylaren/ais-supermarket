@@ -129,7 +129,7 @@ export default function CreateReceiptView({ category }) {
 
     const totalDiscountSum = promoDiscount + cardDiscount;
     const totalToPay = originalSubtotal - totalDiscountSum;
-    const vat = totalToPay * (20 / 120);
+    const vat = totalToPay * 0.2;
     const handleCheckout = async () => {
         if (cart.length === 0) { alert("Кошик порожній!"); return; }
         setIsLoading(true);
