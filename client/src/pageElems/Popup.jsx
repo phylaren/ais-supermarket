@@ -36,7 +36,7 @@ export default function Popup({ category, onClose, onSuccess, initialData }) {
                         });
 
                         if (res.status === 401) {
-                            alert("⏳ Час вашої сесії вийшов. Будь ласка, увійдіть знову");
+                            alert("Час вашої сесії вийшов. Будь ласка, увійдіть знову");
                             localStorage.removeItem('token');
                             localStorage.removeItem('role');
                             window.location.href = '/login';
@@ -44,7 +44,7 @@ export default function Popup({ category, onClose, onSuccess, initialData }) {
                         }
 
                         if (res.status === 403) {
-                            alert("🚫 У вас немає прав доступу до цієї дії чи таблиці");
+                            alert("У вас немає прав доступу до цієї дії чи таблиці");
                             return;
                         }
 
@@ -93,7 +93,7 @@ export default function Popup({ category, onClose, onSuccess, initialData }) {
             });
 
             if (response.status === 401) {
-                alert("⏳ Час вашої сесії вийшов. Будь ласка, увійдіть знову");
+                alert("Час вашої сесії вийшов. Будь ласка, увійдіть знову");
                 localStorage.removeItem('token');
                 localStorage.removeItem('role');
                 window.location.href = '/login';
@@ -101,7 +101,7 @@ export default function Popup({ category, onClose, onSuccess, initialData }) {
             }
 
             if (response.status === 403) {
-                alert("🚫 У вас немає прав доступу до цієї дії чи таблиці");
+                alert(" У вас немає прав доступу до цієї дії чи таблиці");
                 return;
             }
 

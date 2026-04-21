@@ -13,8 +13,8 @@ const storeProductFilters = [
         name: "sort_by",
         label: "Сортувати за",
         options: [
-            { value: "name_asc", label: "Назвою (А-Я)" },
-            { value: "quantity_asc", label: "Кількістю (зростання)" }
+            { value: "name_asc", label: "За назвою від А до Я" },
+            { value: "quantity_asc", label: "За кількістю за зростанням" }
         ]
     },
     {

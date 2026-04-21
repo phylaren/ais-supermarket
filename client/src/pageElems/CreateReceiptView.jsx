@@ -71,7 +71,7 @@ export default function CreateReceiptView({ category }) {
 
     const addToCart = (product) => {
         if (product.products_number < 1) {
-            alert("❌ Цього товару більше немає на складі!");
+            alert("Цього товару більше немає на складі!");
             return;
         }
         setCart(prevCart => {
@@ -151,9 +151,9 @@ export default function CreateReceiptView({ category }) {
                 body: JSON.stringify(payload)
             });
             if (!res.ok) throw new Error("Помилка при створенні чека");
-            alert("✅ Чек успішно створено!");
+            alert("Чек успішно створено!");
             setCart([]); setCustomerCard(null); setCardNumber(""); fetchData();
-        } catch (error) { alert("❌ Не вдалося створити чек"); }
+        } catch (error) { alert("Не вдалося створити чек"); }
         finally { setIsLoading(false); }
     };
 
@@ -201,7 +201,7 @@ export default function CreateReceiptView({ category }) {
                 <div style={{ flex: "1.2", display: "flex", flexDirection: "column", gap: "20px" }}>
                     <div className={tableStyle.tableWrapper} style={{ marginTop: 0 }}>
                         <h3 style={{ padding: "15px 20px", margin: 0, borderBottom: "1px solid #e2e8f0", backgroundColor: "#f8fafc", color: "#334155", fontSize: "16px" }}>
-                            🛒 Поточний чек
+                             Поточний чек
                         </h3>
                         {cart.length > 0 ? (
                             <table className={tableStyle.styledTable}>
@@ -239,7 +239,7 @@ export default function CreateReceiptView({ category }) {
                             </table>
                         ) : (
                             <div className={tableStyle.waitingScreen} style={{ border: "none", boxShadow: "none" }}>
-                                Кошик порожній. Додайте товари з каталогу праворуч ➡️
+                                Кошик порожній. Додайте товари з каталогу праворуч 
                             </div>
                         )}
                     </div>
@@ -287,18 +287,18 @@ export default function CreateReceiptView({ category }) {
                             disabled={cart.length === 0 || isLoading}
                             style={{ width: "100%", padding: "15px", backgroundColor: cart.length === 0 ? "#cbd5e1" : "#16a34a", color: "white", fontSize: "16px", fontWeight: "bold", border: "none", borderRadius: "8px", cursor: cart.length === 0 ? "not-allowed" : "pointer" }}
                         >
-                            {isLoading ? "Обробка..." : "🧾 ВИБИТИ ЧЕК"}
+                            {isLoading ? "Обробка..." : "ВИБИТИ ЧЕК"}
                         </button>
                     </div>
                 </div>
 
                 <div style={{ flex: "1.5", backgroundColor: "#fff", borderRadius: "8px", border: "1px solid #e2e8f0", padding: "20px", height: "calc(100vh - 120px)", display: "flex", flexDirection: "column", boxShadow: "0 4px 15px rgba(0,0,0,0.05)" }}>
-                    <h3 style={{ marginTop: 0, marginBottom: "15px", color: "#334155", fontSize: "16px" }}>📦 Товари у магазині</h3>
+                    <h3 style={{ marginTop: 0, marginBottom: "15px", color: "#334155", fontSize: "16px" }}>Товари у магазині</h3>
 
                     <div style={{ display: "flex", gap: "10px", marginBottom: "15px" }}>
-                        <button onClick={() => handleTabChange("search")} style={getTabStyle("search")}>🔍 Пошук</button>
-                        <button onClick={() => handleTabChange("category")} style={getTabStyle("category")}>📁 Категорія</button>
-                        <button onClick={() => handleTabChange("filters")} style={getTabStyle("filters")}>⚡ Фільтри</button>
+                        <button onClick={() => handleTabChange("search")} style={getTabStyle("search")}> Пошук</button>
+                        <button onClick={() => handleTabChange("category")} style={getTabStyle("category")}> Категорія</button>
+                        <button onClick={() => handleTabChange("filters")} style={getTabStyle("filters")}> Фільтри</button>
                     </div>
 
                     <div style={{ marginBottom: "20px", minHeight: "45px" }}>
@@ -342,8 +342,8 @@ export default function CreateReceiptView({ category }) {
                                     style={{ flex: 1, padding: "10px 12px", borderRadius: "6px", border: "1px solid #cbd5e1" }}
                                 >
                                     <option value="">Без сортування</option>
-                                    <option value="name_asc">Назвою (А-Я)</option>
-                                    <option value="quantity_asc">Кількістю (зростання)</option>
+                                    <option value="name_asc">за назвою від А до Я</option>
+                                    <option value="quantity_asc">за кількістю за зростання</option>
                                 </select>
                             </div>
                         )}
@@ -385,7 +385,7 @@ export default function CreateReceiptView({ category }) {
                             </table>
                         ) : (
                             <div className={tableStyle.waitingScreen} style={{ border: "none", boxShadow: "none" }}>
-                                За вашим запитом нічого не знайдено 😕
+                                За вашим запитом нічого не знайдено 
                             </div>
                         )}
                     </div>
