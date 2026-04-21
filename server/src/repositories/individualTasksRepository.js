@@ -31,7 +31,7 @@ export const getFullCategoryChecksFromDB = (category_name) => {
                     WHERE s.id_check = r.id_check AND sp.id_product = p.id_product
                 )
             )`;
-        db.all(sql, [categoryName], (err, rows) => err ? reject(err) : resolve(rows));
+        db.all(sql, [category_name], (err, rows) => err ? reject(err) : resolve(rows));
     });
 };
 
@@ -64,6 +64,6 @@ export const getCustomerSpendingsFromDB = (id_card) => {
             INNER JOIN Category AS c ON p.id_category = c.id_category
             WHERE ct.id_card = ?
             GROUP BY c.category_name`;
-        db.all(sql, [cardId], (err, rows) => err ? reject(err) : resolve(rows));
+        db.all(sql, [id_card], (err, rows) => err ? reject(err) : resolve(rows));
     });
 };

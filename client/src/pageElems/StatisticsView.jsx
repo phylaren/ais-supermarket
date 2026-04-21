@@ -5,6 +5,8 @@ import tableStyle from "./table.module.css";
 import GoToMainButton from "./GoToMainButton.jsx";
 import { getUserRole } from './getUserRole.js'
 
+import IndividualTasks from "./IndividualTasks.jsx";
+
 export default function StatisticsView({ category }) {
     const [totalRevenue, setTotalRevenue] = useState(0);
     const [cashierRevenue, setCashierRevenue] = useState([]);
@@ -226,6 +228,9 @@ export default function StatisticsView({ category }) {
                     </div>
                 </div>
             )}
+            <div style={{ marginTop: "40px", borderTop: "2px dashed #cbd5e1", paddingTop: "20px" }}>
+                <IndividualTasks />
+            </div>
             <GoToMainButton></GoToMainButton>
         </div>
     );
