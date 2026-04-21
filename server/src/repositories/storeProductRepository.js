@@ -1,12 +1,31 @@
 import db from "../../db.js";
 
+
 const applyFilters = (sql, params, filters) => {
   let filteredSql = sql;
 
   if (filters.search) {
-    filteredSql += ` AND (s.UPC LIKE ? OR p.product_name LIKE ?)`;
-    const searchString = `%${filters.search}%`;
-    params.push(searchString, searchString);
+    const s = filters.search;
+    
+    const lower = s.toLowerCase();
+    const upper = s.toUpperCase();
+    const capitalized = lower.charAt(0).toUpperCase() + lower.slice(1);
+
+    filteredSql += ` AND (
+      s.UPC LIKE ? OR 
+      p.product_name LIKE ? OR 
+      p.product_name LIKE ? OR 
+      p.product_name LIKE ? OR 
+      p.product_name LIKE ?
+    )`;
+    
+    params.push(
+      `%${s}%`,
+      `%${s}%`,
+      `%${lower}%`,
+      `%${upper}%`,
+      `%${capitalized}%`
+    );
   }
 
   if (filters.id_category && filters.id_category !== 'all') {

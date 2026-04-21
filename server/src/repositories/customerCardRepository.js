@@ -4,10 +4,31 @@ const applyFilters = (sql, params, filters) => {
   let filteredSql = sql;
 
   if (filters.search) {
-    filteredSql += ` AND cust_surname LIKE ?`;
-    params.push(`%${filters.search}%`);
+    const s = filters.search;
+    const lower = s.toLowerCase();
+    const upper = s.toUpperCase();
+    const capitalized = lower.charAt(0).toUpperCase() + lower.slice(1);
+
+    filteredSql += ` AND (
+      id_card LIKE ? OR 
+      phone_number LIKE ? OR 
+      cust_surname LIKE ? OR 
+      cust_surname LIKE ? OR 
+      cust_surname LIKE ? OR 
+      cust_surname LIKE ?
+    )`;
+    
+    params.push(
+      `%${s}%`,
+      `%${s}%`,
+      `%${s}%`,
+      `%${lower}%`,
+      `%${upper}%`,
+      `%${capitalized}%`
+    );
   }
-  else if (filters.discount_percent) {
+
+  if (filters.discount_percent && filters.discount_percent !== 'all') {
     filteredSql += ` AND discount_percent = ?`;
     params.push(Number(filters.discount_percent));
   }

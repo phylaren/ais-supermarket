@@ -4,9 +4,30 @@ const applyFilters = (sql, params, filters) => {
   let filteredSql = sql;
 
   if (filters.search) {
-    filteredSql += ` AND (r.id_check LIKE ? OR e.empl_surname LIKE ? OR c.cust_surname LIKE ?)`;
-    const searchString = `%${filters.search}%`;
-    params.push(searchString, searchString, searchString);
+    const s = filters.search;
+    const lower = s.toLowerCase();
+    const upper = s.toUpperCase();
+    const capitalized = lower.charAt(0).toUpperCase() + lower.slice(1);
+
+    filteredSql += ` AND (
+      r.id_check LIKE ? OR 
+      
+      e.empl_surname LIKE ? OR 
+      e.empl_surname LIKE ? OR 
+      e.empl_surname LIKE ? OR 
+      e.empl_surname LIKE ? OR 
+      
+      c.cust_surname LIKE ? OR 
+      c.cust_surname LIKE ? OR 
+      c.cust_surname LIKE ? OR 
+      c.cust_surname LIKE ?
+    )`;
+    
+    params.push(
+      `%${s}%`,
+      `%${s}%`, `%${lower}%`, `%${upper}%`, `%${capitalized}%`,
+      `%${s}%`, `%${lower}%`, `%${upper}%`, `%${capitalized}%`
+    );
   }
 
   if (filters.receipt_date_from) {

@@ -4,9 +4,26 @@ const applyFilters = (sql, params, filters) => {
   let filteredSql = sql;
 
   if (filters.search) {
-    filteredSql += ` AND (empl_surname LIKE ? OR phone_number LIKE ?)`;
-    const searchString = `%${filters.search}%`;
-    params.push(searchString, searchString);
+    const s = filters.search;
+    const lower = s.toLowerCase();
+    const upper = s.toUpperCase();
+    const capitalized = lower.charAt(0).toUpperCase() + lower.slice(1);
+
+    filteredSql += ` AND (
+      phone_number LIKE ? OR 
+      empl_surname LIKE ? OR 
+      empl_surname LIKE ? OR 
+      empl_surname LIKE ? OR 
+      empl_surname LIKE ?
+    )`;
+    
+    params.push(
+      `%${s}%`,
+      `%${s}%`,
+      `%${lower}%`,
+      `%${upper}%`,
+      `%${capitalized}%`
+    );
   }
 
   if (filters.empl_role && filters.empl_role !== 'all') {
