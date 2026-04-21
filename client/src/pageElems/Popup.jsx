@@ -101,11 +101,14 @@ export default function Popup({ category, onClose, onSuccess, initialData }) {
             }
 
             if (response.status === 403) {
-                alert(" У вас немає прав доступу до цієї дії чи таблиці");
+                alert("🚫 У вас немає прав доступу до цієї дії чи таблиці");
                 return;
             }
 
-            if (!response.ok) throw new Error('Помилка при збереженні');
+            if (!response.ok) {
+                const errorData = await response.json();
+                throw new Error(errorData.message || errorData.error || 'Не вдалося зберегти запис');
+            }
 
             alert(isEditing ? "Успішно оновлено!" : "Успішно додано!");
             onSuccess();
@@ -113,7 +116,7 @@ export default function Popup({ category, onClose, onSuccess, initialData }) {
 
         } catch (error) {
             console.error("Помилка:", error);
-            alert("Не вдалося зберегти запис");
+            alert(error.message);
         }
     };
 
@@ -149,7 +152,7 @@ export default function Popup({ category, onClose, onSuccess, initialData }) {
                         if (field.type === "select") {
                             let defaultSelectValue = initialData?.[field.name] || (field.labelKey ? initialData?.[field.labelKey] : "") || "";
 
-                            if (field.endpoint && selectOptions[field.name]) { 
+                            if (field.endpoint && selectOptions[field.name]) {
                                 const matchedOption = selectOptions[field.name].find(
                                     opt => String(opt[field.valueKey]).trim() === String(defaultSelectValue).trim() ||
                                         String(opt[field.labelKey]).trim() === String(defaultSelectValue).trim()

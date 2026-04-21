@@ -1,16 +1,38 @@
+import db from "../../db.js";
 import { insertEntity, deleteEntity, updateEntity } from "../service/service.js";
 import { getAllStoreProductsByCountService, getStoreProductsByNameService, getStoreProductByUPCService,
   getStoreProductsByCategoryService, getStoreProductByNameService, getStoreProductsData
  } from "../service/storeProductService.js";
 
 export const insertData = async (req, res) => {
-  const result = await insertEntity({
-    tableName: "Store_Product",
-    data: req.body,
-    entityName: "Товар у магазині",
-  });
+  const { id_product } = req.body;
 
-  return res.status(result.status).json(result.body);
+  if (!id_product) {
+    return res.status(400).json({ success: false, message: "ID товару обов'язковий" });
+  }
+
+  const checkSql = `SELECT COUNT(*) as count FROM Store_Product WHERE id_product = ?`;
+
+  db.get(checkSql, [id_product], async (err, row) => {
+    if (err) {
+      return res.status(500).json({ success: false, message: "Помилка бази даних під час перевірки товару" });
+    }
+
+    if (row.count >= 2) {
+      return res.status(400).json({ 
+        success: false, 
+        message: "Цей товар вже має максимально допустимі 2 записи в магазині (звичайний та акційний)!" 
+      });
+    }
+
+    const result = await insertEntity({
+      tableName: "Store_Product",
+      data: req.body,
+      entityName: "Товар у магазині",
+    });
+
+    return res.status(result.status).json(result.body);
+  });
 };
 
 export const deleteStoreProduct = async (req, res) => {
