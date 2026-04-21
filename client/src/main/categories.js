@@ -35,7 +35,8 @@ const manager = [
         name: "Товари в магазині",
         link: "store-product/all-by-count",
         rules: ALL_ACCESS,
-        functions: MANAGER_FUNCTIONS
+        functions: MANAGER_FUNCTIONS,
+        hasAddStock: true
     },
     {
         name: "Товари",

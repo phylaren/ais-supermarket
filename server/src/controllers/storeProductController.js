@@ -1,6 +1,7 @@
 import db from "../../db.js";
 import { insertEntity, deleteEntity, updateEntity } from "../service/service.js";
 import { getAllStoreProductsByCountService, getStoreProductsByNameService } from "../service/storeProductService.js";
+import * as repo from '../repositories/storeProductRepository.js';
 
 export const insertData = async (req, res) => {
   const { id_product } = req.body;
@@ -70,4 +71,20 @@ export const getAllStoreProductsByName = async (req, res) => {
   const filters = req.query;
   const result = await getStoreProductsByNameService(filters);
   return res.status(result.status).json(result.body);
+};
+
+export const addStock = async (req, res) => {
+    try {
+        const { upc } = req.params;
+        const { quantity } = req.body;
+
+        if (!quantity || quantity <= 0) {
+            return res.status(400).json({ success: false, message: "Некоректна кількість" });
+        }
+
+        await repo.addStockToDB(upc, quantity);
+        return res.status(200).json({ success: true, message: "Партію прийнято" });
+    } catch (error) {
+        return res.status(500).json({ success: false, message: error.message });
+    }
 };

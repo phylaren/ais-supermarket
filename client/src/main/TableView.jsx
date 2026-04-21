@@ -105,6 +105,41 @@ export default function TableView({ category }) {
         setIsPopupOpen(true);
     };
 
+    const handleAddStockClick = async (upc) => {
+        const input = window.prompt(`Введіть кількість товару, яка надійшла для UPC: ${upc}`);
+
+        if (input === null || input.trim() === "") return;
+
+        const quantity = parseInt(input, 10);
+        if (isNaN(quantity) || quantity <= 0) {
+            alert("Помилка: Кількість має бути додатнім цілим числом.");
+            return;
+        }
+
+        try {
+            const token = localStorage.getItem('token');
+            const response = await fetch(`http://localhost:5000/api/${category.link}/${upc}/add-stock`, {
+                method: 'PATCH',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                },
+                body: JSON.stringify({ quantity })
+            });
+
+            if (response.ok) {
+                alert(`Успішно додано ${quantity} шт. на склад!`);
+                fetchData();
+            } else {
+                const errorData = await response.json();
+                alert(`Не вдалося прийняти партію: ${errorData.message}`);
+            }
+        } catch (error) {
+            console.error("Помилка прийому партії:", error);
+            alert("Помилка з'єднання з сервером.");
+        }
+    };
+
     return (
         <div className={style.pageContainer}>
             {isPopupOpen && (
@@ -131,9 +166,9 @@ export default function TableView({ category }) {
                 category={category}
                 onDelete={handleDelete}
                 onDetailsClick={(id) => {
-                console.log("ID отримано в TableView:", id);
-                setSelectedReceiptId(id);
-            }}
+                    console.log("ID отримано в TableView:", id);
+                    setSelectedReceiptId(id);
+                }}
                 onAddClick={handleAddClick}
                 onEditClick={handleEditClick}
                 searchTerm={searchTerm}
@@ -142,6 +177,7 @@ export default function TableView({ category }) {
                 setFilterValues={setFilterValues}
                 onApplyFilters={fetchData}
                 isLoading={isLoading}
+                onAddStockClick={handleAddStockClick}
             />
 
             <GoToMainButton />

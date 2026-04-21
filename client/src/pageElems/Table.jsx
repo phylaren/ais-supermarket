@@ -17,7 +17,7 @@ function getAttributes(data) {
 export default function Table({
     data, category, onDelete, onAddClick, onEditClick,
     searchTerm, setSearchTerm, filterValues, setFilterValues,
-    onApplyFilters, isLoading, onDetailsClick
+    onApplyFilters, isLoading, onDetailsClick, onAddStockClick
 }) {
     const [isFilterOpen, setIsFilterOpen] = useState(false);
     const [activeSort, setActiveSort] = useState(null);
@@ -160,6 +160,7 @@ export default function Table({
                             onEditClick={onEditClick}
                             category={category}
                             onDetailsClick={onDetailsClick}
+                            onAddStockClick={onAddStockClick}
                         />
                     </table>
                 )}
@@ -244,7 +245,7 @@ function Attributes({ attributes }) {
     );
 }
 
-function Data({ data, onDelete, onEditClick, category, onDetailsClick }) {
+function Data({ data, onDelete, onEditClick, category, onDetailsClick, onAddStockClick }) {
     const canEdit = category?.rules?.edit;
     const canDelete = category?.rules?.delete;
 
@@ -291,6 +292,17 @@ function Data({ data, onDelete, onEditClick, category, onDetailsClick }) {
                             >
                                 Деталі
                             </button>)}
+
+                            {category.hasAddStock && (
+                                <button
+                                    type="button"
+                                    onClick={() => onAddStockClick(rowId)}
+                                    style={{ backgroundColor: "#10b981", color: "white", border: "none", padding: "5px 10px", borderRadius: "4px", cursor: "pointer" }}
+                                    title="Прийняти партію товару"
+                                >
+                                    + Партію
+                                </button>
+                            )}
                         </td>
                     </tr>
                 );
