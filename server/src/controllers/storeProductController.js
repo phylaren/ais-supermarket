@@ -76,14 +76,18 @@ export const getAllStoreProductsByName = async (req, res) => {
 export const addStock = async (req, res) => {
     try {
         const { upc } = req.params;
-        const { quantity } = req.body;
+        const { quantity, price } = req.body; 
 
         if (!quantity || quantity <= 0) {
             return res.status(400).json({ success: false, message: "Некоректна кількість" });
         }
+        if (!price || price <= 0) {
+            return res.status(400).json({ success: false, message: "Некоректна ціна" });
+        }
 
-        await repo.addStockToDB(upc, quantity);
-        return res.status(200).json({ success: true, message: "Партію прийнято" });
+        await repo.addStockToDB(upc, quantity, price);
+        
+        return res.status(200).json({ success: true, message: "Партію прийнято, ціну оновлено" });
     } catch (error) {
         return res.status(500).json({ success: false, message: error.message });
     }

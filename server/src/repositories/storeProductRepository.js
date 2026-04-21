@@ -107,10 +107,11 @@ export const getStoreProductsOrderedByNameFromDB = (filters = {}) => {
   });
 };
 
-export const addStockToDB = (upc, quantity) => {
+export const addStockToDB = (upc, quantity, newPrice) => {
     return new Promise((resolve, reject) => {
-        const sql = `UPDATE Store_Product SET products_number = products_number + ? WHERE UPC = ?`;
-        db.run(sql, [quantity, upc], function (err) {
+        const sql = `UPDATE Store_Product SET products_number = products_number + ?, selling_price = ? WHERE UPC = ?`;
+        
+        db.run(sql, [quantity, newPrice, upc], function (err) {
             if (err) reject(err);
             else resolve(this.changes);
         });
