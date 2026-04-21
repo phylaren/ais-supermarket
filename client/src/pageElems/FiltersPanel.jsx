@@ -6,7 +6,8 @@ export default function FiltersPanel({
     filterValues,
     handleInputChange,
     selectOptions,
-    handleApplyFilters
+    handleApplyFilters,
+    handleResetFilters
 }) {
     return (
         <div className="noPrint" style={{
@@ -152,22 +153,38 @@ export default function FiltersPanel({
                 })}
 
                 {currentFilters.some(f => f.type !== "button" && f.type !== "action") && (
-                    <button
-                        onClick={handleApplyFilters}
-                        style={{
-                            padding: "0 20px",
-                            height: "38px",
-                            backgroundColor: "#1677ff",
-                            color: "white",
-                            border: "none",
-                            borderRadius: "6px",
-                            cursor: "pointer",
-                            fontWeight: "500",
-                            marginLeft: "auto"
-                        }}
-                    >
-                        Застосувати
-                    </button>
+                    <div style={{ marginLeft: "auto", display: "flex", gap: "10px" }}>
+                        <button
+                            onClick={handleResetFilters}
+                            style={{
+                                padding: "0 20px",
+                                height: "38px",
+                                backgroundColor: "#fff",
+                                color: "#64748b",
+                                border: "1px solid #cbd5e1",
+                                borderRadius: "6px",
+                                cursor: "pointer",
+                                fontWeight: "500"
+                            }}
+                        >
+                            Скинути
+                        </button>
+                        <button
+                            onClick={handleApplyFilters}
+                            style={{
+                                padding: "0 20px",
+                                height: "38px",
+                                backgroundColor: "#1677ff",
+                                color: "white",
+                                border: "none",
+                                borderRadius: "6px",
+                                cursor: "pointer",
+                                fontWeight: "500",
+                            }}
+                        >
+                            Застосувати
+                        </button>
+                    </div>
                 )}
             </div>
         </div>

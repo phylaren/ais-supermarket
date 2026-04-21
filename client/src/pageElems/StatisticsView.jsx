@@ -130,6 +130,22 @@ export default function StatisticsView({ category }) {
         setAppliedFilters(filterValues);
         fetchStats(filterValues);
     };
+    const handleResetFilters = () => {
+        const today = new Date();
+        const firstDay = new Date(today.getFullYear(), today.getMonth(), 1).toISOString().split('T')[0];
+        const currentDay = today.toISOString().split('T')[0];
+
+        const defaultFilters = {
+            receipt_date_from: firstDay,
+            receipt_date_to: currentDay,
+            surname: ""
+        };
+
+        setFilterValues(defaultFilters);
+        setAppliedFilters(defaultFilters);
+
+        fetchStats(defaultFilters); 
+    };
 
     return (
         <div className={style.pageContainer}>
@@ -149,6 +165,7 @@ export default function StatisticsView({ category }) {
                 handleInputChange={(name, val) => setFilterValues(prev => ({ ...prev, [name]: val }))}
                 selectOptions={selectOptions}
                 handleApplyFilters={handleApplyFilters}
+                handleResetFilters={handleResetFilters}
             />
 
             {isLoading ? (

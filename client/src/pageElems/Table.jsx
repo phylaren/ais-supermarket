@@ -72,6 +72,7 @@ export default function Table({
         year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit'
     });
 
+
     const handleSortClick = (value) => {
         setActiveSort(activeSort === value ? null : value);
         console.log("Вибрано сортування:", value);
@@ -83,6 +84,23 @@ export default function Table({
 
     const handleApplyFilters = () => {
         onApplyFilters();
+    };
+
+    const handleResetFilters = () => {
+        const today = new Date();
+        const firstDay = new Date(today.getFullYear(), today.getMonth(), 1).toISOString().split('T')[0];
+        const currentDay = today.toISOString().split('T')[0];
+
+        const defaultFilters = {
+            receipt_date_from: firstDay,
+            receipt_date_to: currentDay,
+            surname: ""
+        };
+
+        setFilterValues(defaultFilters);
+        setAppliedFilters(defaultFilters);
+
+        fetchStats(defaultFilters); 
     };
 
     return (
@@ -108,6 +126,7 @@ export default function Table({
                     handleInputChange={handleInputChange}
                     selectOptions={selectOptions}
                     handleApplyFilters={handleApplyFilters}
+                    handleResetFilters={handleResetFilters}
                 />
             )}
 
