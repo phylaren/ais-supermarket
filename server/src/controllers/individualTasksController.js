@@ -6,8 +6,8 @@ export const getCategoryRevenue = async (req, res) => {
 };
 
 export const getChecksWithAllProducts = async (req, res) => {
-    const { categoryName } = req.query;
-    const result = await service.getFullCategoryChecksService(categoryName);
+    const { category_name } = req.query;
+    const result = await service.getFullCategoryChecksService(category_name);
     res.status(result.status).json(result);
 };
 
@@ -17,7 +17,7 @@ export const getUniversalCashiers = async (req, res) => {
 };
 
 export const getCustomerCategorySpendings = async (req, res) => {
-    const { cardId } = req.query;
-    const result = await service.getCustomerSpendingsService(cardId);
+    const { id_card } = req.query;
+    const result = await service.getCustomerSpendingsService(id_card);
     res.status(result.status).json(result);
 };

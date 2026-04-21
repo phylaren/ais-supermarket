@@ -16,7 +16,7 @@ export const getCategoryRevenueFromDB = () => {
     });
 };
 
-export const getFullCategoryChecksFromDB = (categoryName) => {
+export const getFullCategoryChecksFromDB = (category_name) => {
     return new Promise((resolve, reject) => {
         const sql = `
             SELECT r.id_check, r.print_date, r.sum_total
@@ -52,7 +52,7 @@ export const getUniversalCashiersFromDB = () => {
     });
 };
 
-export const getCustomerSpendingsFromDB = (cardId) => {
+export const getCustomerSpendingsFromDB = (id_card) => {
     return new Promise((resolve, reject) => {
         const sql = `
             SELECT c.category_name, SUM(s.selling_price * s.product_number) AS TotalByCategory

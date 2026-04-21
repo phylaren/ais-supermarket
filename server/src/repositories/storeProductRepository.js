@@ -1,6 +1,5 @@
 import db from "../../db.js";
 
-
 const applyFilters = (sql, params, filters) => {
   let filteredSql = sql;
 
@@ -48,12 +47,13 @@ export const getAllStoreProductsByCountFromDB = (filters = {}) => {
       SELECT
         s.UPC,
         p.product_name,
-        p.id_category,
+        c.category_name,
         s.selling_price,
         s.products_number,
         s.promotional_product
       FROM Store_Product AS s
       INNER JOIN Product AS p ON s.id_product = p.id_product
+      INNER JOIN Category AS c ON p.id_category = c.id_category
       WHERE 1=1
     `;
     let params = [];
@@ -81,12 +81,13 @@ export const getStoreProductsOrderedByNameFromDB = (filters = {}) => {
       SELECT
         s.UPC,
         p.product_name,
-        p.id_category,
+        c.category_name,
         s.selling_price,
         s.products_number,
         s.promotional_product
       FROM Store_Product AS s
       INNER JOIN Product AS p ON s.id_product = p.id_product
+      INNER JOIN Category AS c ON p.id_category = c.id_category
       WHERE 1=1
     `;
     let params = [];
@@ -100,103 +101,6 @@ export const getStoreProductsOrderedByNameFromDB = (filters = {}) => {
     }
 
     db.all(sql, params, (err, rows) => {
-      if (err) return reject(err);
-      resolve(rows);
-    });
-  });
-};
-
-export const getStoreProductByUPCFromDB = (upc) => {
-  return new Promise((resolve, reject) => {
-    const sql = `
-      SELECT
-        sp.UPC,
-        p.product_name,
-        sp.selling_price,
-        sp.products_number,
-        p.characteristics
-      FROM Store_Product AS sp
-      INNER JOIN Product AS p ON sp.id_product = p.id_product
-      WHERE sp.UPC = ?
-    `;
-
-    db.get(sql, [upc], (err, row) => {
-      if (err) return reject(err);
-      resolve(row);
-    });
-  });
-};
-
-export const getStoreProductsByCategoryFromDB = (categoryName) => {
-  return new Promise((resolve, reject) => {
-    const sql = `
-      SELECT
-        s.UPC,
-        p.product_name,
-        c.category_name,
-        s.products_number,
-        s.selling_price,
-        s.promotional_product,
-        p.characteristics
-      FROM Store_Product AS s
-      INNER JOIN Product AS p ON s.id_product = p.id_product
-      INNER JOIN Category AS c ON p.id_category = c.id_category
-      WHERE c.category_name = ?
-      ORDER BY p.product_name ASC
-    `;
-
-    db.all(sql, [categoryName], (err, rows) => {
-      if (err) return reject(err);
-      resolve(rows);
-    });
-  });
-};
-
-export const getStoreProductByNameFromDB = (productName) => {
-  return new Promise((resolve, reject) => {
-    const sql = `
-      SELECT
-        sp.UPC,
-        p.product_name,
-        sp.selling_price,
-        sp.products_number,
-        sp.promotional_product,
-        c.category_name
-      FROM Store_Product AS sp
-      INNER JOIN Product AS p ON sp.id_product = p.id_product
-      INNER JOIN Category AS c ON p.id_category = c.id_category
-      WHERE p.product_name = ?
-    `;
-
-    db.all(sql, [productName], (err, rows) => {
-      if (err) return reject(err);
-      resolve(rows);
-    });
-  });
-};
-
-export const findStoreProducts = (isPromotional, sortBy) => {
-  return new Promise((resolve, reject) => {
-    const order = sortBy === 'number'
-      ? 'sp.products_number DESC'
-      : 'p.product_name ASC';
-
-    const promoValue = isPromotional ? 1 : 0;
-
-    const sql = `
-      SELECT 
-        sp.UPC, 
-        p.product_name, 
-        sp.selling_price, 
-        sp.products_number,
-        sp.promotional_product
-      FROM Store_Product AS sp
-      INNER JOIN Product AS p ON sp.id_product = p.id_product
-      WHERE sp.promotional_product = ?
-      ORDER BY ${order}
-    `;
-
-    db.all(sql, [promoValue], (err, rows) => {
       if (err) return reject(err);
       resolve(rows);
     });

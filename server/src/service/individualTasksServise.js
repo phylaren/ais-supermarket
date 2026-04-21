@@ -7,10 +7,10 @@ export const getCategoryRevenueService = async () => {
     } catch (e) { return { status: 500, success: false, message: e.message }; }
 };
 
-export const getFullCategoryChecksService = async (categoryName) => {
-    if (!categoryName) return { status: 400, success: false, message: "Назва категорії обов'язкова" };
+export const getFullCategoryChecksService = async (category_name) => {
+    if (!category_name) return { status: 400, success: false, message: "Назва категорії обов'язкова" };
     try {
-        const data = await repo.getFullCategoryChecksFromDB(categoryName);
+        const data = await repo.getFullCategoryChecksFromDB(category_name);
         return { status: 200, success: true, data };
     } catch (e) { return { status: 500, success: false, message: e.message }; }
 };
@@ -22,10 +22,10 @@ export const getUniversalCashiersService = async () => {
     } catch (e) { return { status: 500, success: false, message: e.message }; }
 };
 
-export const getCustomerSpendingsService = async (cardId) => {
-    if (!cardId) return { status: 400, success: false, message: "ID картки обов'язковий" };
+export const getCustomerSpendingsService = async (id_card) => {
+    if (!id_card) return { status: 400, success: false, message: "ID картки обов'язковий" };
     try {
-        const data = await repo.getCustomerSpendingsFromDB(cardId);
+        const data = await repo.getCustomerSpendingsFromDB(id_card);
         return { status: 200, success: true, data };
     } catch (e) { return { status: 500, success: false, message: e.message }; }
 };
