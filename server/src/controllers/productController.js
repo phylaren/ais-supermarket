@@ -3,7 +3,6 @@ import * as productService from "../service/productService.js";
 
 export const getAllProducts = async (req, res) => {
   try {
-    // Передаємо query-параметри (наприклад, ?id_category=3) у сервіс
     const result = await productService.getAllProductsService(req.query);
     return res.status(result.status).json(result.body);
   } catch (error) {
