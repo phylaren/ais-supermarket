@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import style from "../main/Main.module.css";
 import tableStyle from "./table.module.css";
 
@@ -11,6 +11,34 @@ export default function IndividualTasks() {
 
     const [idCardInput, setIdCardInput] = useState('');
     const [customerSpendings, setCustomerSpendings] = useState(null);
+
+    const [categories, setCategories] = useState([]);
+    const [customers, setCustomers] = useState([]);
+
+    useEffect(() => {
+        const fetchOptions = async () => {
+            const token = localStorage.getItem('token');
+            const headers = { 'Authorization': `Bearer ${token}` };
+
+            try {
+                const catRes = await fetch('http://localhost:5000/api/category', { headers });
+                if (catRes.ok) {
+                    const catData = await catRes.json();
+                    setCategories(catData.data || catData);
+                }
+
+                const custRes = await fetch('http://localhost:5000/api/customer-card', { headers }); 
+                if (custRes.ok) {
+                    const custData = await custRes.json();
+                    setCustomers(custData.data || custData);
+                }
+            } catch (error) {
+                console.error("Помилка завантаження опцій для списків:", error);
+            }
+        };
+
+        fetchOptions();
+    }, []);
 
     const fetchTask = async (endpoint, setter, params = '') => {
         try {
@@ -107,13 +135,18 @@ export default function IndividualTasks() {
                 <h3 style={{ marginTop: 0, color: "#334155", marginBottom: "20px" }}>Чеки, що містять усі товари певної категорії</h3>
                 
                 <div className={style.inputGroup}>
-                    <input 
-                        type="text" 
+                    <select 
                         className={style.actionInput}
-                        placeholder="Назва категорії (напр. Молочка)" 
                         value={categoryNameInput}
                         onChange={(e) => setCategoryNameInput(e.target.value)}
-                    />
+                    >
+                        <option value="">Оберіть категорію...</option>
+                        {categories.map((c, i) => (
+                            <option key={i} value={c.category_name}>
+                                {c.category_name}
+                            </option>
+                        ))}
+                    </select>
                     <button className={style.primaryButton} onClick={() => fetchTask('full-category-checks', setFullChecks, `?category_name=${categoryNameInput}`)}>
                         Пошук
                     </button>
@@ -153,13 +186,18 @@ export default function IndividualTasks() {
                 <h3 style={{ marginTop: 0, color: "#334155", marginBottom: "20px" }}>Витрати клієнта за категоріями</h3>
                 
                 <div className={style.inputGroup}>
-                    <input 
-                        type="text" 
+                    <select 
                         className={style.actionInput}
-                        placeholder="ID Картки клієнта" 
                         value={idCardInput}
                         onChange={(e) => setIdCardInput(e.target.value)}
-                    />
+                    >
+                        <option value="">Оберіть клієнта...</option>
+                        {customers.map((c, i) => (
+                            <option key={i} value={c.id_card}>
+                                {c.id_card} - {c.cust_surname} {c.cust_name}
+                            </option>
+                        ))}
+                    </select>
                     <button className={style.primaryButton} onClick={() => fetchTask('customer-spendings', setCustomerSpendings, `?id_card=${idCardInput}`)}>
                         Розрахувати
                     </button>
