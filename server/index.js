@@ -14,7 +14,7 @@ import receiptRoutes from './src/routes/receiptRoutes.js';
 import authRoutes from './src/routes/authRoutes.js';
 
 import individualTasksRoutes from './src/routes/individualTasksRoutes.js'
-
+import { startCleanupJobs } from './src/service/startCleanupJobs.js';
 dotenv.config();
 
 const app = express();
@@ -36,6 +36,8 @@ app.use('/api/receipt', receiptRoutes);
 app.use('/api/auth', authRoutes); 
 
 app.use('/api/individual-tasks', individualTasksRoutes); 
+
+startCleanupJobs();
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {

@@ -22,7 +22,7 @@ export const getReceiptsByEmployee = async (req, res) => {
     return res.status(result.status).json(result);
 
   } catch (error) {
-    console.error("❌ Помилка в getReceiptsByEmployee:", error);
+    console.error("Помилка в getReceiptsByEmployee:", error);
     return res.status(500).json({ success: false, message: "Внутрішня помилка сервера: " + error.message });
   }
 };

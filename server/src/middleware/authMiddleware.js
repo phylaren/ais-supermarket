@@ -17,7 +17,7 @@ export const verifyToken = (req, res, next) => {
         req.user = decoded;
         next();
     } catch (error) {
-        console.log("❌ Помилка розшифровки токена:", error.message);
+        console.log("Помилка розшифровки токена:", error.message);
         return res.status(401).json({ error: "Токен недійсний або прострочений" });
     }
 };
