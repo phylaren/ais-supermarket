@@ -55,6 +55,6 @@ export const getMe = (req, res) => {
   db.get(sql, [currentUserId], (err, row) => {
     if (err) return res.status(500).json({ error: "Помилка сервера" });
     if (!row) return res.status(404).json({ error: "Користувача не знайдено" });
-    res.json({ success: true, data: row });
+    res.json({ success: true, data: [row] });
   });
 };
