@@ -58,3 +58,17 @@
     font-weight: 500;
     margin-top: 20px;
 }
+
+.detailsButton {
+    background-color: #1677ff;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.detailsButton:hover {
+    background-color: #125ecc;
+}

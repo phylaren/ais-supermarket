@@ -47,7 +47,8 @@ const manager = [
         name: "Чеки",
         link: "receipt",
         rules: { create: false, edit: false, delete: true },
-        functions: MANAGER_NO_SEARCH
+        functions: MANAGER_NO_SEARCH,
+        hasDetails: true
     },
     {
         name: "Статистика",
@@ -92,7 +93,9 @@ const cashier = [
         name: "Мої чеки",
         link: "receipt/my-receipts",
         rules: { create: true, edit: false, delete: false },
-        functions: CASHIER_FUNCTIONS
+        functions: CASHIER_FUNCTIONS,
+        hasDetails: true
+
     },
 ];
 

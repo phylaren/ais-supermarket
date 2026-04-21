@@ -17,7 +17,7 @@ function getAttributes(data) {
 export default function Table({
     data, category, onDelete, onAddClick, onEditClick,
     searchTerm, setSearchTerm, filterValues, setFilterValues,
-    onApplyFilters, isLoading
+    onApplyFilters, isLoading, onDetailsClick
 }) {
     const [isFilterOpen, setIsFilterOpen] = useState(false);
     const [activeSort, setActiveSort] = useState(null);
@@ -102,7 +102,7 @@ export default function Table({
         setFilterValues(defaultFilters);
         setAppliedFilters(defaultFilters);
 
-        fetchStats(defaultFilters); 
+        fetchStats(defaultFilters);
     };
 
     return (
@@ -159,6 +159,7 @@ export default function Table({
                             onDelete={onDelete}
                             onEditClick={onEditClick}
                             category={category}
+                            onDetailsClick={onDetailsClick}
                         />
                     </table>
                 )}
@@ -200,7 +201,7 @@ function Filters({ onAddClick, category, searchTerm, setSearchTerm, onPrint, onT
                     onClick={onPrint}
                     style={{ padding: "8px 15px", cursor: "pointer", borderRadius: "4px", border: "1px solid #ccc", backgroundColor: "#fff" }}
                 >
-                    🖨 Роздрукувати
+                    Роздрукувати
                 </button>
             )}
 
@@ -217,7 +218,7 @@ function Filters({ onAddClick, category, searchTerm, setSearchTerm, onPrint, onT
             {canSearch && (
                 <input
                     type="text"
-                    placeholder="🔍 Пошук по таблиці..."
+                    placeholder="Пошук по таблиці"
                     value={searchTerm || ""}
                     onChange={(e) => setSearchTerm(e.target.value)}
                     onKeyDown={(e) => { if (e.key === 'Enter') onSearchEnter(); }}
@@ -243,7 +244,7 @@ function Attributes({ attributes }) {
     );
 }
 
-function Data({ data, onDelete, onEditClick, category }) {
+function Data({ data, onDelete, onEditClick, category, onDetailsClick }) {
     const canEdit = category?.rules?.edit;
     const canDelete = category?.rules?.delete;
 
@@ -255,7 +256,7 @@ function Data({ data, onDelete, onEditClick, category }) {
                 return (
                     <tr key={rowIndex}>
                         {Object.entries(row).map(([key, value], colIndex) => {
-                            
+
                             let safeValue = value;
                             if (value === null || value === undefined) safeValue = "—";
                             if (key === "promotional_product") {
@@ -282,6 +283,14 @@ function Data({ data, onDelete, onEditClick, category }) {
                             >
                                 Видалити
                             </button>}
+
+                            {category.hasDetails && (<button
+                                type="button"
+                                onClick={() => onDetailsClick(row.id_check)}
+                                style={{ backgroundColor: "#1677ff", color: "white", border: "none", padding: "5px 10px", borderRadius: "4px", cursor: "pointer" }}
+                            >
+                                Деталі
+                            </button>)}
                         </td>
                     </tr>
                 );
