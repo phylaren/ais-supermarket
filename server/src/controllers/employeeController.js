@@ -14,15 +14,30 @@ export const insertData = async (req, res) => {
 
 export const deleteEmployee = async (req, res) => {
   const { id_employee } = req.params;
+  const checkSql = `SELECT COUNT(*) as count FROM Receipt WHERE id_employee = ?`;
 
-  const result = await deleteEntity({
-    tableName: "Employee",
-    idField: "id_employee",
-    entityName: "Працівника",
-    id: id_employee,
+  db.get(checkSql, [id_employee], async (err, row) => {
+    if (err) {
+      console.error("Помилка БД при перевірці працівника:", err.message);
+      return res.status(500).json({ success: false, message: "Помилка бази даних під час перевірки" });
+    }
+
+    if (row.count > 0) {
+      return res.status(400).json({ 
+        success: false, 
+        message: "Неможливо видалити працівника: він вже створив один або більше чеків!" 
+      });
+    }
+
+    const result = await deleteEntity({
+      tableName: "Employee",
+      idField: "id_employee",
+      entityName: "Працівника",
+      id: id_employee,
+    });
+
+    return res.status(result.status).json(result.body);
   });
-
-  return res.status(result.status).json(result.body);
 };
 
 export const updateData = async (req, res) => {

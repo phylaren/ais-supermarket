@@ -1,3 +1,5 @@
+PRAGMA foreign_keys = ON;
+
 CREATE TABLE IF NOT EXISTS Category (
     id_category INTEGER NOT NULL PRIMARY KEY,
     category_name VARCHAR(50) NOT NULL

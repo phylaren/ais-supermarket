@@ -55,37 +55,42 @@ export default function TableView({ category }) {
     }, [category.link]);
 
     const handleDelete = async (id) => {
-        const isConfirmed = window.confirm(`Ви впевнені, що хочете видалити запис з ID: ${id}?`);
-        if (!isConfirmed) return;
+    const isConfirmed = window.confirm(`Ви впевнені, що хочете видалити запис з ID: ${id}?`);
+    if (!isConfirmed) return;
 
-        try {
-            const token = localStorage.getItem('token');
-            const response = await fetch(`http://localhost:5000/api/${category.link}/${id}`, {
-                method: 'DELETE',
-                headers: { 'Authorization': `Bearer ${token}` }
-            });
+    try {
+        const token = localStorage.getItem('token');
+        const response = await fetch(`http://localhost:5000/api/${category.link}/${id}`, {
+            method: 'DELETE',
+            headers: { 'Authorization': `Bearer ${token}` }
+        });
 
-            if (response.status === 401) {
-                alert("Час вашої сесії вийшов. Будь ласка, увійдіть знову");
-                localStorage.removeItem('token');
-                localStorage.removeItem('role');
-                window.location.href = '/login';
-                return;
-            }
-
-            if (response.status === 403) {
-                alert("У вас немає прав доступу до цієї дії чи таблиці");
-                return;
-            }
-
-            if (!response.ok) throw new Error('Помилка при видаленні');
-
-            setData(prevData => prevData.filter(row => Object.values(row)[0] !== id));
-            alert("Успішно видалено!");
-        } catch (error) {
-            alert("Не вдалося видалити запис");
+        if (response.status === 401) {
+            alert("Час вашої сесії вийшов. Будь ласка, увійдіть знову");
+            localStorage.removeItem('token');
+            localStorage.removeItem('role');
+            window.location.href = '/login';
+            return;
         }
-    };
+
+        if (response.status === 403) {
+            alert("У вас немає прав доступу до цієї дії чи таблиці");
+            return;
+        }
+
+        if (!response.ok) {
+            const errorData = await response.json();
+            throw new Error(errorData.message || errorData.error || 'Не вдалося видалити запис');
+        }
+
+        setData(prevData => prevData.filter(row => Object.values(row)[0] !== id));
+        alert("Успішно видалено!");
+        
+    } catch (error) {
+        console.error("Помилка видалення:", error);
+        alert(error.message);
+    }
+};
 
     const handleAddClick = () => {
         setEditingRecord(null);
