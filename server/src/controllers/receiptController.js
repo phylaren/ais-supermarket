@@ -45,26 +45,26 @@ export const insertData = async (req, res) => {
 };
 
 export const deleteReceipt = async (req, res) => {
-  const { id_receipt } = req.params;
+  const { id_check } = req.params;
 
   const result = await deleteEntity({
     tableName: "Receipt",
-    idField: "id_receipt",
+    idField: "id_check",
     entityName: "Чек",
-    id: id_receipt,
+    id: id_check,
   });
 
   return res.status(result.status).json(result.body);
 };
 
 export const updateData = async (req, res) => {
-  const { id_receipt } = req.params;
+  const { id_check } = req.params;
 
   const result = await updateEntity({
     tableName: "Receipt",
-    idField: "id_receipt",
+    idField: "id_check",
     entityName: "Чек",
-    id: id_receipt,
+    id: id_check,
     data: req.body
   });
 
