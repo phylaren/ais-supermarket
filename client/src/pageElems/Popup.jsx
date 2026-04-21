@@ -143,6 +143,12 @@ export default function Popup({ category, onClose, onSuccess, initialData }) {
                                         type="checkbox"
                                         defaultChecked={initialData?.[field.name] === 1}
                                         className={style.checkboxInput}
+                                        maxLength={field.maxLength}
+                                        minLength={field.minLength}
+                                        min={field.min}
+                                        max={field.max}
+                                        pattern={field.pattern}
+                                        title={field.title}
                                     />
                                     {field.label}
                                 </label>
@@ -210,6 +216,24 @@ export default function Popup({ category, onClose, onSuccess, initialData }) {
                                     required={field.required}
                                     className={style.inputField}
                                     readOnly={isEditing && isPrimaryKey}
+                                    maxLength={field.maxLength}
+                                    minLength={field.minLength}
+                                    min={field.min}
+                                    max={field.max}
+                                    pattern={field.pattern}
+                                    title={field.title}
+
+                                    onInput={(e) => {
+                                        const textOnlyFields = [
+                                            "empl_name", "empl_surname", "empl_patronymic",
+                                            "cust_name", "cust_surname", "cust_patronymic",
+                                            "city"
+                                        ];
+
+                                        if (textOnlyFields.includes(field.name)) {
+                                            e.target.value = e.target.value.replace(/[^a-zA-Zа-яА-ЯіІїЇєЄґҐ' \-]/g, '');
+                                        }
+                                    }}
                                 />
                             </div>
                         );
