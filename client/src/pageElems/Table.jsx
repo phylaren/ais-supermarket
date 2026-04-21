@@ -254,9 +254,13 @@ function Data({ data, onDelete, onEditClick, category }) {
 
                 return (
                     <tr key={rowIndex}>
-                        {Object.values(row).map((value, colIndex) => {
+                        {Object.entries(row).map(([key, value], colIndex) => {
+                            
                             let safeValue = value;
                             if (value === null || value === undefined) safeValue = "—";
+                            if (key === "promotional_product") {
+                                safeValue = value === 1 ? "Так" : "Ні";
+                            }
                             else if (typeof value === 'boolean') safeValue = value ? "Так" : "Ні";
 
                             return <td key={colIndex}>{safeValue}</td>;
