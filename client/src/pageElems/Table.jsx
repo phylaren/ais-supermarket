@@ -122,10 +122,10 @@ export default function Table({
                 </div>
 
                 {isLoading ? (
-                    <div className={style.waitingScreen}>Завантажую дані... ⏳</div>
+                    <div className={style.waitingScreen}>Завантажую дані... </div>
                 ) : data.length === 0 ? (
                     <div className={style.waitingScreen} style={{ color: "#64748b" }}>
-                        Даних немає 😕 <br />
+                        Даних немає <br />
                         <span style={{ fontSize: "14px", fontWeight: "normal" }}>
                             (Або таблиця пуста, або за вашими фільтрами нічого не знайдено)
                         </span>
