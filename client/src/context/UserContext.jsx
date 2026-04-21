@@ -4,7 +4,7 @@ import { getUserRole } from "../pageElems/getUserRole";
 export const UserContext = createContext();
 
 export function UserProvider({children}){
-    const [role, setRole] = (getUserRole() || null);
+    const [role, setRole] = useState(getUserRole() || null);
     const [page, setPage] = useState("Головна");
     
     const logout = () => {
