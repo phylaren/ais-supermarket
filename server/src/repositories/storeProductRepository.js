@@ -117,3 +117,24 @@ export const addStockToDB = (upc, quantity, newPrice) => {
         });
     });
 };
+
+export const checkDuplicatePromo = (id_product, isPromo, currentUpc = null) => {
+    return new Promise((resolve, reject) => {
+        let sql = `SELECT UPC FROM Store_Product WHERE id_product = ? AND promotional_product = ?`;
+        let params = [id_product, isPromo];
+
+        if (currentUpc) {
+            sql += ` AND UPC != ?`;
+            params.push(currentUpc);
+        }
+
+        db.get(sql, params, (err, row) => {
+            if (err) {
+                console.error("Помилка перевірки дублікату:", err.message);
+                reject(err);
+            } else {
+                resolve(row);
+            }
+        });
+    });
+};

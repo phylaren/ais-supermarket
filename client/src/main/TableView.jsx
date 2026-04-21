@@ -101,55 +101,61 @@ export default function TableView({ category }) {
     };
 
     const handleEditClick = (record) => {
-        setEditingRecord(record);
+        const formattedRecord = { ...record };
+
+        if (formattedRecord.promotional_product !== undefined) {
+            formattedRecord.promotional_product = formattedRecord.promotional_product ? "1" : "0";
+        }
+
+        setEditingRecord(formattedRecord);
         setIsPopupOpen(true);
     };
 
     const handleAddStockClick = async (upc) => {
-    const currentProduct = data.find(item => item.UPC === upc || Object.values(item)[0] === upc);
-    const currentPrice = currentProduct ? currentProduct.selling_price : "";
+        const currentProduct = data.find(item => item.UPC === upc || Object.values(item)[0] === upc);
+        const currentPrice = currentProduct ? currentProduct.selling_price : "";
 
-    const qtyInput = window.prompt(`Введіть КІЛЬКІСТЬ товару, яка надійшла для UPC: ${upc}`);
-    if (qtyInput === null || qtyInput.trim() === "") return;
-    
-    const quantity = parseInt(qtyInput, 10);
-    if (isNaN(quantity) || quantity <= 0) {
-        alert("Помилка: Кількість має бути додатнім цілим числом");
-        return;
-    }
+        const qtyInput = window.prompt(`Введіть КІЛЬКІСТЬ товару, яка надійшла для UPC: ${upc}`);
+        if (qtyInput === null || qtyInput.trim() === "") return;
 
-    const priceInput = window.prompt(`Введіть НОВУ ЦІНУ продажу за одиницю (Поточна: ${currentPrice} ₴):`, currentPrice);
-    if (priceInput === null || priceInput.trim() === "") return;
-
-    const price = parseFloat(priceInput);
-    if (isNaN(price) || price <= 0) {
-        alert("Помилка: Ціна має бути додатнім числом.");
-        return;
-    }
-
-    try {
-        const token = localStorage.getItem('token');
-        const response = await fetch(`http://localhost:5000/api/${category.link}/${upc}/add-stock`, {
-            method: 'PATCH',
-            headers: { 
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${token}` 
-            },
-            body: JSON.stringify({ quantity, price })
-        });
-
-        if (response.ok) {
-            alert(`Успішно прийнято ${quantity} шт.\nНова ціна на полиці: ${price} ₴`);
-            fetchData();
-        } else {
-            const errorData = await response.json();
-            alert(`Не вдалося прийняти партію: ${errorData.message}`);
+        const quantity = parseInt(qtyInput, 10);
+        if (isNaN(quantity) || quantity <= 0) {
+            alert("Помилка: Кількість має бути додатнім цілим числом");
+            return;
         }
-    } catch (error) {
-        console.error("Помилка прийому партії:", error);
-        alert("Помилка з'єднання з сервером.");
-    }
-};
+
+        const priceInput = window.prompt(`Введіть НОВУ ЦІНУ продажу за одиницю (Поточна: ${currentPrice} ₴):`, currentPrice);
+        if (priceInput === null || priceInput.trim() === "") return;
+
+        const price = parseFloat(priceInput);
+        if (isNaN(price) || price <= 0) {
+            alert("Помилка: Ціна має бути додатнім числом.");
+            return;
+        }
+
+        try {
+            const token = localStorage.getItem('token');
+            const response = await fetch(`http://localhost:5000/api/${category.link}/${upc}/add-stock`, {
+                method: 'PATCH',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                },
+                body: JSON.stringify({ quantity, price })
+            });
+
+            if (response.ok) {
+                alert(`Успішно прийнято ${quantity} шт.\nНова ціна на полиці: ${price} ₴`);
+                fetchData();
+            } else {
+                const errorData = await response.json();
+                alert(`Не вдалося прийняти партію: ${errorData.message}`);
+            }
+        } catch (error) {
+            console.error("Помилка прийому партії:", error);
+            alert("Помилка з'єднання з сервером.");
+        }
+    };
 
     return (
         <div className={style.pageContainer}>

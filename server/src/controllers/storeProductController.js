@@ -4,23 +4,22 @@ import { getAllStoreProductsByCountService, getStoreProductsByNameService } from
 import * as repo from '../repositories/storeProductRepository.js';
 
 export const insertData = async (req, res) => {
-  const { id_product } = req.body;
+  try {
+    const { id_product, promotional_product } = req.body;
 
-  if (!id_product) {
-    return res.status(400).json({ success: false, message: "ID товару обов'язковий" });
-  }
-
-  const checkSql = `SELECT COUNT(*) as count FROM Store_Product WHERE id_product = ?`;
-
-  db.get(checkSql, [id_product], async (err, row) => {
-    if (err) {
-      return res.status(500).json({ success: false, message: "Помилка бази даних під час перевірки товару" });
+    if (!id_product) {
+      return res.status(400).json({ success: false, message: "ID товару обов'язковий" });
     }
 
-    if (row.count >= 2) {
+    const isPromo = (promotional_product === true || promotional_product === 1 || promotional_product === "1") ? 1 : 0;
+
+    const duplicate = await repo.checkDuplicatePromo(id_product, isPromo);
+
+    if (duplicate) {
+      const statusText = isPromo ? "Акційний" : "Неакційний";
       return res.status(400).json({ 
         success: false, 
-        message: "Цей товар вже має максимально допустимі 2 записи в магазині (звичайний та акційний)!" 
+        message: `Помилка: ${statusText} товар для цього продукту вже існує на складі (UPC: ${duplicate.UPC})!` 
       });
     }
 
@@ -31,7 +30,9 @@ export const insertData = async (req, res) => {
     });
 
     return res.status(result.status).json(result.body);
-  });
+  } catch (error) {
+    return res.status(500).json({ success: false, message: error.message });
+  }
 };
 
 export const deleteStoreProduct = async (req, res) => {
@@ -48,17 +49,36 @@ export const deleteStoreProduct = async (req, res) => {
 };
 
 export const updateData = async (req, res) => {
-  const { UPC } = req.params;
+  try {
+    const { UPC } = req.params;
+    const { id_product, promotional_product } = req.body;
 
-  const result = await updateEntity({
-    tableName: "Store_Product",
-    idField: "UPC",
-    entityName: "Товар у магазині",
-    id: UPC,
-    data: req.body
-  });
+    if (id_product !== undefined && promotional_product !== undefined) {
+      const isPromo = (promotional_product === true || promotional_product === 1 || promotional_product === "1") ? 1 : 0;
+      
+      const duplicate = await repo.checkDuplicatePromo(id_product, isPromo, UPC);
 
-  return res.status(result.status).json(result.body);
+      if (duplicate) {
+        const statusText = isPromo ? "Акційний" : "Неакційний";
+        return res.status(400).json({ 
+          success: false, 
+          message: `Помилка: ${statusText} товар для цього продукту вже існує на складі (UPC: ${duplicate.UPC})!` 
+        });
+      }
+    }
+
+    const result = await updateEntity({
+      tableName: "Store_Product",
+      idField: "UPC",
+      entityName: "Товар у магазині",
+      id: UPC,
+      data: req.body
+    });
+
+    return res.status(result.status).json(result.body);
+  } catch (error) {
+    return res.status(500).json({ success: false, message: error.message });
+  }
 };
 
 export const getAllStoreProductsByCount = async (req, res) => {
