@@ -47,12 +47,13 @@ export const getAllStoreProductsByCountFromDB = (filters = {}) => {
       SELECT
         s.UPC,
         p.product_name,
-        p.id_category,
+        c.category_name,
         s.selling_price,
         s.products_number,
         s.promotional_product
       FROM Store_Product AS s
       INNER JOIN Product AS p ON s.id_product = p.id_product
+      INNER JOIN Category AS c ON p.id_category = c.id_category
       WHERE 1=1
     `;
     let params = [];
@@ -80,12 +81,13 @@ export const getStoreProductsOrderedByNameFromDB = (filters = {}) => {
       SELECT
         s.UPC,
         p.product_name,
-        p.id_category,
+        c.category_name,
         s.selling_price,
         s.products_number,
         s.promotional_product
       FROM Store_Product AS s
       INNER JOIN Product AS p ON s.id_product = p.id_product
+      INNER JOIN Category AS c ON p.id_category = c.id_category
       WHERE 1=1
     `;
     let params = [];
