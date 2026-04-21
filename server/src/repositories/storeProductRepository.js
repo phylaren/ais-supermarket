@@ -106,3 +106,13 @@ export const getStoreProductsOrderedByNameFromDB = (filters = {}) => {
     });
   });
 };
+
+export const addStockToDB = (upc, quantity) => {
+    return new Promise((resolve, reject) => {
+        const sql = `UPDATE Store_Product SET products_number = products_number + ? WHERE UPC = ?`;
+        db.run(sql, [quantity, upc], function (err) {
+            if (err) reject(err);
+            else resolve(this.changes);
+        });
+    });
+};
